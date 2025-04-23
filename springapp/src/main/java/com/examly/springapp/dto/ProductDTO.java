@@ -1,21 +1,36 @@
-package com.examly.springapp.model;
+package com.examly.springapp.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
-@Entity
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ProductDTO {
+    @NotNull(message = "Product ID cannot be null")
     private long productId;
+
+    @NotBlank(message = "Product name cannot be blank")
+    @Size(max = 100, message = "Product name cannot exceed 100 characters")
     private String productName;
+
+    @NotBlank(message = "Description cannot be blank")
     private String description;
+
+    @NotNull(message = "Price cannot be null")
+    @Positive(message = "Price must be positive")
     private double price;
+
+    @NotNull(message = "Stock quantity cannot be null")
+    @Positive(message = "Stock quantity must be positive")
     private int stockQuantity;
+
+    @NotBlank(message = "Category cannot be blank")
     private String category;
+
+    @NotBlank(message = "Brand cannot be blank")
     private String brand;
+
+    @NotBlank(message = "Cover Image cannot be blank")
     private String coverImage;
     public long getProductId() {
         return productId;
@@ -65,9 +80,9 @@ public class Product {
     public void setCoverImage(String coverImage) {
         this.coverImage = coverImage;
     }
-    public Product() {
+    public ProductDTO() {
     }
-    public Product(long productId, String productName, String description, double price, int stockQuantity,
+    public ProductDTO(long productId, String productName, String description, double price, int stockQuantity,
             String category, String brand, String coverImage) {
         this.productId = productId;
         this.productName = productName;
