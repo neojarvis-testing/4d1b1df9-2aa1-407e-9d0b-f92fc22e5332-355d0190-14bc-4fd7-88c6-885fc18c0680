@@ -12,11 +12,21 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long userId;
     @Column(unique=true)
-    String email;
-    String password;
-    String username;
-    String mobileNumber;
-    String userRole;
+    private String email;
+    private String password;
+    private String username;
+    private String mobileNumber;
+    private String userRole;
+    public User() {
+    }
+    public User(long userId, String email, String password, String username, String mobileNumber, String userRole) {
+        this.userId = userId;
+        this.email = email;
+        this.password = password;
+        this.username = username;
+        this.mobileNumber = mobileNumber;
+        this.userRole = userRole;
+    }
     public long getUserId() {
         return userId;
     }
@@ -53,5 +63,4 @@ public class User {
     public void setUserRole(String userRole) {
         this.userRole = userRole;
     }
-
 }
