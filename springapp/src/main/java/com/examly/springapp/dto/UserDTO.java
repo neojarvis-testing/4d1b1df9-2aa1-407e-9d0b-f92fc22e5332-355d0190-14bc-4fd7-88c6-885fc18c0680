@@ -1,14 +1,23 @@
 package com.examly.springapp.dto;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 public class UserDTO {
     private long userId;
-    @Email(message = "Invalid email format")            //Email Validation 
+    @Email(message = "Invalid email format.")//Email Validation
     private String email;
+    // @Size(min = 8, message = "Password must be 8 atleast characters long.")Password size validation, minimum size should be 8.
+    @Pattern(regexp = "^[A-Za-z0-9]{8,}$", message = "Password must contain atleast 1 letter and 1 numeric character")                
     private String password;
+    @NotBlank(message = "Username cannot be empty")
+    @Pattern(regexp = "^[A-Za-z0-9_]*$", message ="Username should contain alphabets, numeric characters and underscores")
     private String username;
+    @Pattern(regexp = "^[0-9]{10}$", message = "Mobile number must be 10 digits long.")
     private String mobileNumber;
+    @Pattern(regexp = "^(ADMIN|USER)$", message = "User role must be 'ADMIN' or 'USER'")
     private String userRole;
 
     //Default constructor
