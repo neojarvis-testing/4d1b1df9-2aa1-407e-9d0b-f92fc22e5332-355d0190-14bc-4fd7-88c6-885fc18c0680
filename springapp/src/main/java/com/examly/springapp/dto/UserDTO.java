@@ -1,5 +1,4 @@
 package com.examly.springapp.dto;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -25,12 +24,10 @@ public class UserDTO {
     private String userRole;
 
     //Default constructor
-public UserDTO() {
-    }
+public UserDTO() { }
 
     //Parameterised constructor
 public UserDTO(String email, String password, String username, String mobileNumber, String userRole) {
-    
         this.email = email;
         this.password = password;
         this.username = username;
@@ -69,4 +66,5 @@ public String getUserRole() {
 public void setUserRole(String userRole) {
     this.userRole = userRole;
 }
+
 }

@@ -5,7 +5,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
- 
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -19,4 +19,3 @@ public class SecurityConfig {
         .httpBasic();
         return http.build();
     }
-}
