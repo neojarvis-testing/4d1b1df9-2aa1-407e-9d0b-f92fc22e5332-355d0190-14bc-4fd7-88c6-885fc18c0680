@@ -1,5 +1,4 @@
 package com.examly.springapp.config;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -20,4 +19,3 @@ public class SecurityConfig {
         .httpBasic();
         return http.build();
     }
-}
