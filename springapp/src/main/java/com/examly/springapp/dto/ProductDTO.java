@@ -6,9 +6,7 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
 public class ProductDTO {
-    @NotNull(message = "Product ID cannot be null")
-    private long productId;
-
+    
     @NotBlank(message = "Product name cannot be blank")
     @Size(max = 100, message = "Product name cannot exceed 100 characters")
     private String productName;
@@ -32,12 +30,7 @@ public class ProductDTO {
 
     @NotBlank(message = "Cover Image cannot be blank")
     private String coverImage;
-    public long getProductId() {
-        return productId;
-    }
-    public void setProductId(long productId) {
-        this.productId = productId;
-    }
+    
     public String getProductName() {
         return productName;
     }
@@ -82,9 +75,8 @@ public class ProductDTO {
     }
     public ProductDTO() {
     }
-    public ProductDTO(long productId, String productName, String description, double price, int stockQuantity,
+    public ProductDTO(String productName, String description, double price, int stockQuantity,
             String category, String brand, String coverImage) {
-        this.productId = productId;
         this.productName = productName;
         this.description = description;
         this.price = price;
