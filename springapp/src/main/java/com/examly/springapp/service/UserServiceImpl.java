@@ -23,9 +23,9 @@ public class UserServiceImpl {
     public  UserDTO registerUser(UserDTO userDTO) {
         User user = UserMapper.mapToUser(userDTO);
         user.setPassword(encoder.encode(user.getPassword()));
-        User existingUser =userRepo.existsByUserName(userDTO.getUsername());
+        User existingUser =userRepo.findByEmail(userDTO.getEmail());
         if(existingUser != null){
-            throw new UsernameAlreadyExist("Username already exists.");
+            throw new UserNotFoundException("User already exists.");
         }
         User saved = userRepo.save(user);
         return UserMapper.mapToUserDTO(saved);
@@ -37,7 +37,7 @@ public class UserServiceImpl {
        if(existingUser==null){
         throw new UserNotFoundException("User not found.");
        }
-      // if(existingUser.getPassword().equals(loginDTO.getPassword())){
+     
         if(encoder.matches(loginDTO.getPassword(), existingUser.getPassword())){
              return UserMapper.mapToLoginDTO(existingUser);
        }

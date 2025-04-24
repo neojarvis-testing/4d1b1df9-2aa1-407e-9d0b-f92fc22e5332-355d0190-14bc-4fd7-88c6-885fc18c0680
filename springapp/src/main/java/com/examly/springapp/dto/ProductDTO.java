@@ -75,8 +75,9 @@ public class ProductDTO {
     }
     public ProductDTO() {
     }
-    public ProductDTO(String productName, String description, double price, int stockQuantity,
-            String category, String brand, String coverImage) {
+    public ProductDTO(String productName, String description, double price, 
+        int stockQuantity, String category, String brand, String coverImage){
+            
         this.productName = productName;
         this.description = description;
         this.price = price;
