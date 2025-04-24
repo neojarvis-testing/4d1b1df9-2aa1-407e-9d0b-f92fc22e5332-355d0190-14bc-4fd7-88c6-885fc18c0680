@@ -18,8 +18,8 @@ public class GlobalExceptionHandler  {
         return ResponseEntity.status(400).body(e.getMessage());
     }
 
-    @ExceptionHandler(UsernameAlreadyExist.class)
-    public ResponseEntity<?> exception2(UsernameAlreadyExist e){
+    @ExceptionHandler(UserAlreadyExists.class)
+    public ResponseEntity<?> exception2(UserAlreadyExists e){
         return ResponseEntity.status(400).body(e.getMessage());
     }
 
