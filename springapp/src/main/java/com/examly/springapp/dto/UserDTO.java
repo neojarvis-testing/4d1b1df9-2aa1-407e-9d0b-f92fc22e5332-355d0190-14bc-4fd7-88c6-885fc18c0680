@@ -3,20 +3,24 @@ package com.examly.springapp.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 
 public class UserDTO {
-    private long userId;
+
     @Email(message = "Invalid email format.")//Email Validation
     private String email;
-    // @Size(min = 8, message = "Password must be 8 atleast characters long.")Password size validation, minimum size should be 8.
-    @Pattern(regexp = "^[A-Za-z0-9]{8,}$", message = "Password must contain atleast 1 letter and 1 numeric character")                
+
+    @Pattern(regexp = "^[A-Za-z0-9]{8,}$",
+    message = "Password must contain atleast 1 letter and 1 numeric character")   //Password size validation, minimum size should be 8.             
     private String password;
+
     @NotBlank(message = "Username cannot be empty")
-    @Pattern(regexp = "^[A-Za-z0-9_]*$", message ="Username should contain alphabets, numeric characters and underscores")
+    @Pattern(regexp = "^[A-Za-z0-9_]*$",
+    message ="Username should contain alphabets, numeric characters and underscores")
     private String username;
+
     @Pattern(regexp = "^[0-9]{10}$", message = "Mobile number must be 10 digits long.")
     private String mobileNumber;
+
     @Pattern(regexp = "^(ADMIN|USER)$", message = "User role must be 'ADMIN' or 'USER'")
     private String userRole;
 
@@ -25,8 +29,8 @@ public UserDTO() {
     }
 
     //Parameterised constructor
-public UserDTO(long userId, String email, String password, String username, String mobileNumber, String userRole) {
-        this.userId = userId;
+public UserDTO(String email, String password, String username, String mobileNumber, String userRole) {
+    
         this.email = email;
         this.password = password;
         this.username = username;
@@ -34,13 +38,7 @@ public UserDTO(long userId, String email, String password, String username, Stri
         this.userRole = userRole;
     }
 
-    //getter and setters
-public long getUserId() {
-    return userId;
-}
-public void setUserId(long userId) {
-    this.userId = userId;
-}
+    //getter and setters    
 public String getEmail() {
     return email;
 }
