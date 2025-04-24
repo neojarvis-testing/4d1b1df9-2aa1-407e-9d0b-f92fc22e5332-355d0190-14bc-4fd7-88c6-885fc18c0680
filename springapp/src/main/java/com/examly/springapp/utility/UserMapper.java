@@ -1,4 +1,5 @@
 package com.examly.springapp.utility;
+import com.examly.springapp.dto.LoginDTO;
 import com.examly.springapp.dto.UserDTO;
 import com.examly.springapp.model.User;
 
@@ -22,5 +23,15 @@ public class UserMapper {
         user.setUserRole(userDTO.getUserRole());
         user.setPassword(userDTO.getPassword());
     return user;
-    }    
+    }   
+    
+    public static LoginDTO mapToLoginDTO(User user){
+        String token="token";
+        LoginDTO loginDTO = new LoginDTO();
+        loginDTO.setToken(token);
+        loginDTO.setPassword(user.getPassword());
+        loginDTO.setEmail(user.getEmail());
+        loginDTO.setUserRole(user.getUserRole());
+        return loginDTO;
+    }
 }   

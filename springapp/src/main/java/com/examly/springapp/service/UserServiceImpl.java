@@ -1,7 +1,10 @@
 package com.examly.springapp.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.examly.springapp.dto.LoginDTO;
 import com.examly.springapp.dto.UserDTO;
 import com.examly.springapp.exceptions.UserNotFoundException;
 import com.examly.springapp.exceptions.UsernameAlreadyExist;
@@ -14,22 +17,29 @@ public class UserServiceImpl {
     @Autowired
     UserRepo userRepo;
 
+    @Autowired
+    PasswordEncoder encoder;
+
     public  UserDTO registerUser(UserDTO userDTO) {
         User user = UserMapper.mapToUser(userDTO);
-        if(userRepo.existsByUserName(userDTO.getUsername())){
+        user.setPassword(encoder.encode(user.getPassword()));
+        User existingUser =userRepo.existsByUserName(userDTO.getUsername());
+        if(existingUser != null){
             throw new UsernameAlreadyExist("Username already exists.");
         }
         User saved = userRepo.save(user);
         return UserMapper.mapToUserDTO(saved);
     }
 
-    public  UserDTO loginUser(UserDTO userDTO) {
-       User existingUser = userRepo.findByEmail(userDTO.getEmail());
+    public LoginDTO loginUser(LoginDTO loginDTO) {
+        
+       User existingUser = userRepo.findByEmail(loginDTO.getEmail());
        if(existingUser==null){
         throw new UserNotFoundException("User not found.");
        }
-       if(existingUser.getPassword().equals(userDTO.getPassword())){
-        return UserMapper.mapToUserDTO(existingUser);
+      // if(existingUser.getPassword().equals(loginDTO.getPassword())){
+        if(encoder.matches(loginDTO.getPassword(), existingUser.getPassword())){
+             return UserMapper.mapToLoginDTO(existingUser);
        }
        throw new UserNotFoundException("Invalid credentials.");
     }

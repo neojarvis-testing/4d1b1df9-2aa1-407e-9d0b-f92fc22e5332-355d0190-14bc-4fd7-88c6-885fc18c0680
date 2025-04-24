@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.examly.springapp.dto.LoginDTO;
 import com.examly.springapp.dto.UserDTO;
 import com.examly.springapp.service.UserServiceImpl;
 
@@ -26,8 +27,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserDTO>userLogin(@Valid @RequestBody UserDTO userDTO){
-        userDTO = userService.loginUser(userDTO);
-        return ResponseEntity.status(201).body(userDTO);
+    public ResponseEntity<LoginDTO>userLogin(@Valid @RequestBody LoginDTO loginDTO){
+        loginDTO = userService.loginUser(loginDTO);
+        return ResponseEntity.status(201).body(loginDTO);
     }
 }
