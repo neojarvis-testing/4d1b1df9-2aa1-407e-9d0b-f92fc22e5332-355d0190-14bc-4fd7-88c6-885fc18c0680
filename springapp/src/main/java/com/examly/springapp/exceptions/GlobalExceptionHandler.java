@@ -24,7 +24,7 @@ public class GlobalExceptionHandler  {
     @ExceptionHandler(UsernameAlreadyExist.class)
     public ResponseEntity<?> exception2(UsernameAlreadyExist e){
         return ResponseEntity.status(400).body(e.getMessage());
-
+    }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidationErrors(MethodArgumentNotValidException e) {
         List<FieldError> errors = e.getBindingResult().getFieldErrors();
