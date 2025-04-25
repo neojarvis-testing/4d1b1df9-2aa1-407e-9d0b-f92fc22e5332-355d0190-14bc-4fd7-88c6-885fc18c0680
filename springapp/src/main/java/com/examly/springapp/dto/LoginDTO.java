@@ -1,6 +1,7 @@
 package com.examly.springapp.dto;
 
 public class LoginDTO {
+    private String username;
     private String token;
     private String email;     
     private String password;
@@ -10,7 +11,8 @@ public class LoginDTO {
     public LoginDTO() {
     }
 
-    public LoginDTO(Long userId,String token, String email, String password,String userRole) {
+    public LoginDTO(String username,String token, String email, String password,String userRole) {
+        this.username = username;
         this.token = token;
         this.email = email;
         this.password = password;
@@ -39,6 +41,14 @@ public class LoginDTO {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
 }
