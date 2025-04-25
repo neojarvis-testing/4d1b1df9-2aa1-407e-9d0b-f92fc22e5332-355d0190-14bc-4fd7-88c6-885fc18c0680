@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 public class OrderDTO {
-    private Long id;
+    private Long orderId;
     private LocalDate orderDate;
     private String orderStatus;
     private String shippingAddress;
@@ -15,7 +15,7 @@ public class OrderDTO {
     private Double totalAmount;
     private Long userId;
     private List<OrderItemDTO> orderItems;
-
+    
 }
 
 

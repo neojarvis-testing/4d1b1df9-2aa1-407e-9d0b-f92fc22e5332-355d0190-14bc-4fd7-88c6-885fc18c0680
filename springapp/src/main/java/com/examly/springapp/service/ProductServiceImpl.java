@@ -45,8 +45,7 @@ public class ProductServiceImpl {
 
     public List<ProductDTO> getAllProducts() {
         List<Product> products=productRepo.findAll();
-        return products.stream().map(ProductMapper::mapToProductDTO)
-                                .collect(Collectors.toList());
+        return products.stream().map(ProductMapper::mapToProductDTO).collect(Collectors.toList());
      }
 
 
