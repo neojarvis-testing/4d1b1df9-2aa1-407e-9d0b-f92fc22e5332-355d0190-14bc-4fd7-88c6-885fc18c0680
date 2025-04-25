@@ -14,7 +14,7 @@ public class OrderMapper {
 
     public static OrderDTO convertToOrderDTO(Order order) {
         OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setId(order.getId());
+        orderDTO.setOrderId(order.getOrderId());
         orderDTO.setOrderDate(order.getOrderDate());
         orderDTO.setOrderStatus(order.getOrderStatus());
         orderDTO.setShippingAddress(order.getShippingAddress());

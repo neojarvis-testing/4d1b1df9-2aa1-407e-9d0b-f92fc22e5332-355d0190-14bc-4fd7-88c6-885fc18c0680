@@ -22,11 +22,12 @@ public class UserServiceImpl {
 
     public  UserDTO registerUser(UserDTO userDTO) {
         User user = UserMapper.mapToUser(userDTO);
-        user.setPassword(encoder.encode(user.getPassword()));
+        
         User existingUser =userRepo.existsByUserName(userDTO.getUsername());
         if(existingUser != null){
             throw new UsernameAlreadyExist("Username already exists.");
         }
+        user.setPassword(encoder.encode(user.getPassword()));
         User saved = userRepo.save(user);
         return UserMapper.mapToUserDTO(saved);
     }

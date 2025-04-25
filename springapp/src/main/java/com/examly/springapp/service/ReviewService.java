@@ -10,5 +10,5 @@ public interface ReviewService {
     List<ReviewDTO> getAllReviews();
     List<ReviewDTO> getReviewsByUserId(long userId);
     List<ReviewDTO> getReviewsByProductId(long productId);
-    ReviewDTO updateReview(long reviewId, ReviewDTO reviewDTO);
+   
 }

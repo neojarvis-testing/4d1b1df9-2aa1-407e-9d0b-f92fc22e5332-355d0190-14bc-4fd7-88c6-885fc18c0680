@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 public class OrderDTO {
-    private Long id;
+    private Long orderId;
     private LocalDate orderDate;
     private String orderStatus;
     private String shippingAddress;

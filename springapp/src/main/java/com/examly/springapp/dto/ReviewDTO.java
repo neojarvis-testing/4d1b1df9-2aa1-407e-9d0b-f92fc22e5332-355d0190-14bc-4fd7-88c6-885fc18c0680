@@ -2,6 +2,7 @@ package com.examly.springapp.dto;
 
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -18,6 +19,7 @@ public class ReviewDTO {
 
     @NotNull(message = "Rating cannot be null")
     @Positive(message = "Rating must be positive")
+    @Max(value = 5,message = "Rating must be below 5")
     private Integer rating;
 
     @NotNull(message = "Date cannot be null")

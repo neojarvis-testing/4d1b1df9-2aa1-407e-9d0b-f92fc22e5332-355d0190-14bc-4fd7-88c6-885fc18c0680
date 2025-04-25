@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,9 +63,4 @@ public class ReviewController {
         return ResponseEntity.status(200).body(reviews);
     }
 
-    @PutMapping("/{reviewId}")
-    public ResponseEntity<ReviewDTO> updateReview(@PathVariable long reviewId, @RequestBody ReviewDTO reviewDTO) {
-        ReviewDTO saved = reviewService.updateReview(reviewId, reviewDTO); // Calls service method and passes the user data
-        return ResponseEntity.status(201).body(saved);
-    }
 }

@@ -2,6 +2,7 @@ package com.examly.springapp.model;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,8 +22,13 @@ public class Review {
      @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
 
+    @Column(name = "review_text")
      private String reviewText;
+
+     @Column(name = "rating")
      private Integer rating;
+
+     @Column(name = "review_date")
     private LocalDate date;
 
      @ManyToOne
