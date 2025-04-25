@@ -66,4 +66,3 @@ public class UserServiceImpl implements UserDetailsService {
         return users.stream().map(UserMapper::mapToUserDTO).collect(Collectors.toList());
     }
 }
-

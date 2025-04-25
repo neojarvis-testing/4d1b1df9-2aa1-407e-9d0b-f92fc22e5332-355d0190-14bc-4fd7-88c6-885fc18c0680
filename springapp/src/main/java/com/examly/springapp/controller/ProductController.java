@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.examly.springapp.dto.ProductDTO;
-import com.examly.springapp.model.Product;
 import com.examly.springapp.service.ProductServiceImpl;
 
 import jakarta.validation.Valid;
