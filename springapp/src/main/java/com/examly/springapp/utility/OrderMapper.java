@@ -1,17 +1,17 @@
 package com.examly.springapp.utility;
-
+ 
 import java.util.stream.Collectors;
-
+ 
 import com.examly.springapp.dto.OrderDTO;
 import com.examly.springapp.dto.OrderItemDTO;
 import com.examly.springapp.model.Order;
 import com.examly.springapp.model.OrderItem;
-
+ 
 import java.util.List;
 import java.util.stream.Collectors;
-
+ 
 public class OrderMapper {
-
+ 
     public static OrderDTO convertToOrderDTO(Order order) {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setOrderId(order.getOrderId());
@@ -26,7 +26,7 @@ public class OrderMapper {
             .collect(Collectors.toList()));
         return orderDTO;
     }
-
+ 
     public static OrderItemDTO convertToOrderItemDTO(OrderItem orderItem) {
         OrderItemDTO orderItemDTO = new OrderItemDTO();
         orderItemDTO.setOrderItemId(orderItem.getOrderItemId());
@@ -37,4 +37,3 @@ public class OrderMapper {
         return orderItemDTO;
     }
 }
-
