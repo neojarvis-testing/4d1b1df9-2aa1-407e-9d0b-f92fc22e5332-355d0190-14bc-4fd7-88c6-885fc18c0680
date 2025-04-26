@@ -4,6 +4,8 @@ import com.examly.springapp.dto.UserDTO;
 import com.examly.springapp.model.User;
 
 public class UserMapper {
+
+    //Maps a User object to a UserDTO object
     public static UserDTO mapToUserDTO(User user){
         UserDTO userDTO = new UserDTO();
         userDTO.setEmail(user.getEmail());
@@ -14,7 +16,7 @@ public class UserMapper {
         return userDTO;
     }  
     
-    
+    //Maps a UserDTO object to a User object
     public static User mapToUser(UserDTO userDTO) {
         User user = new User();
         user.setEmail(userDTO.getEmail());
@@ -25,6 +27,7 @@ public class UserMapper {
     return user;
     }   
     
+    //Maps a User object to a LoginDTO object
     public static LoginDTO mapToLoginDTO(User user){
         String token="token";
         LoginDTO loginDTO = new LoginDTO();
