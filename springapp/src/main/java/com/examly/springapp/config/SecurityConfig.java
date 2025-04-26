@@ -37,23 +37,50 @@ public AuthenticationManager authenticationManager(HttpSecurity http) throws Exc
     .build();
 }
 @Bean
-public SecurityFilterChain cFilterChain(HttpSecurity http)throws Exception{
-     http.cors(cors->cors.disable())
-    .csrf(csrf->csrf.disable())
-    .authorizeHttpRequests(auth->auth
-    .requestMatchers("/api/register","/api/login","/api/users","/api/products","/api/reviews","/api/reviews/product/{productId}").permitAll()
-    .requestMatchers(HttpMethod.GET,"/api/orders/{orderId}","/api/reviews/{reviewId}").hasAnyRole("ADMIN","USER")
-    .requestMatchers(HttpMethod.GET,"/api/products/{productId}","/api/orders").hasRole("ADMIN")
-    .requestMatchers(HttpMethod.PUT,"/api/products/{productId}","/api/orders/{orderId}").hasRole("ADMIN")
-    .requestMatchers(HttpMethod.POST,"/api/products").hasRole("ADMIN")
-    .requestMatchers(HttpMethod.DELETE,"/api/products/{productId}").hasRole("ADMIN")
-    .requestMatchers(HttpMethod.POST,"/api/orders","/api/reviews").hasRole("USER")
-    .requestMatchers(HttpMethod.GET,"/api/orders/user/{userId}","/api/reviews/user/{userId}").hasRole("USER")
-    .requestMatchers(HttpMethod.DELETE,"/api/orders/{orderId}","/api/reviews/{reviewId}").hasRole("USER")
-    .anyRequest().authenticated())
-    .exceptionHandling(exception->exception.authenticationEntryPoint(entryPoint))
-    .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
-    
+public SecurityFilterChain cFilterChain(HttpSecurity http) throws Exception {
+    /* Configure CORS settings */
+    http.cors(cors -> cors.disable())
+        /* Disable CSRF protection */
+        .csrf(csrf -> csrf.disable())
+        /* Configure authorization rules */
+        .authorizeHttpRequests(auth -> auth
+
+            /* Allow public access to registration, login, and user endpoints */
+            .requestMatchers("/api/register", "/api/login", "/api/users").permitAll()
+
+            /* Allow GET requests to specific endpoints for ADMIN and USER roles */
+            .requestMatchers(HttpMethod.GET, "/api/orders/{orderId}", "/api/products", "/api/reviews/{reviewId}", "/api/reviews/product/{productId}", "/api/reviews", "/api/orders").hasAnyRole("ADMIN", "USER")
+
+            /* Allow GET requests to specific endpoints for ADMIN role only */
+            .requestMatchers(HttpMethod.GET, "/api/products/{productId}").hasRole("ADMIN")
+
+            /* Allow PUT requests to specific endpoints for ADMIN role only */
+            .requestMatchers(HttpMethod.PUT, "/api/products/{productId}", "/api/orders/{orderId}").hasRole("ADMIN")
+
+            /* Allow POST requests to specific endpoints for ADMIN role only */
+            .requestMatchers(HttpMethod.POST, "/api/products").hasRole("ADMIN")
+
+            /* Allow DELETE requests to specific endpoints for ADMIN role only */
+            .requestMatchers(HttpMethod.DELETE, "/api/products/{productId}").hasRole("ADMIN")
+
+            /* Allow POST requests to specific endpoints for USER role only */
+            .requestMatchers(HttpMethod.POST, "/api/orders", "/api/reviews").hasRole("USER")
+
+            /* Allow GET requests to specific endpoints for USER role only */
+            .requestMatchers(HttpMethod.GET, "/api/orders/user/{userId}", "/api/reviews/user/{userId}").hasRole("USER")
+
+            /* Allow DELETE requests to specific endpoints for USER role only */
+            .requestMatchers(HttpMethod.DELETE, "/api/orders/{orderId}", "/api/reviews/{reviewId}").hasRole("USER")
+
+            /* Allow all other requests */
+            .anyRequest().permitAll())
+
+        /* Configure exception handling */
+        .exceptionHandling(exception -> exception.authenticationEntryPoint(entryPoint))
+        /* Add custom filter before the UsernamePasswordAuthenticationFilter */
+        .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+
+    /* Build and return the SecurityFilterChain */
     return http.build();
 }
 }
