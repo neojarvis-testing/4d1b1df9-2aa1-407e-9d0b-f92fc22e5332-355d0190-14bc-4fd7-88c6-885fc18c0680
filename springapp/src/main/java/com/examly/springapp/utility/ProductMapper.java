@@ -6,6 +6,7 @@ import com.examly.springapp.model.Product;
 public class ProductMapper {
     public static ProductDTO mapToProductDTO(Product product){
         ProductDTO productDTO = new ProductDTO();
+        productDTO.setProductId(product.getProductId());
         productDTO.setProductName(product.getProductName());
         productDTO.setDescription(product.getDescription());
         productDTO.setPrice(product.getPrice());
@@ -26,5 +27,4 @@ public class ProductMapper {
         product.setCoverImage(productDTO.getCoverImage());
         return product;
     }
-
 }

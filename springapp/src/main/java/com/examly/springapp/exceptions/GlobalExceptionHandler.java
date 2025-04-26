@@ -32,5 +32,10 @@ public class GlobalExceptionHandler  {
         }
         return ResponseEntity.status(400).body(map.toString());
     }
+    
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<?> exception3(ProductNotFoundException e){
+        return ResponseEntity.status(400).body(e.getMessage());
+    }
 } 
 

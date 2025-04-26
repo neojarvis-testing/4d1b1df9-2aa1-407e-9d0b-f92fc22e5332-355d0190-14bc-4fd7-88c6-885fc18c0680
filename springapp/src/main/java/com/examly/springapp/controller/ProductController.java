@@ -19,39 +19,47 @@ import com.examly.springapp.service.ProductServiceImpl;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/products")//add version 
+@RequestMapping("/api/products")
 public class ProductController {
 
-    @Autowired //injects the instance of service automatically 
+    /*injects the instance of service automatically using field injection*/
+    @Autowired
     ProductServiceImpl productService;
 
-    @PostMapping //Handles post requests
+    /*Handles post mapping */
+    @PostMapping
     public ResponseEntity<ProductDTO> addProduct(@Valid @RequestBody ProductDTO productDTO) //@Valid handles validations
     {
         ProductDTO saved=productService.addProduct(productDTO); //calls service method and passes the user data
         return ResponseEntity.status(201).body(saved);
     }
-    
-    @GetMapping("/{productId}") //returns product with corresponding id
+
+     /*Handles get mapping, returns product with corresponding id */
+    @GetMapping("/{productId}")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable long productId){
         ProductDTO productDTO=productService.getProductById(productId);
         return ResponseEntity.status(200).body(productDTO);
     }
+
+    /*Handles delete mapping, deletes product with corresponding id */
+    /*Handles delete mapping, deletes product with corresponding id and returns a message*/
     @DeleteMapping("/{productId}")
-        public ResponseEntity<Boolean> deleteProductById(@PathVariable long productId){
-            boolean result=productService.deleteProductById(productId);
-            if(result)
-                return ResponseEntity.status(204).body(true);
-            else
-                return ResponseEntity.status(404).body(false);
+    public ResponseEntity<Boolean> deleteProductById(@PathVariable long productId) {
+       boolean result = productService.deleteProductById(productId);
+       if(result)
+            return ResponseEntity.status(200).body(true);
+        else
+            return ResponseEntity.status(200).body(false);
     }
 
+     /*Handles get mapping, returns all products */
     @GetMapping
     public ResponseEntity<List<ProductDTO>> getAllProducts(){
         List<ProductDTO> products=productService.getAllProducts();
         return ResponseEntity.status(200).body(products);
     }
     
+    /*Handles put mapping, updates a product */
     @PutMapping("/{productId}")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable long productId,  @RequestBody ProductDTO productDTO){
         ProductDTO saved=productService.updateProduct(productId,productDTO); //calls service method and passes the user data
