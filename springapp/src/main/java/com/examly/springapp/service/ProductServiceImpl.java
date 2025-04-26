@@ -14,7 +14,7 @@ import com.examly.springapp.utility.ProductMapper;
 import jakarta.validation.Valid;
 
 @Service
-public class ProductServiceImpl {
+public class ProductServiceImpl implements ProductService{
     @Autowired //injects the repository to handle database(DB) operations
     ProductRepo productRepo;
     
