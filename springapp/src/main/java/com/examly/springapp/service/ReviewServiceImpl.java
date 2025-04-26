@@ -58,14 +58,14 @@ public class ReviewServiceImpl implements ReviewService {
      * false otherwise.
      */
 
-    @Override
     public boolean deleteReviewById(long reviewId) {
-        if (reviewRepository.existsById(reviewId)) {
-            reviewRepository.deleteById(reviewId);
-            return true;
-        }
-        return false;
+    Review review = reviewRepository.findById(reviewId).orElse(null);
+    if (review == null) {
+        return false; // throw an exception saying review with id does not exist
     }
+    reviewRepository.delete(review);
+    return true;
+}
     
     /** 
      * Retrieves all Reviews, converts them to ReviewDTOs, 
