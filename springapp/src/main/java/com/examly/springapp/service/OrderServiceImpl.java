@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
  
 import com.examly.springapp.dto.OrderDTO;
 import com.examly.springapp.dto.OrderItemDTO;
+import com.examly.springapp.exceptions.DuplicateOrderException;
 import com.examly.springapp.model.Order;
 import com.examly.springapp.model.OrderItem;
 import com.examly.springapp.model.Product;
@@ -37,6 +38,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = mapToEntity(orderDTO);
         order.setTotalAmount(calculateTotalAmount(orderDTO.getOrderItems()));
         order.setOrderStatus("Confirmed");
+
         Order savedOrder = orderRepository.save(order);
         return mapToDTO(savedOrder);
     }
