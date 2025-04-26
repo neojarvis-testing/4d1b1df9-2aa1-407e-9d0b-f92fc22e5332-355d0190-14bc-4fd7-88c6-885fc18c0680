@@ -12,8 +12,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 import com.examly.springapp.config.UserPrinciple;
 import com.examly.springapp.dto.LoginDTO;
+import com.examly.springapp.dto.UserDTO;
 import com.examly.springapp.exceptions.UserNotFoundException;
 import com.examly.springapp.exceptions.UsernameAlreadyExist;
 import com.examly.springapp.model.TokenDTO;
