@@ -9,5 +9,5 @@ public interface OrderService {
     List<OrderDTO> getOrdersByUserId(long userId);
     List<OrderDTO> getAllOrders();
     OrderDTO updateOrder(long orderId, OrderDTO orderDTO);
-    void deleteOrderById(long orderId);
+    boolean deleteOrderById(long orderId);
 }

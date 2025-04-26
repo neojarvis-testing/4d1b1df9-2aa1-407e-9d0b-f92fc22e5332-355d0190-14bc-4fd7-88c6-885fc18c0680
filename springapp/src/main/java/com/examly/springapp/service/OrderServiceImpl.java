@@ -95,20 +95,14 @@ public class OrderServiceImpl implements OrderService {
         Order updatedOrder = orderRepository.save(order);
         return mapToDTO(updatedOrder);
     }
- 
+
     @Override
-    public void deleteOrderById(long orderId) {
-        /**
-         * Deletes an Order by its ID if it exists, otherwise throws an exception.
-         */
+    public boolean deleteOrderById(long orderId) {
         if (orderRepository.existsById(orderId)) {
-          //  orderRepository.deleteById(orderId);
-          Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
-          order.setOrderStatus("Cancelled");
-          orderRepository.save(order);
-        } else {
-            throw new RuntimeException("Order not found");
+            orderRepository.deleteById(orderId);
+            return true;
         }
+        return false;
     }
  
     private double calculateTotalAmount(List<OrderItemDTO> orderItems) {
@@ -154,7 +148,9 @@ public class OrderServiceImpl implements OrderService {
        
         List<OrderItem> orderItems = orderDTO.getOrderItems().stream()
             .map(this::mapToOrderItemEntity)
+            .map(orderItem-> { orderItem.setOrder(order); return orderItem; })
             .collect(Collectors.toList());
+        
         order.setOrderItems(orderItems);
         return order;
     }
@@ -166,6 +162,7 @@ public class OrderServiceImpl implements OrderService {
         OrderItemDTO orderItemDTO = new OrderItemDTO();
         orderItemDTO.setOrderItemId(orderItem.getOrderItemId());
         orderItemDTO.setProductId(orderItem.getProduct().getProductId());
+        orderItemDTO.setProductName(orderItem.getProduct().getProductName());
         orderItemDTO.setQuantity(orderItem.getQuantity());
         orderItemDTO.setPrice(orderItem.getPrice());
         return orderItemDTO;

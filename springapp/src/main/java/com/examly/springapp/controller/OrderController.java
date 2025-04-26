@@ -19,7 +19,7 @@ import com.examly.springapp.service.OrderService;
 import jakarta.validation.Valid;
  
 @RestController
-@RequestMapping("/api/v1/orders")
+@RequestMapping("/api/orders")
 public class OrderController {
  
     @Autowired
@@ -76,12 +76,11 @@ public class OrderController {
     }
  
     @DeleteMapping("/{orderId}")
-    public ResponseEntity<Void> deleteOrderById(@PathVariable long orderId) {
-        /**
-         * Handles DELETE requests to delete an order by its ID.
-         * Returns a 204 status if successful, otherwise throws an exception.
-         */
-        orderService.deleteOrderById(orderId);
-        return ResponseEntity.status(204).build();
+    public ResponseEntity<Boolean> deleteOrderById(@PathVariable long orderId) {
+        boolean result = orderService.deleteOrderById(orderId);
+        if (result)
+            return ResponseEntity.status(200).body(true);
+        else
+            return ResponseEntity.status(404).body(false);
     }
 }
