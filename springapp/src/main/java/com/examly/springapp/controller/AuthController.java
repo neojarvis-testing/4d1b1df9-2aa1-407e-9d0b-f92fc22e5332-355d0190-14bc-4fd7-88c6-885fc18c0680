@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.examly.springapp.config.JwtUtils;
 import com.examly.springapp.dto.LoginDTO;
 import com.examly.springapp.dto.UserDTO;
+import com.examly.springapp.model.TokenDTO;
 import com.examly.springapp.service.UserServiceImpl;
 
 import jakarta.validation.Valid;
@@ -25,31 +26,40 @@ import jakarta.validation.Valid;
 @RequestMapping("/api")
 public class AuthController {
 
+    /* Autowiring the UserServiceImpl to handle user-related operations */
     @Autowired
     UserServiceImpl userService;
+
+    /* Autowiring the Authentication Manager to handle authentication processes */
     @Autowired
     AuthenticationManager authenticationManager;
+
+    /* Autowiring the JwtUtils to handle JWT token generation and validation */
     @Autowired
     JwtUtils jwtUtils;
 
+    /* Endpoint to register a new user */
     @PostMapping("/register")
-    public ResponseEntity<UserDTO>userRegister(@Valid @RequestBody UserDTO userDTO ){
+    public ResponseEntity<UserDTO> userRegister(@Valid @RequestBody UserDTO userDTO) {
         userDTO = userService.registerUser(userDTO);
         return ResponseEntity.status(201).body(userDTO);
     }
 
+    /* Endpoint to login a user and generate a JWT token */
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody LoginDTO loginDTO){
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+    public ResponseEntity<TokenDTO> loginUser(@RequestBody LoginDTO loginDTO) {
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtUtils.genrateToken(authentication);
-        return ResponseEntity.status(200).body(token);
+        TokenDTO tokenDTO = userService.makeTokenDto(loginDTO, token);
+        return ResponseEntity.status(200).body(tokenDTO);
     }
 
-  
+    /* Endpoint to get all users */
     @GetMapping("/users")
-    public ResponseEntity<List<UserDTO>> getAllUsers(){
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> list = userService.getAllUsers();
-        return ResponseEntity.status(200).body(list); 
+        return ResponseEntity.status(200).body(list);
     }
 }

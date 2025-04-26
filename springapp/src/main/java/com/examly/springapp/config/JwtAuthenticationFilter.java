@@ -25,17 +25,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
+        /* Extract the token from the request */
         String token =jwtUtils.extractToken(request);
+
+        /* Check if the token is not null and is valid */
         if(token!=null&& jwtUtils.validateToken(token)){
+
+            /* Extract the username from the token */
             String username = jwtUtils.extractUsername(token);
-            System.out.println("Name from token:"+username);
+
+            /* Load user details using the username */
             UserDetails userDetails = service.loadUserByUsername(username);
-            System.out.println("data found "+ userDetails);
+
+            /* Create an authentication token with the user details and authorities */
             UsernamePasswordAuthenticationToken authenticationToken = 
             new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+            
+            /* Set additional details for the authentication token */
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+            /* Set the authentication in the security context */
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
+    /* Continue the filter chain */
     filterChain.doFilter(request, response);
 }
 
