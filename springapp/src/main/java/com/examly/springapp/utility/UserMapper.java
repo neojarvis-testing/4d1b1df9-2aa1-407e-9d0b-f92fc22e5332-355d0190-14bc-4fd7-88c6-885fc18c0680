@@ -19,6 +19,7 @@ public class UserMapper {
     //Maps a UserDTO object to a User object
     public static User mapToUser(UserDTO userDTO) {
         User user = new User();
+        user.setUserId(userDTO.getUserId());
         user.setEmail(userDTO.getEmail());
         user.setMobileNumber(userDTO.getMobileNumber());
         user.setUsername(userDTO.getUsername());
