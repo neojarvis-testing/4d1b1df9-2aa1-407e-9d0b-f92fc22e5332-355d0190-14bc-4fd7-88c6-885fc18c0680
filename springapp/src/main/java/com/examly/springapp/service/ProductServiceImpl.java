@@ -19,8 +19,6 @@ import jakarta.validation.Valid;
 @Service
 public class ProductServiceImpl implements ProductService{
 
-    /* injects the repository to handle database(DB) operations */
-    @Autowired 
     ProductRepo productRepo;
     
     /*
