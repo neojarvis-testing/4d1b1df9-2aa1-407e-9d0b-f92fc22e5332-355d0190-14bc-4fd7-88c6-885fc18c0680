@@ -46,10 +46,10 @@ public SecurityFilterChain cFilterChain(HttpSecurity http) throws Exception {
         .authorizeHttpRequests(auth -> auth
 
             /* Allow public access to registration, login, and user endpoints */
-            .requestMatchers("/api/register", "/api/login", "/api/users").permitAll()
+            .requestMatchers("/api/register", "/api/login", "/api/users","/api/reviews", "/api/products").permitAll()
 
             /* Allow GET requests to specific endpoints for ADMIN and USER roles */
-            .requestMatchers(HttpMethod.GET, "/api/orders/{orderId}", "/api/products", "/api/reviews/{reviewId}", "/api/reviews/product/{productId}", "/api/reviews", "/api/orders").hasAnyRole("ADMIN", "USER")
+            .requestMatchers(HttpMethod.GET, "/api/orders/{orderId}", "/api/reviews/{reviewId}", "/api/reviews/product/{productId}", "/api/orders").hasAnyRole("ADMIN", "USER")
 
             /* Allow GET requests to specific endpoints for ADMIN role only */
             .requestMatchers(HttpMethod.GET, "/api/products/{productId}").hasRole("ADMIN")
