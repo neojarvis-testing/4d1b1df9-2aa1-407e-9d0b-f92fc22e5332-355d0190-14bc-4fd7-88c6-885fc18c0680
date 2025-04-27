@@ -28,12 +28,12 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private UserRepo userRepository;
  
+    /**
+     * Converts OrderDTO to Order entity, calculates total amount,
+     * saves it to the repository, and returns the saved OrderDTO.
+     */
     @Override
     public OrderDTO addOrder(OrderDTO orderDTO) {
-        /**
-         * Converts OrderDTO to Order entity, calculates total amount,
-         * saves it to the repository, and returns the saved OrderDTO.
-         */
         Order order = mapToEntity(orderDTO);
         order.setTotalAmount(calculateTotalAmount(orderDTO.getOrderItems()));
         order.setOrderStatus("Confirmed");
@@ -41,42 +41,42 @@ public class OrderServiceImpl implements OrderService {
         return mapToDTO(savedOrder);
     }
  
+    /**
+     * Retrieves an Order by its ID, throws an exception if not found,
+     * and converts it to OrderDTO.
+     */
     @Override
     public OrderDTO getOrderById(long orderId) {
-        /**
-         * Retrieves an Order by its ID, throws an exception if not found,
-         * and converts it to OrderDTO.
-         */
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
         return mapToDTO(order);
     }
  
+    /**
+     * Retrieves Orders by user ID, converts them to OrderDTOs,
+     * and returns the list.
+     */
     @Override
     public List<OrderDTO> getOrdersByUserId(long userId) {
-        /**
-         * Retrieves Orders by user ID, converts them to OrderDTOs,
-         * and returns the list.
-         */
         List<Order> orders = orderRepository.findByUserId(userId);
         return orders.stream().map(this::mapToDTO).collect(Collectors.toList());
     }
  
+    /**
+     * Retrieves all Orders, converts them to OrderDTOs,
+     * and returns the list.
+     */
     @Override
     public List<OrderDTO> getAllOrders() {
-        /**
-         * Retrieves all Orders, converts them to OrderDTOs,
-         * and returns the list.
-         */
         List<Order> orders = orderRepository.findAll();
         return orders.stream().map(this::mapToDTO).collect(Collectors.toList());
     }
  
+    /**
+     * Updates an existing Order by its ID, throws an exception if not found,
+     * calculates total amount, and returns the updated OrderDTO.
+     */
     @Override
     public OrderDTO updateOrder(long orderId, OrderDTO orderDTO) {
-        /**
-         * Updates an existing Order by its ID, throws an exception if not found,
-         * calculates total amount, and returns the updated OrderDTO.
-         */
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
         order.setOrderDate(orderDTO.getOrderDate());
         order.setOrderStatus(orderDTO.getOrderStatus());
@@ -105,20 +105,28 @@ public class OrderServiceImpl implements OrderService {
         return false;
     }
  
+    /**
+     * Calculates the total amount by multiplying the price and quantity
+     * of each order item and summing them up.
+     */
     private double calculateTotalAmount(List<OrderItemDTO> orderItems) {
-        /**
-         * Calculates the total amount by multiplying the price and quantity
-         * of each order item and summing them up.
-         */
-        return orderItems.stream()
-            .mapToDouble(item -> item.getPrice() * item.getQuantity())
-            .sum();
+        // return orderItems.stream()
+        //     .mapToDouble(item -> item.getPrice() * item.getQuantity())
+        //     .sum();
+        double total=0;
+        int count = 0;
+        for(OrderItemDTO item:orderItems){
+            Product product=productRepository.findById(item.getProductId()).orElse(null);
+            total=total+product.getPrice()*item.getQuantity();
+            count = count + item.getQuantity();
+        }
+        return total;
     }
  
+    /*
+     * Converts an Order entity to OrderDTO.
+     */
     private OrderDTO mapToDTO(Order order) {
-        /**
-         * Converts an Order entity to OrderDTO.
-         */
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setOrderId(order.getOrderId());
         orderDTO.setOrderDate(order.getOrderDate());
@@ -133,13 +141,13 @@ public class OrderServiceImpl implements OrderService {
         return orderDTO;
     }
  
+    /**
+     * Converts an OrderDTO to Order entity.
+     */
     private Order mapToEntity(OrderDTO orderDTO) {
-        /**
-         * Converts an OrderDTO to Order entity.
-         */
         Order order = new Order();
         order.setOrderDate(orderDTO.getOrderDate());
-        order.setOrderStatus(orderDTO.getOrderStatus());
+        order.setOrderStatus("Processing");
         order.setShippingAddress(orderDTO.getShippingAddress());
         order.setBillingAddress(orderDTO.getBillingAddress());
        
@@ -155,10 +163,10 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
  
+    /**
+     * Converts an OrderItem entity to OrderItemDTO.
+     */
     private OrderItemDTO mapToOrderItemDTO(OrderItem orderItem) {
-        /**
-         * Converts an OrderItem entity to OrderItemDTO.
-         */
         OrderItemDTO orderItemDTO = new OrderItemDTO();
         orderItemDTO.setOrderItemId(orderItem.getOrderItemId());
         orderItemDTO.setProductId(orderItem.getProduct().getProductId());
@@ -168,10 +176,10 @@ public class OrderServiceImpl implements OrderService {
         return orderItemDTO;
     }
  
+    /**
+     * Converts an OrderItemDTO to OrderItem entity.
+     */
     private OrderItem mapToOrderItemEntity(OrderItemDTO orderItemDTO) {
-        /**
-         * Converts an OrderItemDTO to OrderItem entity.
-         */
         OrderItem orderItem = new OrderItem();
         orderItem.setQuantity(orderItemDTO.getQuantity());
         orderItem.setPrice(orderItemDTO.getPrice());
