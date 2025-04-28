@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
 import { Observable } from 'rxjs';
-import { Api } from '../api-urls';
 import { Login } from '../models/login.model';
+import { Api } from '../api-urls';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,7 @@ export class AuthService {
    * Sends a POST request to the API endpoint with the user details
    */
   register(user:User):Observable<any>{
+    console.log(user);
     return this.http.post<any>(`${Api.apiUrl}/api/register`,user);
   }
 
