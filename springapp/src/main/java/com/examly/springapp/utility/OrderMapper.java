@@ -33,7 +33,7 @@ public class OrderMapper {
         orderItemDTO.setProductName(orderItem.getProduct().getProductName());
         orderItemDTO.setProductId(orderItem.getProduct().getProductId());
         orderItemDTO.setQuantity(orderItem.getQuantity());
-        orderItemDTO.setPrice(orderItem.getPrice());
+        orderItemDTO.setPrice(orderItem.getProduct().getPrice());
         return orderItemDTO;
     }
 }

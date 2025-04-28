@@ -3,11 +3,13 @@ package com.examly.springapp.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.examly.springapp.dto.OrderDTO;
 import com.examly.springapp.dto.OrderItemDTO;
+import com.examly.springapp.exceptions.OrderNotFoundException;
+import com.examly.springapp.exceptions.ProductNotFoundException;
+import com.examly.springapp.exceptions.UserNotFoundException;
 import com.examly.springapp.model.Order;
 import com.examly.springapp.model.OrderItem;
 import com.examly.springapp.model.Product;
@@ -38,21 +40,21 @@ public class OrderServiceImpl implements OrderService {
         Order order = mapToEntity(orderDTO);
         double totalAmount = calculateTotalAmount(orderDTO.getOrderItems());
         order.setTotalAmount(totalAmount);
-        order.setOrderStatus(OrderStatus.CONFIRMED);
+        order.setOrderStatus("CONFIRMED");
 
         // Check if order item quantity is less than product stock quantity
         for (OrderItemDTO itemDTO : orderDTO.getOrderItems()) {
             Product product = productRepository.findById(itemDTO.getProductId())
-                    .orElseThrow(() -> new RuntimeException("Product not found"));
+                    .orElseThrow(() -> new ProductNotFoundException("Product not found"));
             if (itemDTO.getQuantity() > product.getStockQuantity()) {
-                throw new RuntimeException("Insufficient stock for product: " + product.getProductName());
+                throw new ProductNotFoundException("Insufficient stock for product: " + product.getProductName());
             }
         }
 
         // Update product stock quantity
         for (OrderItemDTO itemDTO : orderDTO.getOrderItems()) {
             Product product = productRepository.findById(itemDTO.getProductId())
-                    .orElseThrow(() -> new RuntimeException("Product not found"));
+                    .orElseThrow(() -> new ProductNotFoundException("Product not found"));
             product.setStockQuantity(product.getStockQuantity() - itemDTO.getQuantity());
             productRepository.save(product);
         }
@@ -63,17 +65,19 @@ public class OrderServiceImpl implements OrderService {
 
     
     /**
-     * Retrieves an order by its ID.
+     * Retrieves an order by its ID. Throws an exception if not found, 
+     * and converts it to orderDTO.
      */
     @Override
     public OrderDTO getOrderById(long orderId) {
-        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
         return mapToDTO(order);
     }
 
     
     /**
-     * Retrieves orders by user ID.
+     * Retrieves Reviews by user ID, converts them to orderDTOs, 
+     * and returns the list.
      */
     @Override
     public List<OrderDTO> getOrdersByUserId(long userId) {
@@ -83,7 +87,8 @@ public class OrderServiceImpl implements OrderService {
 
     
     /**
-     * Retrieves all orders.
+     * Retrieves all orders, converts them to orderDTOs, 
+     * and returns the list.
      */
     @Override
     public List<OrderDTO> getAllOrders() {
@@ -94,17 +99,19 @@ public class OrderServiceImpl implements OrderService {
     
     /**
      * Updates an existing order by its ID.
+     * If the order does not exist, throw a custom exception
+     * Otherwise Update order with the fields if provided in the DTO
      */
     @Override
     public OrderDTO updateOrder(long orderId, OrderDTO orderDTO) {
-        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
         order.setOrderDate(orderDTO.getOrderDate());
         order.setOrderStatus(orderDTO.getOrderStatus());
         order.setShippingAddress(orderDTO.getShippingAddress());
         order.setBillingAddress(orderDTO.getBillingAddress());
         order.setTotalAmount(calculateTotalAmount(orderDTO.getOrderItems()));
 
-        User user = userRepository.findById(orderDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById(orderDTO.getUserId()).orElseThrow(() -> new UserNotFoundException("User not found"));
         order.setUser(user);
 
         List<OrderItem> orderItems = orderDTO.getOrderItems().stream()
@@ -162,11 +169,11 @@ public class OrderServiceImpl implements OrderService {
     private Order mapToEntity(OrderDTO orderDTO) {
         Order order = new Order();
         order.setOrderDate(orderDTO.getOrderDate());
-        order.setOrderStatus(OrderStatus.PROCESSING);
+        order.setOrderStatus("PROCESSING");
         order.setShippingAddress(orderDTO.getShippingAddress());
         order.setBillingAddress(orderDTO.getBillingAddress());
 
-        User user = userRepository.findById(orderDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById(orderDTO.getUserId()).orElseThrow(() -> new UserNotFoundException("User not found"));
         order.setUser(user);
 
         List<OrderItem> orderItems = orderDTO.getOrderItems().stream()
@@ -184,7 +191,7 @@ public class OrderServiceImpl implements OrderService {
         orderItemDTO.setProductId(orderItem.getProduct().getProductId());
         orderItemDTO.setProductName(orderItem.getProduct().getProductName());
         orderItemDTO.setQuantity(orderItem.getQuantity());
-        orderItemDTO.setPrice(orderItem.getPrice());
+        orderItemDTO.setPrice(orderItem.getProduct().getPrice());
         return orderItemDTO;
     }
 
@@ -193,7 +200,7 @@ public class OrderServiceImpl implements OrderService {
         orderItem.setQuantity(orderItemDTO.getQuantity());
         orderItem.setPrice(orderItemDTO.getPrice());
 
-        Product product = productRepository.findById(orderItemDTO.getProductId()).orElseThrow(() -> new RuntimeException("Product not found"));
+        Product product = productRepository.findById(orderItemDTO.getProductId()).orElseThrow(() -> new ProductNotFoundException("Product not found"));
         orderItem.setProduct(product);
         return orderItem;
     }

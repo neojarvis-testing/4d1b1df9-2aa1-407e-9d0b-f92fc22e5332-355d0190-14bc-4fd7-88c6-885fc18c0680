@@ -19,8 +19,7 @@ public class OrderDTO {
     @NotNull(message = "Order date cannot be null")
     private LocalDate orderDate;
 
-    @NotBlank(message = "Order status cannot be blank")
-    private OrderStatus orderStatus;
+    private String orderStatus;
 
     @NotBlank(message = "Shipping address cannot be blank")
     private String shippingAddress;
@@ -29,7 +28,6 @@ public class OrderDTO {
     private String billingAddress;
 
     @NotNull(message = "Total amount cannot be null")
-    @Positive(message = "Total amount must be positive")
     private Double totalAmount;
 
     @NotNull(message = "User ID cannot be null")

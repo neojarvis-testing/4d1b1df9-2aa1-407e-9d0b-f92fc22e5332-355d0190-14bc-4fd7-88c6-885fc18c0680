@@ -33,7 +33,7 @@ public class Order {
     private LocalDate orderDate;
 
     @Column(name = "orderStatus")
-    private OrderStatus orderStatus;
+    private String orderStatus;
 
     @Column(name = "shippingAddress")
     private String shippingAddress;
