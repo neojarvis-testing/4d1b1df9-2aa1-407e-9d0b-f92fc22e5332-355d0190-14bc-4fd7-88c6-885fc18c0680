@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -14,7 +15,8 @@ public class ReviewDTO {
     private Long reviewId;
 
     @NotBlank(message = "Review text cannot be blank")
-    @Size(max = 500, message = "Review text cannot exceed 500 characters")
+    @Size(max = 300, message = "Review text cannot exceed 300 characters")
+    @Pattern(regexp = "^[A-Za-z0-9 ]+$",message = "Review text should follow pattern")
     private String reviewText;
 
     @NotNull(message = "Rating cannot be null")

@@ -23,8 +23,10 @@ public class User {
     @Column(unique=true, name = "email")
     private String email;
 
+    @Column(name = "password")
     private String password;
 
+    @Column(name = "username")
     private String username;
 
     @Column(name = "mobile_number")
