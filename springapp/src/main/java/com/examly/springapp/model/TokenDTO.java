@@ -1,31 +1,24 @@
 package com.examly.springapp.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class TokenDTO {
- 
-    private long userId;
+    
+    @NotNull(message = "User ID cannot be null")
+    private Long userId;
+
+    @NotBlank(message = "User role cannot be blank")
     private String userRole;
+
+    @NotBlank(message = "Token cannot be blank")
     private String token;
-    public TokenDTO(long userId, java.lang.String userRole, String token) {
-        this.userId = userId;
-        this.userRole = userRole;
-        this.token = token;
-    }
-    public long getUserId() {
-        return userId;
-    }
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-    public String getUserRole() {
-        return userRole;
-    }
-    public void setUserRole(String userRole) {
-        this.userRole = userRole;
-    }
-    public String getToken() {
-        return token;
-    }
-    public void setToken(String token) {
-        this.token = token;
-    }
+
+
 }    

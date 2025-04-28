@@ -9,27 +9,30 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@Table(name = "review")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Review {
+
      @Id
      @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reviewId;
+     private Long reviewId;
 
-    @Column(name = "review_text")
+     @Column(name = "review_text")
      private String reviewText;
 
      @Column(name = "rating")
      private Integer rating;
 
      @Column(name = "review_date")
-    private LocalDate date;
+     private LocalDate date;   
 
      @ManyToOne
      @JoinColumn(name = "userId")
