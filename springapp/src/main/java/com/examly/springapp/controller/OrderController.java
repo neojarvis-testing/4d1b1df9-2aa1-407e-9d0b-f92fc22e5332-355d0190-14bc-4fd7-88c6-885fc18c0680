@@ -14,12 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
  
 import com.examly.springapp.dto.OrderDTO;
 import com.examly.springapp.service.OrderService;
- 
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
  
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "Order Controller", description = "API for managing orders")
 @RequestMapping("/api/orders")
 public class OrderController {
  
@@ -30,6 +33,7 @@ public class OrderController {
      * Validates the request body and returns the saved OrderDTO.
      */
     @PostMapping
+    @Operation(summary = "Add a new order", description = "Creates a new order and returns the saved order object")
     public ResponseEntity<OrderDTO> addOrder(@Valid @RequestBody OrderDTO orderDTO) {
         OrderDTO savedOrder = orderService.addOrder(orderDTO);
         return ResponseEntity.status(201).body(savedOrder);
@@ -40,6 +44,7 @@ public class OrderController {
      * Returns the OrderDTO if found, otherwise throws an exception.
      */
     @GetMapping("/{orderId}")
+    @Operation(summary = "Get order by ID", description = "Returns the order with the specified ID")
     public ResponseEntity<OrderDTO> getOrderById(@PathVariable long orderId) {
         OrderDTO orderDTO = orderService.getOrderById(orderId);
         return ResponseEntity.status(200).body(orderDTO);
@@ -50,6 +55,7 @@ public class OrderController {
      * Returns a list of OrderDTOs.
      */
     @GetMapping("/user/{userId}")
+    @Operation(summary = "Get orders by user ID", description = "Returns a list of orders for the specified user ID")
     public ResponseEntity<List<OrderDTO>> getOrdersByUserId(@PathVariable long userId) {
         List<OrderDTO> orders = orderService.getOrdersByUserId(userId);
         return ResponseEntity.status(200).body(orders);
@@ -60,6 +66,7 @@ public class OrderController {
      * Returns a list of OrderDTOs.
      */
     @GetMapping
+    @Operation(summary = "Get all orders", description = "Returns a list of all orders")
     public ResponseEntity<List<OrderDTO>> getAllOrders() {
         List<OrderDTO> orders = orderService.getAllOrders();
         return ResponseEntity.status(200).body(orders);
@@ -70,6 +77,7 @@ public class OrderController {
      * Returns the updated OrderDTO.
      */
     @PutMapping("/{orderId}")
+    @Operation(summary = "Update order by ID", description = "Updates the order with the specified ID and returns the updated order object")
     public ResponseEntity<OrderDTO> updateOrder(@PathVariable long orderId, @Valid @RequestBody OrderDTO orderDTO) {
         OrderDTO updatedOrder = orderService.updateOrder(orderId, orderDTO);
         return ResponseEntity.status(200).body(updatedOrder);
@@ -80,6 +88,7 @@ public class OrderController {
      * Returns a confirmation message or status.
      */
     @DeleteMapping("/{orderId}")
+    @Operation(summary = "Delete order by ID", description = "Deletes the order with the specified ID and returns a confirmation message")
     public ResponseEntity<Boolean> deleteOrderById(@PathVariable long orderId) {
         boolean result = orderService.deleteOrderById(orderId);
         if (result)
