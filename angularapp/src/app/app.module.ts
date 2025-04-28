@@ -19,6 +19,8 @@ import { SignupComponent } from './components/signup/signup.component';
 import { UsernavComponent } from './components/usernav/usernav.component';
 import { UserviewproductComponent } from './components/userviewproduct/userviewproduct.component';
 import { AdminnavComponent } from './components/adminnav/adminnav.component';
+import { HttpClientModule } from '@angular/common/http'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,10 @@ import { AdminnavComponent } from './components/adminnav/adminnav.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
