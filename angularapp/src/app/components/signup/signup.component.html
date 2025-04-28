@@ -1,1 +1,86 @@
-<p>signup works!</p>
+<div class="registration-form">
+    <h2>Registration</h2>
+    <form [formGroup]="form" (ngSubmit)="register()">
+
+    <!-- Username -->
+    <div>
+    <label for="username">Username*</label>
+    <input
+              type="text"
+              name="username"
+              id="username"
+              formControlName="username"
+              placeholder="Enter your username"
+            />
+    <div *ngIf="form.controls.username.invalid && (form.controls.username.touched || form.controls.username.dirty)">
+    <small *ngIf="form.controls.username.errors.required">*Username is required</small>
+    </div>
+    </div>
+    <!-- Email -->
+    <div>
+    <label for="email">Email*</label>
+    <input
+              type="email"
+              name="email"
+              id="email"
+              formControlName="email"
+              placeholder="Enter your email"
+            />
+    <div *ngIf="form.controls.email.invalid && (form.controls.email.touched || form.controls.email.dirty)">
+    <small *ngIf="form.controls.email.errors.required">*Email is required</small>
+    <small *ngIf="form.controls.email.errors.email">*Email does not meet the required criteria</small>
+    </div>
+    </div>
+    <!-- Password -->
+    <div>
+    <label for="password">Password*</label>
+    <input
+              type="password"
+              name="password"
+              id="password"
+              formControlName="password"
+              placeholder="Enter your password"
+            />
+    <div *ngIf="form.controls.password.invalid && (form.controls.password.touched || form.controls.password.dirty)">
+    <small *ngIf="form.controls.password.errors.required">*Password is required</small>
+    <small *ngIf="form.controls.password.errors.pattern">
+                *Password must contain one lowercase, uppercase, digit, and special character
+    </small>
+    </div>
+    </div>
+    <!-- Confirm Password -->
+    <div>
+    <label for="confirmPassword">Confirm Password*</label>
+    <input
+              type="password"
+              name="confirmPassword"
+              id="confirmPassword"
+              formControlName="confirmPassword"
+              placeholder="Confirm your password"
+            />
+    <div *ngIf="form.controls.confirmPassword.invalid && (form.controls.confirmPassword.touched || form.controls.confirmPassword.dirty)">
+    <small *ngIf="form.controls.confirmPassword.errors.required">*Confirm Password is required</small>
+    <small *ngIf="form.controls.confirmPassword.hasError('passwordMismatch')">*Passwords do not match</small>
+    </div>
+    </div>
+    <!-- Mobile Number -->
+    <div>
+    <label for="mobileNumber">Mobile Number*</label>
+    <input
+              type="tel"
+              name="mobileNumber"
+              id="mobileNumber"
+              formControlName="mobileNumber"
+              placeholder="Enter your mobile number"
+            />
+    <div *ngIf="form.controls.mobileNumber.invalid && (form.controls.mobileNumber.touched || form.controls.mobileNumber.dirty)">
+    <small *ngIf="form.controls.mobileNumber.errors.required">*Mobile Number is required</small>
+    <small *ngIf="form.controls.mobileNumber.errors.pattern">*Mobile Number must be 10 digits</small>
+    </div>
+    </div>
+    <!-- Submit Button -->
+    <button type="submit" [disabled]="form.invalid">
+            Register
+    </button>
+    </form>
+    </div>
