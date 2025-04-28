@@ -19,6 +19,7 @@ import jakarta.validation.Valid;
 @Service
 public class ProductServiceImpl implements ProductService{
 
+    @Autowired
     ProductRepo productRepo;
     
     /*
