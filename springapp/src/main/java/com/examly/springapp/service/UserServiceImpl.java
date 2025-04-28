@@ -3,7 +3,6 @@ package com.examly.springapp.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,16 +19,15 @@ import com.examly.springapp.model.User;
 import com.examly.springapp.repository.UserRepo;
 import com.examly.springapp.utility.UserMapper;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserDetailsService {
 
-    /* Autowiring the UserRepo to handle database operations */
-    @Autowired
-    UserRepo userRepo;
+    private final UserRepo userRepo;
 
-    /* Autowiring the PasswordEncoder to handle password encoding */
-    @Autowired
-    PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
     /* Method to register a new user */
     public UserDTO registerUser(UserDTO userDTO) {

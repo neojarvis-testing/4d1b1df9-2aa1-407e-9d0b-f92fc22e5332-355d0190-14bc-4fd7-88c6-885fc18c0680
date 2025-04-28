@@ -2,7 +2,6 @@ package com.examly.springapp.controller;
  
 import java.util.List;
  
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,64 +16,69 @@ import com.examly.springapp.dto.OrderDTO;
 import com.examly.springapp.service.OrderService;
  
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
  
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/orders")
 public class OrderController {
  
-    @Autowired
-    private OrderService orderService;
+    private final OrderService orderService;
  
+    /**
+     * Handles POST requests to add a new order.
+     * Validates the request body and returns the saved OrderDTO.
+     */
     @PostMapping
     public ResponseEntity<OrderDTO> addOrder(@Valid @RequestBody OrderDTO orderDTO) {
-        /**
-         * Handles POST requests to add a new order.
-         * Validates the request body and returns the saved OrderDTO.
-         */
         OrderDTO savedOrder = orderService.addOrder(orderDTO);
         return ResponseEntity.status(201).body(savedOrder);
     }
  
+    /**
+     * Handles GET requests to retrieve an order by its ID.
+     * Returns the OrderDTO if found, otherwise throws an exception.
+     */
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderDTO> getOrderById(@PathVariable long orderId) {
-        /**
-         * Handles GET requests to retrieve an order by its ID.
-         * Returns the OrderDTO if found, otherwise throws an exception.
-         */
         OrderDTO orderDTO = orderService.getOrderById(orderId);
         return ResponseEntity.status(200).body(orderDTO);
     }
  
+    /**
+     * Handles GET requests to retrieve orders by user ID.
+     * Returns a list of OrderDTOs.
+     */
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<OrderDTO>> getOrdersByUserId(@PathVariable long userId) {
-        /**
-         * Handles GET requests to retrieve orders by user ID.
-         * Returns a list of OrderDTOs.
-         */
         List<OrderDTO> orders = orderService.getOrdersByUserId(userId);
         return ResponseEntity.status(200).body(orders);
     }
  
+    /**
+     * Handles GET requests to retrieve all orders.
+     * Returns a list of OrderDTOs.
+     */
     @GetMapping
     public ResponseEntity<List<OrderDTO>> getAllOrders() {
-        /**
-         * Handles GET requests to retrieve all orders.
-         * Returns a list of OrderDTOs.
-         */
         List<OrderDTO> orders = orderService.getAllOrders();
         return ResponseEntity.status(200).body(orders);
     }
  
+    /**
+     * Handles PUT requests to update an existing order by its ID.
+     * Returns the updated OrderDTO.
+     */
     @PutMapping("/{orderId}")
     public ResponseEntity<OrderDTO> updateOrder(@PathVariable long orderId, @Valid @RequestBody OrderDTO orderDTO) {
-        /**
-         * Handles PUT requests to update an existing order by its ID.
-         * Returns the updated OrderDTO.
-         */
         OrderDTO updatedOrder = orderService.updateOrder(orderId, orderDTO);
         return ResponseEntity.status(200).body(updatedOrder);
     }
  
+    /**
+     * Handles DELETE requests to remove an existing order by its ID.
+     * Returns a confirmation message or status.
+     */
     @DeleteMapping("/{orderId}")
     public ResponseEntity<Boolean> deleteOrderById(@PathVariable long orderId) {
         boolean result = orderService.deleteOrderById(orderId);

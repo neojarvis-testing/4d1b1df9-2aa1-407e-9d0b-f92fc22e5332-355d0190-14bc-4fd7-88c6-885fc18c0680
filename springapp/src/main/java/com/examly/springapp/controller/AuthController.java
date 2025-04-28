@@ -2,7 +2,6 @@ package com.examly.springapp.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,22 +20,18 @@ import com.examly.springapp.model.TokenDTO;
 import com.examly.springapp.service.UserServiceImpl;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api")
 public class AuthController {
 
-    /* Autowiring the UserServiceImpl to handle user-related operations */
-    @Autowired
-    UserServiceImpl userService;
+    private final UserServiceImpl userService;
 
-    /* Autowiring the Authentication Manager to handle authentication processes */
-    @Autowired
-    AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    /* Autowiring the JwtUtils to handle JWT token generation and validation */
-    @Autowired
-    JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
 
     /* Endpoint to register a new user */
     @PostMapping("/register")

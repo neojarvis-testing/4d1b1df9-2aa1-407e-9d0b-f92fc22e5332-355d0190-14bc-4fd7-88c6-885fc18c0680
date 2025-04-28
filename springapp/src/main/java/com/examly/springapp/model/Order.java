@@ -3,7 +3,10 @@ package com.examly.springapp.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.examly.springapp.service.OrderStatus;
+
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,14 +25,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
-     @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
+    @Column(name = "orderDate")
     private LocalDate orderDate;
-    private String orderStatus;
+
+    @Column(name = "orderStatus")
+    private OrderStatus orderStatus;
+
+    @Column(name = "shippingAddress")
     private String shippingAddress;
+
+    @Column(name = "billingAddress")
     private String billingAddress;
+
+    @Column(name = "totalAmount")
     private Double totalAmount;
 
     @ManyToOne

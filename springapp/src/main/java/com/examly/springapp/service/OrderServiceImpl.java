@@ -16,24 +16,29 @@ import com.examly.springapp.repository.OrderRepo;
 import com.examly.springapp.repository.ProductRepo;
 import com.examly.springapp.repository.UserRepo;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
-    private OrderRepo orderRepository;
+    private final OrderRepo orderRepository;
 
-    @Autowired
-    private ProductRepo productRepository;
+    private final ProductRepo productRepository;
+    
+    private final UserRepo userRepository;
 
-    @Autowired
-    private UserRepo userRepository;
-
+    
+    /**
+     * Adds a new order.
+     * Validates the order items' stock quantity and updates the product stock.
+     */
     @Override
     public OrderDTO addOrder(OrderDTO orderDTO) {
         Order order = mapToEntity(orderDTO);
         double totalAmount = calculateTotalAmount(orderDTO.getOrderItems());
         order.setTotalAmount(totalAmount);
-        order.setOrderStatus("Confirmed");
+        order.setOrderStatus(OrderStatus.CONFIRMED);
 
         // Check if order item quantity is less than product stock quantity
         for (OrderItemDTO itemDTO : orderDTO.getOrderItems()) {
@@ -56,24 +61,40 @@ public class OrderServiceImpl implements OrderService {
         return mapToDTO(savedOrder);
     }
 
+    
+    /**
+     * Retrieves an order by its ID.
+     */
     @Override
     public OrderDTO getOrderById(long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
         return mapToDTO(order);
     }
 
+    
+    /**
+     * Retrieves orders by user ID.
+     */
     @Override
     public List<OrderDTO> getOrdersByUserId(long userId) {
         List<Order> orders = orderRepository.findByUserId(userId);
         return orders.stream().map(this::mapToDTO).collect(Collectors.toList());
     }
 
+    
+    /**
+     * Retrieves all orders.
+     */
     @Override
     public List<OrderDTO> getAllOrders() {
         List<Order> orders = orderRepository.findAll();
         return orders.stream().map(this::mapToDTO).collect(Collectors.toList());
     }
 
+    
+    /**
+     * Updates an existing order by its ID.
+     */
     @Override
     public OrderDTO updateOrder(long orderId, OrderDTO orderDTO) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
@@ -95,6 +116,11 @@ public class OrderServiceImpl implements OrderService {
         return mapToDTO(updatedOrder);
     }
 
+    
+    /**
+     * Deletes an order by its ID.
+     * @return True if the order was deleted, false if not found.
+     */
     @Override
     public boolean deleteOrderById(long orderId) {
         if (orderRepository.existsById(orderId)) {
@@ -104,6 +130,11 @@ public class OrderServiceImpl implements OrderService {
         return false;
     }
 
+    
+    /**
+     * Calculates the total amount for the order items.
+     * @return The total amount.
+     */
     private double calculateTotalAmount(List<OrderItemDTO> orderItems) {
         double total = 0;
         for (OrderItemDTO item : orderItems) {
@@ -131,7 +162,7 @@ public class OrderServiceImpl implements OrderService {
     private Order mapToEntity(OrderDTO orderDTO) {
         Order order = new Order();
         order.setOrderDate(orderDTO.getOrderDate());
-        order.setOrderStatus("Processing");
+        order.setOrderStatus(OrderStatus.PROCESSING);
         order.setShippingAddress(orderDTO.getShippingAddress());
         order.setBillingAddress(orderDTO.getBillingAddress());
 

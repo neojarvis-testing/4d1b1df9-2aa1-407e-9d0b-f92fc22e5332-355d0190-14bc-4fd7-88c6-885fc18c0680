@@ -2,7 +2,6 @@ package com.examly.springapp.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,14 +16,14 @@ import com.examly.springapp.dto.ProductDTO;
 import com.examly.springapp.service.ProductServiceImpl;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/products")
 public class ProductController {
 
-    /*injects the instance of service automatically using field injection*/
-    @Autowired
-    ProductServiceImpl productService;
+    private final ProductServiceImpl productService;
 
     /*Handles post mapping */
     @PostMapping
