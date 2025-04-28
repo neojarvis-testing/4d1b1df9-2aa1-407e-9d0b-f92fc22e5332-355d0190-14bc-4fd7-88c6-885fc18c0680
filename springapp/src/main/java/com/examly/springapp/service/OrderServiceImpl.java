@@ -1,13 +1,15 @@
 package com.examly.springapp.service;
- 
+
 import java.util.List;
 import java.util.stream.Collectors;
- 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
- 
+
 import com.examly.springapp.dto.OrderDTO;
 import com.examly.springapp.dto.OrderItemDTO;
+import com.examly.springapp.exceptions.OrderNotFoundException;
+import com.examly.springapp.exceptions.ProductNotFoundException;
+import com.examly.springapp.exceptions.UserNotFoundException;
 import com.examly.springapp.model.Order;
 import com.examly.springapp.model.OrderItem;
 import com.examly.springapp.model.Product;
@@ -15,87 +17,117 @@ import com.examly.springapp.model.User;
 import com.examly.springapp.repository.OrderRepo;
 import com.examly.springapp.repository.ProductRepo;
 import com.examly.springapp.repository.UserRepo;
- 
+
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
- 
-    @Autowired
-    private OrderRepo orderRepository;
- 
-    @Autowired
-    private ProductRepo productRepository;
- 
-    @Autowired
-    private UserRepo userRepository;
- 
+
+    private final OrderRepo orderRepository;
+
+    private final ProductRepo productRepository;
+    
+    private final UserRepo userRepository;
+
+    
     /**
-     * Converts OrderDTO to Order entity, calculates total amount,
-     * saves it to the repository, and returns the saved OrderDTO.
-     */
+     * Adds a new order.
+     * Validates the order items' stock quantity and updates the product stock.
+     */
     @Override
     public OrderDTO addOrder(OrderDTO orderDTO) {
         Order order = mapToEntity(orderDTO);
-        order.setTotalAmount(calculateTotalAmount(orderDTO.getOrderItems()));
-        order.setOrderStatus("Confirmed");
+        double totalAmount = calculateTotalAmount(orderDTO.getOrderItems());
+        order.setTotalAmount(totalAmount);
+        order.setOrderStatus("CONFIRMED");
+
+        // Check if order item quantity is less than product stock quantity
+        for (OrderItemDTO itemDTO : orderDTO.getOrderItems()) {
+            Product product = productRepository.findById(itemDTO.getProductId())
+                    .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+            if (itemDTO.getQuantity() > product.getStockQuantity()) {
+                throw new ProductNotFoundException("Insufficient stock for product: " + product.getProductName());
+            }
+        }
+
+        // Update product stock quantity
+        for (OrderItemDTO itemDTO : orderDTO.getOrderItems()) {
+            Product product = productRepository.findById(itemDTO.getProductId())
+                    .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+            product.setStockQuantity(product.getStockQuantity() - itemDTO.getQuantity());
+            productRepository.save(product);
+        }
+
         Order savedOrder = orderRepository.save(order);
         return mapToDTO(savedOrder);
     }
- 
+
+    
     /**
-     * Retrieves an Order by its ID, throws an exception if not found,
-     * and converts it to OrderDTO.
-     */
+     * Retrieves an order by its ID. Throws an exception if not found, 
+     * and converts it to orderDTO.
+     */
     @Override
     public OrderDTO getOrderById(long orderId) {
-        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
         return mapToDTO(order);
     }
- 
+
+    
     /**
-     * Retrieves Orders by user ID, converts them to OrderDTOs,
-     * and returns the list.
-     */
+     * Retrieves Reviews by user ID, converts them to orderDTOs, 
+     * and returns the list.
+     */
     @Override
     public List<OrderDTO> getOrdersByUserId(long userId) {
         List<Order> orders = orderRepository.findByUserId(userId);
         return orders.stream().map(this::mapToDTO).collect(Collectors.toList());
     }
- 
+
+    
     /**
-     * Retrieves all Orders, converts them to OrderDTOs,
-     * and returns the list.
-     */
+     * Retrieves all orders, converts them to orderDTOs, 
+     * and returns the list.
+     */
     @Override
     public List<OrderDTO> getAllOrders() {
         List<Order> orders = orderRepository.findAll();
         return orders.stream().map(this::mapToDTO).collect(Collectors.toList());
     }
- 
+
+    
     /**
-     * Updates an existing Order by its ID, throws an exception if not found,
-     * calculates total amount, and returns the updated OrderDTO.
-     */
+     * Updates an existing order by its ID.
+     * If the order does not exist, throw a custom exception
+     * Otherwise Update order with the fields if provided in the DTO
+     */
     @Override
     public OrderDTO updateOrder(long orderId, OrderDTO orderDTO) {
-        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
         order.setOrderDate(orderDTO.getOrderDate());
         order.setOrderStatus(orderDTO.getOrderStatus());
         order.setShippingAddress(orderDTO.getShippingAddress());
         order.setBillingAddress(orderDTO.getBillingAddress());
         order.setTotalAmount(calculateTotalAmount(orderDTO.getOrderItems()));
-       
-        User user = userRepository.findById(orderDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+
+        User user = userRepository.findById(orderDTO.getUserId()).orElseThrow(() -> new UserNotFoundException("User not found"));
         order.setUser(user);
-       
+
         List<OrderItem> orderItems = orderDTO.getOrderItems().stream()
             .map(this::mapToOrderItemEntity)
             .collect(Collectors.toList());
         order.setOrderItems(orderItems);
-       
+
         Order updatedOrder = orderRepository.save(order);
         return mapToDTO(updatedOrder);
     }
 
+    
+    /**
+     * Deletes an order by its ID.
+     * @return True if the order was deleted, false if not found.
+     */
     @Override
     public boolean deleteOrderById(long orderId) {
         if (orderRepository.existsById(orderId)) {
@@ -104,28 +136,21 @@ public class OrderServiceImpl implements OrderService {
         }
         return false;
     }
- 
+
+    
     /**
-     * Calculates the total amount by multiplying the price and quantity
-     * of each order item and summing them up.
-     */
+     * Calculates the total amount for the order items.
+     * @return The total amount.
+     */
     private double calculateTotalAmount(List<OrderItemDTO> orderItems) {
-        // return orderItems.stream()
-        //     .mapToDouble(item -> item.getPrice() * item.getQuantity())
-        //     .sum();
-        double total=0;
-        int count = 0;
-        for(OrderItemDTO item:orderItems){
-            Product product=productRepository.findById(item.getProductId()).orElse(null);
-            total=total+product.getPrice()*item.getQuantity();
-            count = count + item.getQuantity();
+        double total = 0;
+        for (OrderItemDTO item : orderItems) {
+            Product product = productRepository.findById(item.getProductId()).orElse(null);
+            total += product.getPrice() * item.getQuantity();
         }
         return total;
     }
- 
-    /*
-     * Converts an Order entity to OrderDTO.
-     */
+
     private OrderDTO mapToDTO(Order order) {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setOrderId(order.getOrderId());
@@ -140,51 +165,42 @@ public class OrderServiceImpl implements OrderService {
             .collect(Collectors.toList()));
         return orderDTO;
     }
- 
-    /**
-     * Converts an OrderDTO to Order entity.
-     */
+
     private Order mapToEntity(OrderDTO orderDTO) {
         Order order = new Order();
         order.setOrderDate(orderDTO.getOrderDate());
-        order.setOrderStatus("Processing");
+        order.setOrderStatus("PROCESSING");
         order.setShippingAddress(orderDTO.getShippingAddress());
         order.setBillingAddress(orderDTO.getBillingAddress());
-       
-        User user = userRepository.findById(orderDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+
+        User user = userRepository.findById(orderDTO.getUserId()).orElseThrow(() -> new UserNotFoundException("User not found"));
         order.setUser(user);
-       
+
         List<OrderItem> orderItems = orderDTO.getOrderItems().stream()
             .map(this::mapToOrderItemEntity)
-            .map(orderItem-> { orderItem.setOrder(order); return orderItem; })
+            .map(orderItem -> { orderItem.setOrder(order); return orderItem; })
             .collect(Collectors.toList());
-        
+
         order.setOrderItems(orderItems);
         return order;
     }
- 
-    /**
-     * Converts an OrderItem entity to OrderItemDTO.
-     */
+
     private OrderItemDTO mapToOrderItemDTO(OrderItem orderItem) {
         OrderItemDTO orderItemDTO = new OrderItemDTO();
         orderItemDTO.setOrderItemId(orderItem.getOrderItemId());
         orderItemDTO.setProductId(orderItem.getProduct().getProductId());
         orderItemDTO.setProductName(orderItem.getProduct().getProductName());
         orderItemDTO.setQuantity(orderItem.getQuantity());
-        orderItemDTO.setPrice(orderItem.getPrice());
+        orderItemDTO.setPrice(orderItem.getProduct().getPrice());
         return orderItemDTO;
     }
- 
-    /**
-     * Converts an OrderItemDTO to OrderItem entity.
-     */
+
     private OrderItem mapToOrderItemEntity(OrderItemDTO orderItemDTO) {
         OrderItem orderItem = new OrderItem();
         orderItem.setQuantity(orderItemDTO.getQuantity());
         orderItem.setPrice(orderItemDTO.getPrice());
-       
-        Product product = productRepository.findById(orderItemDTO.getProductId()).orElseThrow(() -> new RuntimeException("Product not found"));
+
+        Product product = productRepository.findById(orderItemDTO.getProductId()).orElseThrow(() -> new ProductNotFoundException("Product not found"));
         orderItem.setProduct(product);
         return orderItem;
     }
