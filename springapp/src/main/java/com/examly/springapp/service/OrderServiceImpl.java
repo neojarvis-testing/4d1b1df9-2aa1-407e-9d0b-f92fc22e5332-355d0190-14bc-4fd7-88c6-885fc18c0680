@@ -19,9 +19,11 @@ import com.examly.springapp.repository.ProductRepo;
 import com.examly.springapp.repository.UserRepo;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepo orderRepository;
@@ -37,16 +39,19 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public OrderDTO addOrder(OrderDTO orderDTO) {
+        log.info("Entering addOrder method with OrderDTO: {}", orderDTO);
         Order order = mapToEntity(orderDTO);
         double totalAmount = calculateTotalAmount(orderDTO.getOrderItems());
         order.setTotalAmount(totalAmount);
-        order.setOrderStatus("CONFIRMED");
+        order.setOrderStatus(OrderStatus.CONFIRMED);
+        log.info("Order added successfully, Total Amount: {}", totalAmount);
 
         // Check if order item quantity is less than product stock quantity
         for (OrderItemDTO itemDTO : orderDTO.getOrderItems()) {
             Product product = productRepository.findById(itemDTO.getProductId())
                     .orElseThrow(() -> new ProductNotFoundException("Product not found"));
             if (itemDTO.getQuantity() > product.getStockQuantity()) {
+                log.error("Insufficient stock for product: {}", product.getProductName());
                 throw new ProductNotFoundException("Insufficient stock for product: " + product.getProductName());
             }
         }
@@ -58,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
             product.setStockQuantity(product.getStockQuantity() - itemDTO.getQuantity());
             productRepository.save(product);
         }
-
+        log.info("Exiting addOrder method");
         Order savedOrder = orderRepository.save(order);
         return mapToDTO(savedOrder);
     }
@@ -70,7 +75,12 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public OrderDTO getOrderById(long orderId) {
-        Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
+        log.info("Retrieving order with ID: {}", orderId);
+        Order order = orderRepository.findById(orderId).orElseThrow(() ->{
+        log.error("Order with ID: {} not found", orderId);
+        throw new OrderNotFoundException("Order not found");
+        });
+        log.info("Order retrieved successfully with ID: {}", orderId);
         return mapToDTO(order);
     }
 
@@ -81,7 +91,9 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public List<OrderDTO> getOrdersByUserId(long userId) {
+        log.info("Retrieving orders for user with ID: {}", userId);
         List<Order> orders = orderRepository.findByUserId(userId);
+        log.info("Number of orders retrieved for user with ID {}: {}", userId, orders.size());
         return orders.stream().map(this::mapToDTO).collect(Collectors.toList());
     }
 
@@ -92,7 +104,9 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public List<OrderDTO> getAllOrders() {
+        log.info("Retrieving all orders...");
         List<Order> orders = orderRepository.findAll();
+        log.info("Total orders retrieved: {}", orders.size());
         return orders.stream().map(this::mapToDTO).collect(Collectors.toList());
     }
 
@@ -104,22 +118,33 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public OrderDTO updateOrder(long orderId, OrderDTO orderDTO) {
-        Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
+        log.info("Updating order with ID: {}", orderId);
+        Order order = orderRepository.findById(orderId).orElseThrow(() ->{
+        log.error("Order with ID: {} not found", orderId);
+        return new OrderNotFoundException("Order not found");
+        });
+        log.info("Order found. Proceeding with update...");
         order.setOrderDate(orderDTO.getOrderDate());
-        order.setOrderStatus(orderDTO.getOrderStatus());
+        order.setOrderStatus(OrderStatus.CONFIRMED);
         order.setShippingAddress(orderDTO.getShippingAddress());
         order.setBillingAddress(orderDTO.getBillingAddress());
         order.setTotalAmount(calculateTotalAmount(orderDTO.getOrderItems()));
 
-        User user = userRepository.findById(orderDTO.getUserId()).orElseThrow(() -> new UserNotFoundException("User not found"));
+        User user = userRepository.findById(orderDTO.getUserId()).orElseThrow(() ->{
+        log.error("User with ID: {} not found", orderDTO.getUserId());
+        return new UserNotFoundException("User not found");
+        });
         order.setUser(user);
 
+        log.info("Updating order items...");
         List<OrderItem> orderItems = orderDTO.getOrderItems().stream()
             .map(this::mapToOrderItemEntity)
             .collect(Collectors.toList());
         order.setOrderItems(orderItems);
 
+        log.info("Saving updated order...");
         Order updatedOrder = orderRepository.save(order);
+        log.info("Order updated successfully: {}", updatedOrder);
         return mapToDTO(updatedOrder);
     }
 
@@ -130,10 +155,14 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public boolean deleteOrderById(long orderId) {
-        if (orderRepository.existsById(orderId)) {
+        log.info("Deleting order with ID: {}", orderId);
+        if (orderRepository.existsById(orderId)){
+            log.info("Order with ID: {} exists. Proceeding with deletion.", orderId);
             orderRepository.deleteById(orderId);
+            log.info("Order with ID: {} deleted successfully.", orderId);
             return true;
         }
+        log.warn("Order with ID: {} does not exist. Deletion aborted.", orderId);
         return false;
     }
 
@@ -143,11 +172,14 @@ public class OrderServiceImpl implements OrderService {
      * @return The total amount.
      */
     private double calculateTotalAmount(List<OrderItemDTO> orderItems) {
+        log.info("Calculating total amount for order items...");
         double total = 0;
         for (OrderItemDTO item : orderItems) {
             Product product = productRepository.findById(item.getProductId()).orElse(null);
             total += product.getPrice() * item.getQuantity();
+            log.info("Added item: {}, Quantity: {}, Price: {}", product.getProductName(), item.getQuantity(), product.getPrice());
         }
+        log.info("Total amount calculated: {}", total);
         return total;
     }
 
@@ -155,7 +187,7 @@ public class OrderServiceImpl implements OrderService {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setOrderId(order.getOrderId());
         orderDTO.setOrderDate(order.getOrderDate());
-        orderDTO.setOrderStatus(order.getOrderStatus());
+        orderDTO.setOrderStatus(OrderStatus.CONFIRMED);
         orderDTO.setShippingAddress(order.getShippingAddress());
         orderDTO.setBillingAddress(order.getBillingAddress());
         orderDTO.setTotalAmount(order.getTotalAmount());
@@ -169,7 +201,7 @@ public class OrderServiceImpl implements OrderService {
     private Order mapToEntity(OrderDTO orderDTO) {
         Order order = new Order();
         order.setOrderDate(orderDTO.getOrderDate());
-        order.setOrderStatus("PROCESSING");
+        order.setOrderStatus(OrderStatus.CONFIRMED);
         order.setShippingAddress(orderDTO.getShippingAddress());
         order.setBillingAddress(orderDTO.getBillingAddress());
 

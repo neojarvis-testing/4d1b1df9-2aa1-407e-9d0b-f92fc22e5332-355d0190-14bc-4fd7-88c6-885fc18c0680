@@ -19,7 +19,7 @@ public class OrderDTO {
     @NotNull(message = "Order date cannot be null")
     private LocalDate orderDate;
 
-    private String orderStatus;
+    private OrderStatus orderStatus;
 
     @NotBlank(message = "Shipping address cannot be blank")
     private String shippingAddress;
