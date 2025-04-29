@@ -22,6 +22,7 @@ import { AdminnavComponent } from './components/adminnav/adminnav.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -48,11 +49,13 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    RouterModule
   ],
   providers: [{
     provide:HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true
   }],
   bootstrap: [AppComponent]
 })
+
 export class AppModule {}
