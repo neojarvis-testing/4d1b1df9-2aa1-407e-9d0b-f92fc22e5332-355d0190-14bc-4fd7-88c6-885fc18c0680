@@ -201,7 +201,7 @@ public class OrderServiceImpl implements OrderService {
     private Order mapToEntity(OrderDTO orderDTO) {
         Order order = new Order();
         order.setOrderDate(orderDTO.getOrderDate());
-        order.setOrderStatus(OrderStatus.CONFIRMED);
+        order.setOrderStatus(orderDTO.getOrderStatus());
         order.setShippingAddress(orderDTO.getShippingAddress());
         order.setBillingAddress(orderDTO.getBillingAddress());
 

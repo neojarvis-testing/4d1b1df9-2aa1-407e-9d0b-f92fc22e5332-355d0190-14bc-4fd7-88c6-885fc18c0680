@@ -1,1 +1,55 @@
-<p>orderplaced works!</p>
+<div class="order-placed">
+  <h1>Orders Placed</h1>
+
+  <!-- Search Bar -->
+  <div>
+    <input 
+      type="text" 
+      placeholder="Search by Order ID" 
+      [(ngModel)]="searchQuery" 
+      (input)="onSearch()" 
+    />
+  </div>
+
+  <!-- Display Orders -->
+  <div *ngIf="filteredOrders.length; else noOrders">
+    <ul>
+      <li *ngFor="let order of filteredOrders">
+        <div>
+          <strong>Order ID:</strong> {{ order.orderId }}<br>
+          <strong>Username:</strong> {{ order.username }}<br>
+          <strong>Status:</strong> {{ order.orderStatus }}<br>
+          <strong>Shipping Address:</strong> {{ order.shippingAddress }}<br>
+          <strong>Billing Address:</strong> {{ order.billingAddress }}<br>
+          <strong>Total Amount:</strong> {{ order.totalAmount }}<br>
+
+          <!-- Dropdown for Updating Order Status -->
+          <label for="statusDropdown">Update Order Status:</label>
+          <select 
+            id="statusDropdown" 
+            [(ngModel)]="order.orderStatus" 
+            (change)="updateOrderStatus(order)"
+          >
+            <option value="Pending">Pending</option>
+            <option value="Accepted">Accepted</option>
+            <option value="Dispatched">Dispatched</option>
+            <option value="Out For Delivery">Out For Delivery</option>
+            <option value="Delivered">Delivered</option>
+          </select>
+
+        <br>
+          <!-- View Item Button -->
+          <button (click)="viewOrderItems(order.orderId)">View Items</button>
+
+          <!-- View Profile Button -->
+          <button (click)="viewUserProfile(order.user?.userId)">View Profile</button>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- No Orders Found -->
+  <ng-template #noOrders>
+    <p>No orders found.</p>
+  </ng-template>
+</div>
