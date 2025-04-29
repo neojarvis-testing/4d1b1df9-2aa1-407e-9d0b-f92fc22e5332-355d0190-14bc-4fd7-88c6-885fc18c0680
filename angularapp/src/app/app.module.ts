@@ -19,8 +19,9 @@ import { SignupComponent } from './components/signup/signup.component';
 import { UsernavComponent } from './components/usernav/usernav.component';
 import { UserviewproductComponent } from './components/userviewproduct/userviewproduct.component';
 import { AdminnavComponent } from './components/adminnav/adminnav.component';
-import { HttpClientModule } from '@angular/common/http'
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     FormsModule
   ],
-  providers: [],
+  providers: [{
+    provide:HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true
+  }],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

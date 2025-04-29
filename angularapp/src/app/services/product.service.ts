@@ -29,5 +29,5 @@ export class ProductService {
   deleteProduct(productId:number):Observable<void>{
     return this.http.delete<void>(`${Api.apiUrl}/api/products/${productId}`)
   }
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient) {}
 }
