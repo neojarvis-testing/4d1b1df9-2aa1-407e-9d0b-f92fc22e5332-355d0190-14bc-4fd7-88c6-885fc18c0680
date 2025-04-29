@@ -1,1 +1,57 @@
-<p>adminviewproduct works!</p>
+<!-- <div class="container">
+    <h2>Product List</h2>
+    
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Stock Quantity</th>
+          <th>Category</th>
+          <th>Brand</th>
+          <th>Cover Image</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>{{ product.productName }}</td>
+          <td>{{ product.description }}</td>
+          <td>{{ product.price | currency:'INR' }}</td>
+          <td>{{ product.stockQuantity }}</td>
+          <td>{{ product.category }}</td>
+          <td>{{product.coverImage}}</td>
+          <td>{{ product.brand }}</td>
+          <td>
+            <button class="btn btn-primary" (click)="updateProduct(product.productId)">Edit</button>
+            <button class="btn btn-danger" (click)="deleteProduct(product.productId)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div> -->
+
+  <div class="container">
+    <label for="search">Search: </label>
+    <input type="text" [(ngModel)]="searchText" (input)="search()" placeholder="Search products...">
+    <h2>Product List</h2>
+  
+    <div class="product-list">
+      <div *ngFor="let product of filteredProduct" class="product-card">
+        <h3>{{ product.productName }}</h3>
+        <p><strong>Description:</strong> {{ product.description }}</p>
+        <p><strong>Price:</strong> {{ product.price | currency:'INR' }}</p>
+        <p><strong>Stock Quantity:</strong> {{ product.stockQuantity }}</p>
+        <p><strong>Category:</strong> {{ product.category }}</p>
+        <p><strong>Brand:</strong> {{ product.brand }}</p>
+        <div class="cover-image">
+          <img [src]="product.coverImage" alt="{{ product.productName }}" />
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" (click)="updateProduct(product.productId)">Edit</button>
+          <button class="btn btn-danger" (click)="deleteProduct(product.productId)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
