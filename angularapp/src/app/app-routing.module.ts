@@ -14,6 +14,7 @@ import { OrderplacedComponent } from './components/orderplaced/orderplaced.compo
 import { MyorderComponent } from './components/myorder/myorder.component';
 import { CombinedGuard } from './combined.guard';
 import { UserviewproductComponent } from './components/userviewproduct/userviewproduct.component';
+import { MyreviewComponent } from './components/myreview/myreview.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent },
@@ -22,12 +23,13 @@ const routes: Routes = [
   {path:'order-placed',component:OrderplacedComponent,canActivate:[AdminGuard]},
   {path:'updateProduct/:productId',component:ProductCreateComponent,canActivate:[AdminGuard]},
   {path:'signup',component:SignupComponent},
-  {path:'view-product',component:AdminviewproductComponent,canActivate:[CombinedGuard]},
+  {path:'view-product',component:AdminviewproductComponent,canActivate:[AdminGuard]},
   {path:'review',component:ReviewComponent, canActivate:[CombinedGuard]},
-  {path:'review/productId',component:ReviewComponent, canActivate:[UserGuard]},
+  {path:'review/:productId',component:ReviewComponent, canActivate:[UserGuard]},
   {path:'my-orders',component:MyorderComponent, canActivate:[UserGuard]},
   {path:'user',component:MyorderComponent, canActivate:[UserGuard]},
   {path:'userProduct',component:UserviewproductComponent, canActivate:[UserGuard]},
+  {path:'viewReview',component:MyreviewComponent},
   {path:'**',component:ErrorComponent}
 ];
 
