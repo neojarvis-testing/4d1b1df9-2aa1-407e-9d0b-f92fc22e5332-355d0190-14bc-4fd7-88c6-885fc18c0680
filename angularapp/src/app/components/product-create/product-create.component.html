@@ -1,1 +1,52 @@
-<p>product-create works!</p>
+<form [formGroup]="addProductForm" (ngSubmit)="createProduct()">
+    <label for="productName">Product Name:</label><br/>
+    <input id="productName" type="text" formControlName="productName" placeholder="Enter product name">
+    <div *ngIf="addProductForm.controls['productName'].invalid && addProductForm.controls['productName'].touched">
+      <span>Please enter a valid product name (3-20 alphanumeric characters).</span>
+    </div>
+    <br/>
+
+    <label for="description">Description:</label><br/>
+    <textarea id="description" formControlName="description" placeholder="Enter product description"></textarea>
+    <div *ngIf="addProductForm.controls['description'].invalid && addProductForm.controls['description'].touched">
+      <span>Only letters, numbers, spaces, and punctuation (.,!?()-) allowed. (3-500 characters).</span>
+    </div>
+    <br/>
+
+    <label for="price">Price:</label><br/>
+    <input id="price" type="number" formControlName="price" placeholder="Enter price">
+    <div *ngIf="addProductForm.controls['price'].invalid && addProductForm.controls['price'].touched">
+      <span>Price must be at least 1.</span>
+    </div>
+    <br/>
+  
+    <label for="stockQuantity">Stock Quantity:</label><br/>
+    <input id="stockQuantity" type="number" formControlName="stockQuantity" placeholder="Enter stock quantity">
+    <div *ngIf="addProductForm.controls['stockQuantity'].invalid && addProductForm.controls['stockQuantity'].touched">
+      <span>Stock quantity must be at least 0.</span>
+    </div>
+    <br/>
+  
+    <label for="category">Category:</label><br/>
+    <input id="category" type="text" formControlName="category" placeholder="Enter category">
+    <div *ngIf="addProductForm.controls['category'].invalid && addProductForm.controls['category'].touched">
+      <span>Category must be 3-20 characters long.</span>
+    </div>
+    <br/>
+  
+    <label for="brand">Brand:</label><br/>
+    <input id="brand" type="text" formControlName="brand" placeholder="Enter brand">
+    <div *ngIf="addProductForm.controls['brand'].invalid && addProductForm.controls['brand'].touched">
+      <span>Brand must be 3-20 characters long.</span>
+    </div>
+    <br/>
+  
+    <label for="coverImage">Cover Image:</label><br/>
+    <input id="coverImage" type="file" (change)="handleFileChange($event)">
+    <div *ngIf="addProductForm.controls['coverImage'].invalid && addProductForm.controls['coverImage'].touched">
+      <span>Please select an image file.</span>
+    </div>
+    <br/>
+  
+    <button type="submit">Submit</button>
+  </form>
