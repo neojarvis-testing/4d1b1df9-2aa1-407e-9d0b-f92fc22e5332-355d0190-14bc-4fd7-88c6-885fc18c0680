@@ -25,4 +25,8 @@ export class UserviewproductComponent implements OnInit {
   navigateToReview(productId:number){
     this.router.navigate(['/review',productId])
   }
+
+  navigateToMyReview(){
+    this.router.navigate(['/viewReview'])
+  }
 }
