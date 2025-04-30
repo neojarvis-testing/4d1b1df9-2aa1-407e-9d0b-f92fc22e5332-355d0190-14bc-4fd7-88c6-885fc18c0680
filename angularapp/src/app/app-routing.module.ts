@@ -30,7 +30,8 @@ const routes: Routes = [
   {path:'user',component:MyorderComponent, canActivate:[UserGuard]},
   {path:'userProduct',component:UserviewproductComponent, canActivate:[UserGuard]},
   {path:'viewReview',component:MyreviewComponent},
-  {path:'**',component:ErrorComponent}
+  {path:'**',component:ErrorComponent},
+  { path: '', pathMatch: 'full', redirectTo: LoginComponent }
 ];
 
 @NgModule({
