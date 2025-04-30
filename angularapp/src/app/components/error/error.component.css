@@ -1,0 +1,9 @@
+h1{
+    color: red;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.error-message{
+    text-align: center;
+    margin: 300px 300px;
+}

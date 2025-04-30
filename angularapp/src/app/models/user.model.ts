@@ -11,7 +11,7 @@ export interface User {
     password: string; 
 
     //Required:Must be provided while registering
-    //confirmPassword:string;
+    confirmPassword:string;
  
     // Required: Unique identifier for the user
     username: string; 

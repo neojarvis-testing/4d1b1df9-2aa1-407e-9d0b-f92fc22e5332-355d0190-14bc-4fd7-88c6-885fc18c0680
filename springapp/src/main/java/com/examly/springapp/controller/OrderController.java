@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
  
 import com.examly.springapp.dto.OrderDTO;
+import com.examly.springapp.dto.OrderItemDTO;
 import com.examly.springapp.service.OrderService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -60,6 +61,13 @@ public class OrderController {
         List<OrderDTO> orders = orderService.getOrdersByUserId(userId);
         return ResponseEntity.status(200).body(orders);
     }
+
+    @GetMapping("orderItem/{orderId}")
+    @Operation(summary = "Get orderItems by order ID", description = "Returns a list of orderItems for the specified order ID")
+    public ResponseEntity<List<OrderItemDTO>> getOrderItemByOrderId(@PathVariable long orderId) {
+        List<OrderItemDTO> orders = orderService.getOrderItemByOrderId(orderId);
+        return ResponseEntity.status(200).body(orders);
+    } 
  
     /**
      * Handles GET requests to retrieve all orders.

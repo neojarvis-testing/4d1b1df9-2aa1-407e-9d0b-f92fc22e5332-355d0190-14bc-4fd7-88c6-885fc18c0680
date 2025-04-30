@@ -1,0 +1,104 @@
+/* General Page Styling */
+.order-placed {
+    padding: 20px;
+    background-color: #f9f9f9; /* Light background */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for the container */
+  }
+  
+  /* Heading Styling */
+  .order-placed h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+  
+  /* Search Bar Styling */
+  .order-placed input[type="text"] {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  /* Search Button Styling */
+  .order-placed button {
+    margin-left: 10px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .order-placed button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  /* Order List Styling */
+  .order-placed ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .order-placed li {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Strong Text Styling for Field Labels */
+  .order-placed strong {
+    color: #555;
+    font-weight: bold;
+  }
+  
+  /* Dropdown Styling */
+  .order-placed select {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    margin-top: 8px;
+  }
+  
+  /* Modal Specific Styling */
+  .modal-header {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .modal-title {
+    font-size: 18px;
+  }
+  
+  .modal-body ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .modal-body li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .modal-body li:last-child {
+    border-bottom: none;
+  }
+  
+  /* No Orders/Items Found Styling */
+  p {
+    font-size: 16px;
+    color: #888;
+    text-align: center;
+  }
