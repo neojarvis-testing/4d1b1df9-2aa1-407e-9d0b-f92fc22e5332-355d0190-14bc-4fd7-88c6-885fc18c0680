@@ -1,5 +1,10 @@
 package com.examly.springapp.utility;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Base64;
+
 import com.examly.springapp.dto.ProductDTO;
 import com.examly.springapp.model.Product;
 
@@ -26,5 +31,19 @@ public class ProductMapper {
         product.setBrand(productDTO.getBrand());
         product.setCoverImage(productDTO.getCoverImage());
         return product;
+    }
+
+    public static String encodeImageToBase64(String imagePath) {
+        File file = new File(imagePath);
+        try (FileInputStream fileInputStream = new FileInputStream(file)) {
+            byte[] imageBytes = new byte[(int) file.length()];
+            fileInputStream.read(imageBytes);
+
+            // Encode to Base64
+            return Base64.getEncoder().encodeToString(imageBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

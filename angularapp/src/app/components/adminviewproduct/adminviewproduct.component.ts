@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Api } from 'src/app/api-urls';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -13,6 +14,7 @@ export class AdminviewproductComponent implements OnInit {
   products:Product[]=[];
   searchText:string='';
   filteredProduct:Product[]=[]
+  ApiUrl:string=Api.apiUrl
 
   constructor(private productService:ProductService,private router:Router) { }
 
@@ -21,7 +23,8 @@ export class AdminviewproductComponent implements OnInit {
   }
   getAllProducts(){
     this.productService.getAllProducts().subscribe((data)=>{
-      this.products=data;
+         this.products=data;
+         console.log(this.products)
       this.filteredProduct=data;
     })
   }
@@ -47,5 +50,13 @@ export class AdminviewproductComponent implements OnInit {
       return this.filteredProduct;
     else
     this.filteredProduct=this.products.filter((data)=>JSON.stringify(data).toLowerCase().includes(this.searchText.toLowerCase()))
+  }
+
+  getImageUrl(imageName: string): string {
+    let a = this.ApiUrl+"/"+imageName
+    console.log(a)
+    a='https://8080-fdefbfaaafbdebbfaadbececcfeddbcfdcfcc.premiumproject.examly.io/1746002370897_Image.jpg'
+    console.log(a)
+    return `${this.ApiUrl}/${imageName}`;
   }
 }

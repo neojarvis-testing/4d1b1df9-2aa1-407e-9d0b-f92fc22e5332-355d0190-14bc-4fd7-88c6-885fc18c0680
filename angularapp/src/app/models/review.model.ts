@@ -18,9 +18,9 @@ export interface Review {
     date: string; 
  
    // Required: Associated with user who wrote the review
-    user: User; 
- 
-    // Required: Associated product being reviewed
-    product: Product;
+   userId: number; 
+   
+   // Required: Associated product being reviewed
+   productId: number;
 }
  
