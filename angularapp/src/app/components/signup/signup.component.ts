@@ -43,7 +43,7 @@ export class SignupComponent implements OnInit {
         this.authService.register(this.form.value).subscribe((data)=>{
           console.log(data)
           alert("Registration successful");
-          this.router.navigate(['/login'])
+          this.router.navigate(['/'])
         },(error)=>{
           alert("Registration failed! user already exists")
         })
