@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Order } from '../models/order.model';
 import { Observable } from 'rxjs';
 import { Api } from '../api-urls';
+import { OrderItem } from '../models/order-item.model';
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +45,13 @@ export class OrderService {
    */
   getOrdersByUserId(userId:number):Observable<Order[]>{
     return this.http.get<Order[]>(`${Api.apiUrl}/api/orders/user/${userId}`)
+  }
+  /**
+   * Method to fetch orderItems by order ID.
+   * @returns Observable containing an array of orders for the given user
+   */
+  getOrderItemByOrderId(orderId:number):Observable<OrderItem[]>{
+    return this.http.get<OrderItem[]>(`${Api.apiUrl}/api/orders/orderItem/${orderId}`)
   }
 
   /**

@@ -8,32 +8,32 @@ import { OrderService } from 'src/app/services/order.service';
   styleUrls: ['./orderplaced.component.css']
 })
 export class OrderplacedComponent implements OnInit {
+  orders: Order[] = [];
+  filteredOrders: Order[] = [];
+  selectedOrderItems: any[] = [];
+  isLoading: boolean = true;
+  isItemsLoading: boolean = false;
+  errorMessage: string = '';
+  searchQuery: string = '';
+  sortOrder: 'asc' | 'desc' = 'asc'; // Sorting order
 
-  orders: Order[] = []; // Full list of orders
-  filteredOrders: Order[] = []; // Orders after filtering
-  isLoading: boolean = true; // Show loading state
-  errorMessage: string = ''; // Error message (if any)
-  searchQuery: string = ''; // Search query input by user
-
-  constructor(private orderService: OrderService) { }
+  constructor(private orderService: OrderService) {}
 
   ngOnInit(): void {
-    this.getAllOrders(); // Fetch all orders on initialization
+    this.getAllOrders();
   }
 
   // Fetch all orders
   getAllOrders(): void {
     this.orderService.getAllOrders().subscribe(
       (data: Order[]) => {
-        console.log('API response:', data); // Debug log
-        this.orders = data; // Store fetched orders
-        this.filteredOrders = data; // Initialize filtered orders
-        this.isLoading = false; // Turn off loading state
+        this.orders = data;
+        this.filteredOrders = data;
+        this.isLoading = false;
       },
       error => {
-        console.error('Error fetching all orders:', error); // Log error
         this.errorMessage = 'Failed to fetch orders. Please try again later.';
-        this.isLoading = false; // Turn off loading state
+        this.isLoading = false;
       }
     );
   }
@@ -46,6 +46,31 @@ export class OrderplacedComponent implements OnInit {
       order.orderStatus.toLowerCase().includes(query) ||
       order.shippingAddress.toLowerCase().includes(query) ||
       order.billingAddress.toLowerCase().includes(query)
+    );
+  }
+
+  // Sort orders by date
+  sortByDate(): void {
+    this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    this.filteredOrders.sort((a, b) => {
+      const dateA = new Date(a.orderDate).getTime();
+      const dateB = new Date(b.orderDate).getTime();
+      return this.sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+    });
+  }
+
+  // View order items for a specific order
+  viewOrderItems(orderId: number): void {
+    this.isItemsLoading = true;
+    this.orderService.getOrderItemByOrderId(orderId).subscribe(
+      (items: any[]) => {
+        this.selectedOrderItems = items;
+        this.isItemsLoading = false;
+      },
+      error => {
+        this.errorMessage = 'Failed to fetch order items. Please try again later.';
+        this.isItemsLoading = false;
+      }
     );
   }
 }

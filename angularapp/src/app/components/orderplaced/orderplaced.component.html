@@ -9,6 +9,7 @@
       [(ngModel)]="searchQuery" 
       (input)="onSearch()" 
     />
+    <button (click)="sortByDate()">Sort by Date ({{ sortOrder }})</button>
   </div>
 
   <!-- Display Orders -->
@@ -17,7 +18,7 @@
       <li *ngFor="let order of filteredOrders">
         <div>
           <strong>Order ID:</strong> {{ order.orderId }}<br>
-          <strong>Username:</strong> {{ order.username }}<br>
+          <strong>Order Date:</strong> {{ order.orderDate }}<br>
           <strong>Status:</strong> {{ order.orderStatus }}<br>
           <strong>Shipping Address:</strong> {{ order.shippingAddress }}<br>
           <strong>Billing Address:</strong> {{ order.billingAddress }}<br>
@@ -27,8 +28,7 @@
           <label for="statusDropdown">Update Order Status:</label>
           <select 
             id="statusDropdown" 
-            [(ngModel)]="order.orderStatus" 
-            (change)="updateOrderStatus(order)"
+            [(ngModel)]="order.orderStatus"
           >
             <option value="Pending">Pending</option>
             <option value="Accepted">Accepted</option>
@@ -37,12 +37,9 @@
             <option value="Delivered">Delivered</option>
           </select>
 
-        <br>
+          <br>
           <!-- View Item Button -->
-          <button (click)="viewOrderItems(order.orderId)">View Items</button>
-
-          <!-- View Profile Button -->
-          <button (click)="viewUserProfile(order.user?.userId)">View Profile</button>
+          <button data-bs-toggle="modal" data-bs-target="#viewItemsModal" (click)="viewOrderItems(order.orderId)">View Items</button>
         </div>
       </li>
     </ul>
@@ -52,4 +49,30 @@
   <ng-template #noOrders>
     <p>No orders found.</p>
   </ng-template>
+
+  <!-- Bootstrap Modal for Order Items -->
+  <div class="modal fade" id="viewItemsModal" tabindex="-1" aria-labelledby="viewItemsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="viewItemsModalLabel">Order Items</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="selectedOrderItems.length; else noItems">
+            <ul>
+              <li *ngFor="let item of selectedOrderItems">
+                <strong>Item Name:</strong> {{ item.productName }}<br>
+                <strong>Quantity:</strong> {{ item.quantity }}<br>
+                <strong>Price:</strong> {{ item.price }}<br>
+              </li>
+            </ul>
+          </div>
+          <ng-template #noItems>
+            <p>No items found for this order.</p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

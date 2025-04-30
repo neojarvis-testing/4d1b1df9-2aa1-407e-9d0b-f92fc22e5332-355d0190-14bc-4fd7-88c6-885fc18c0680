@@ -14,6 +14,7 @@ import com.examly.springapp.model.Order;
 import com.examly.springapp.model.OrderItem;
 import com.examly.springapp.model.Product;
 import com.examly.springapp.model.User;
+import com.examly.springapp.repository.OrderItemRepo;
 import com.examly.springapp.repository.OrderRepo;
 import com.examly.springapp.repository.ProductRepo;
 import com.examly.springapp.repository.UserRepo;
@@ -95,6 +96,13 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orders = orderRepository.findByUserId(userId);
         log.info("Number of orders retrieved for user with ID {}: {}", userId, orders.size());
         return orders.stream().map(this::mapToDTO).collect(Collectors.toList());
+    }
+
+    public List<OrderItemDTO> getOrderItemByOrderId(long orderId) {
+        log.info("Retrieving orders for order with ID: {}", orderId);
+        List<OrderItem> orders = orderRepository.findByOrderId(orderId);
+        log.info("Number of orders retrieved for user with ID {}: {}", orderId, orders.size());
+        return orders.stream().map(this::mapToOrderItemDTO).collect(Collectors.toList());
     }
 
     
