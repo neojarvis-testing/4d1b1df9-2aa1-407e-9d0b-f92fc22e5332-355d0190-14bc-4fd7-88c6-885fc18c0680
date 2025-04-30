@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("userId",user.userId+"")
         localStorage.setItem("userRole",user.userRole+"")
         localStorage.setItem("token",user.token+"")
-        this.router.navigate(['/addProduct'])
+        this.router.navigate(['/home'])
       },(error)=>{
         alert("Login failed")
         console.log("Error"+JSON.stringify(error))
