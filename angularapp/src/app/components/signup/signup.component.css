@@ -1,0 +1,14 @@
+body {
+    background: url('../../../assets/images/background.webp') no-repeat center center fixed;
+    background-size: cover; /* Ensures the image covers the viewport */
+    margin: 0;
+    padding: 0;
+  }
+  
+  .card {
+    background-color: rgba(199, 184, 184, 0.9); /* Light background with slight transparency */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    max-width: 400px; /* Restricts the width of the form */
+    width: 100%; /* Ensures responsiveness */
+  }
