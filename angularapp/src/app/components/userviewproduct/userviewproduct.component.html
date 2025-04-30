@@ -1,21 +1,27 @@
-<div class="container">
-    <h2>Product</h2>
+<div class="container my-4">
   
-    <div class="product-list">
-      <div *ngFor="let product of products" class="product-card">
-        <h3>{{ product.productName }}</h3>
-        <p><strong>Description:</strong> {{ product.description }}</p>
-        <p><strong>Price:</strong> {{ product.price | currency:'INR' }}</p>
-        <p><strong>Stock Quantity:</strong> {{ product.stockQuantity }}</p>
-        <p><strong>Category:</strong> {{ product.category }}</p>
-        <p><strong>Brand:</strong> {{ product.brand }}</p>
-        <div class="cover-image">
-          <img [src]="product.coverImage" alt="{{ product.productName }}" />
-        </div>
-        <div class="actions">
-          <button class="btn btn-primary" (click)="navigateToReview(product.productId)">Add Review</button>
-          <button class="btn btn-primary" (click)="navigateToMyReview()">View Review</button>
+    <div class="text-center mb-3">
+      <h2>Product</h2>
+    </div>
+    
+    <div class="row">
+      <div *ngFor="let product of products" class="col-md-3 mb-4">
+        <div class="card h-100 shadow-sm">
+          <img [src]='getImageUrl(product.coverImage)' class="card-img-top" [alt]="product.productName" style="height: 180px; object-fit: cover;">
+          <div class="card-body">
+            <h5 class="card-title">{{ product.productName }}</h5>
+            <p class="card-text">{{ product.description }}</p>
+            <p class="card-text"><strong>Price:</strong> {{ product.price | currency: 'INR' }}</p>
+            <p class="card-text"><strong>Stock:</strong> {{ product.stockQuantity }}</p>
+            <p class="card-text"><strong>Category:</strong> {{ product.category }}</p>
+            <p class="card-text"><strong>Brand:</strong> {{ product.brand }}</p>
+          </div>
+          <div class="card-footer d-flex justify-content-between">
+            <button class="btn btn-primary btn-sm" (click)="navigateToReview(product.productId)">Add Review</button>
+            <button class="btn btn-primary btn-sm" (click)="navigateToMyReview()">View Review</button>
+          </div>
         </div>
       </div>
     </div>
+  
   </div>

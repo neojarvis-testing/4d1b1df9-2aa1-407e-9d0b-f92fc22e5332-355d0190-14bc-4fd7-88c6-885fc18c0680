@@ -1,5 +1,6 @@
 package com.examly.springapp.dto;
 
+import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -32,6 +33,7 @@ public class ProductDTO {
     @NotBlank(message = "Brand cannot be blank")
     private String brand;
 
-    @NotBlank(message = "Cover Image cannot be blank")
+    //@NotBlank(message = "Cover Image cannot be blank")
+    //@Lob
     private String coverImage;
 }

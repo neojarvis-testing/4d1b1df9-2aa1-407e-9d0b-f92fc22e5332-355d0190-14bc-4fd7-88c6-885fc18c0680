@@ -1,5 +1,10 @@
 package com.examly.springapp.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -10,10 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.examly.springapp.dto.ProductDTO;
 import com.examly.springapp.service.ProductServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,17 +35,46 @@ import lombok.RequiredArgsConstructor;
 public class ProductController {
 
     private final ProductServiceImpl productService;
+    private static final String UPLOAD_DIR = "./Images";
 
     /*Handles post mapping */
-    @PostMapping
+    @PostMapping(consumes = {"multipart/form-data"})
 
     @Operation(summary = "Update product by ID", description = "Updates the product with the specified ID and returns the updated product object")
-    public ResponseEntity<ProductDTO> addProduct(@Valid @RequestBody ProductDTO productDTO) //@Valid handles validations
-    {
-        ProductDTO saved=productService.addProduct(productDTO); //calls service method and passes the user data
-        return ResponseEntity.status(201).body(saved);
+    public ResponseEntity<?> addProduct(
+        @RequestParam("productData") String productData, // JSON as String
+        @RequestParam("coverImage") MultipartFile coverImage) {
+
+    if (coverImage.isEmpty()) {
+        return ResponseEntity.badRequest().body("Image file is required.");
     }
 
+    try {
+        // Convert JSON String to ProductDTO
+        ObjectMapper objectMapper = new ObjectMapper();
+        ProductDTO productDTO = objectMapper.readValue(productData, ProductDTO.class);
+
+        // Ensure directory exists
+        File uploadDir = new File(UPLOAD_DIR);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+
+        // Save image file
+        String fileName = System.currentTimeMillis() + "_" + coverImage.getOriginalFilename();
+        Path filePath = Path.of(UPLOAD_DIR, fileName);
+        Files.copy(coverImage.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        // Set file path while keeping `coverImage`
+        productDTO.setCoverImage(fileName);
+
+        // Save product in database and return the object
+        ProductDTO savedProduct = productService.addProduct(productDTO);
+        return ResponseEntity.ok(savedProduct);
+    } catch (IOException e) {
+        return ResponseEntity.internalServerError().body("Error saving image file.");
+    }
+}
      /*Handles get mapping, returns product with corresponding id */
     @GetMapping("/{productId}")
     @Operation(summary = "Get product by ID", description = "Returns the product with the specified ID")
@@ -67,10 +104,29 @@ public class ProductController {
     }
     
     /*Handles put mapping, updates a product */
-    @PutMapping("/{productId}")
-    @Operation(summary = "Update product by ID", description = "Updates the product with the specified ID and returns the updated product object")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable long productId,  @RequestBody ProductDTO productDTO){
-        ProductDTO saved=productService.updateProduct(productId,productDTO); //calls service method and passes the user data
-        return ResponseEntity.status(201).body(saved);
+    @PutMapping(value = "/{productId}", consumes = {"multipart/form-data"})
+@Operation(summary = "Update product by ID", description = "Updates the product with the specified ID and returns the updated product object")
+public ResponseEntity<?> updateProduct(
+    @PathVariable long productId,
+    @RequestParam("productData") String productData, // JSON as String
+    @RequestParam(value = "coverImage", required = false) MultipartFile coverImage // Image file (optional)
+) {
+    try {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ProductDTO productDTO = objectMapper.readValue(productData, ProductDTO.class);
+
+        if (coverImage != null && !coverImage.isEmpty()) {
+            String fileName = System.currentTimeMillis() + "_" + coverImage.getOriginalFilename();
+            Path filePath = Path.of(UPLOAD_DIR, fileName);
+            Files.copy(coverImage.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            productDTO.setCoverImage(fileName); // Store the new image path
+        }
+
+        ProductDTO updatedProduct = productService.updateProduct(productId, productDTO);
+        return ResponseEntity.ok(updatedProduct);
+
+    } catch (IOException e) {
+        return ResponseEntity.internalServerError().body("Error updating product.");
     }
+}
 }
