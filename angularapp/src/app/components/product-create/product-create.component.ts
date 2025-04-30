@@ -56,20 +56,18 @@ export class ProductCreateComponent implements OnInit {
     if (this.addProductForm.valid) {
       if (this.isEditing) {
         this.product = { productId: this.product.productId, ...this.addProductForm.value };
-        this.productService.updateProduct(this.product.productId, this.product).subscribe((data) => {
-          console.log(data)
+        this.productService.updateProduct(this.product.productId, this.product).subscribe(() => {
           this.successMessage = 'Product updated successfully!';
-          this.router.navigate(['/view-product']);
+          this.router.navigate(['/viewproduct']);
         }, (error) => {
           console.error('Error updating product:', error);
           this.successMessage = 'Failed to update product.';
         });
       } else {
         this.product = { ...this.addProductForm.value };
-        this.productService.addProduct(this.product).subscribe((data) => {
-          console.log(data)
+        this.productService.addProduct(this.product).subscribe(() => {
           this.successMessage = 'Product added successfully!';
-          this.router.navigate(['/view-product']);
+          this.router.navigate(['/viewproduct']);
         }, (error) => {
           console.error('Error adding product:', error);
           this.successMessage = 'Failed to add product.';

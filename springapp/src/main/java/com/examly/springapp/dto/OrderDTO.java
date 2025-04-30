@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.examly.springapp.service.OrderStatus;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -19,6 +21,7 @@ public class OrderDTO {
     @NotNull(message = "Order date cannot be null")
     private LocalDate orderDate;
 
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
     @NotBlank(message = "Shipping address cannot be blank")

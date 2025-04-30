@@ -4,7 +4,6 @@ import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { ProductCreateComponent } from './components/product-create/product-create.component';
 import { AdminviewproductComponent } from './components/adminviewproduct/adminviewproduct.component';
-import { AdminnavComponent } from './components/adminnav/adminnav.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { AdminGuard } from './admin.guard';
 import { UserGuard } from './user.guard';
@@ -31,7 +30,7 @@ const routes: Routes = [
   {path:'userProduct',component:UserviewproductComponent, canActivate:[UserGuard]},
   {path:'viewReview',component:MyreviewComponent},
   {path:'**',component:ErrorComponent},
-  { path: '', pathMatch: 'full', redirectTo: LoginComponent }
+  { path: '', pathMatch: 'full', redirectTo: 'LoginComponent' }
 ];
 
 @NgModule({

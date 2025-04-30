@@ -67,7 +67,7 @@ public SecurityFilterChain cFilterChain(HttpSecurity http) throws Exception {
             .requestMatchers(HttpMethod.POST, "/api/orders", "/api/reviews").hasRole("USER")
 
             /* Allow GET requests to specific endpoints for USER role only */
-            .requestMatchers(HttpMethod.GET, "/api/orders/user/{userId}", "/api/reviews/user/{userId}").hasRole("USER")
+            .requestMatchers(HttpMethod.GET, "/api/orders/user/{userId}", "/api/reviews/user/{userId}","api/orders/orderItem/orderId").hasRole("USER")
 
             /* Allow DELETE requests to specific endpoints for USER role only */
             .requestMatchers(HttpMethod.DELETE, "/api/orders/{orderId}", "/api/reviews/{reviewId}").hasRole("USER")
