@@ -42,7 +42,7 @@ public class Product {
     private String brand;
 
     @Lob
-    @Column(length = 1000000000)
+    @Column(columnDefinition ="LONGTEXT")
     private String coverImage;
     
 }

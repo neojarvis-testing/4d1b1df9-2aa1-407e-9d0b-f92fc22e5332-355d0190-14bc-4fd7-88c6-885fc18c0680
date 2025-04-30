@@ -1,4 +1,38 @@
-<div class="container">
+<!-- <div class="container">
+    <h2>Product List</h2>
+    
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Stock Quantity</th>
+          <th>Category</th>
+          <th>Brand</th>
+          <th>Cover Image</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>{{ product.productName }}</td>
+          <td>{{ product.description }}</td>
+          <td>{{ product.price | currency:'INR' }}</td>
+          <td>{{ product.stockQuantity }}</td>
+          <td>{{ product.category }}</td>
+          <td>{{product.coverImage}}</td>
+          <td>{{ product.brand }}</td>
+          <td>
+            <button class="btn btn-primary" (click)="updateProduct(product.productId)">Edit</button>
+            <button class="btn btn-danger" (click)="deleteProduct(product.productId)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div> -->
+
+  <div class="container">
     <label for="search">Search: </label>
     <input type="text" [(ngModel)]="searchText" (input)="search()" placeholder="Search products...">
     <h2>Product List</h2>
