@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Api } from 'src/app/api-urls';
 import { Product } from 'src/app/models/product.model';
+import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -13,7 +14,8 @@ export class UserviewproductComponent implements OnInit {
 
   products:Product[]=[]
   ApiUrl:string=Api.apiUrl
-  constructor(private router:Router,private productService:ProductService) { }
+  quantity:number
+  constructor(private router:Router,private productService:ProductService, private cartService:CartService) { }
 
   ngOnInit(): void {
     this.getAllProducts();
@@ -39,4 +41,15 @@ export class UserviewproductComponent implements OnInit {
     console.log(a)
     return `${this.ApiUrl}/${imageName}`;
   }
+
+  
+addToCart(product: Product): void {
+      if (this.quantity && this.quantity > 0) {
+        this.cartService.addToCart(product,this.quantity);
+        alert('Product added to cart!');
+      } else {
+        alert('Please enter a valid quantity.');
+      }
+  
+}
 }

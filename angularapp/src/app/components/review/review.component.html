@@ -1,18 +1,26 @@
 <form [formGroup]="addReviewForm" (ngSubmit)="submitReview()">
-    <label for="reviewText">Review Text:</label><br/>
-    <textarea id="reviewText" formControlName="reviewText" placeholder="Enter your review"></textarea>
-    <div *ngIf="addReviewForm.controls['reviewText'].invalid && addReviewForm.controls['reviewText'].touched">
-      <span>Please enter a valid review (3-300 characters).</span>
-    </div>
-    <br/>
- 
-    <label for="rating">Rating:</label><br/>
-    <input id="rating" type="number" formControlName="rating" placeholder="Enter rating (1-5)">
-    <div *ngIf="addReviewForm.controls['rating'].invalid && addReviewForm.controls['rating'].touched">
-      <span>Rating must be between 1 and 5.</span>
-    </div>
-    <br/>
- 
-    <button type="submit" [disabled]="addReviewForm.invalid">Submit</button>
+  <label for="reviewText">Review Text:</label><br/>
+  <textarea id="reviewText" formControlName="reviewText" placeholder="Enter your review"></textarea>
+  <div *ngIf="addReviewForm.controls['reviewText'].invalid && addReviewForm.controls['reviewText'].touched">
+    <span class="error-message">Please enter a valid review (3-300 characters).</span>
+  </div>
+  <br/>
+
+  <label for="rating">Rating:</label><br/>
+  <div class="stars">
+    <span *ngFor="let star of [1, 2, 3, 4, 5]" (click)="setRating(star)" [class.filled]="star <= addReviewForm.controls['rating'].value">&#9733;</span>
+  </div>
+  <div *ngIf="addReviewForm.controls['rating'].invalid && addReviewForm.controls['rating'].touched">
+    <span class="error-message">Rating must be between 1 and 5.</span>
+  </div>
+  <br/>
+
+  <button type="submit" [disabled]="addReviewForm.invalid">Submit</button>
 </form>
- 
+
+<!-- Success Popup -->
+<div class="success-popup-container" *ngIf="showSuccessPopup">
+  <div class="success-popup">
+    Review added successfully!
+  </div>
+</div>
