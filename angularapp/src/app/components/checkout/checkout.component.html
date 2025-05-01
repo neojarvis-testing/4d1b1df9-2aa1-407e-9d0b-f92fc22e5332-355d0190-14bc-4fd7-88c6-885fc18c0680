@@ -1,1 +1,35 @@
-<p>checkout works!</p>
+<div class="container my-4">
+    <h2>Checkout</h2>
+    <div *ngIf="cartItems.length === 0">
+      <p>Your cart is empty.</p>
+    </div>
+    <div *ngIf="cartItems.length > 0">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of cartItems">
+            <td>{{ item.product.productName }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.price | currency: 'INR' }}</td>
+            <td>{{ item.price * item.quantity | currency: 'INR' }}</td>
+            <td>
+              <button class="btn btn-danger btn-sm" (click)="removeFromCart(item.product.productId)">Remove</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="text-right">
+        <h4>Total: {{ getTotalPrice() | currency: 'INR' }}</h4>
+        <button class="btn btn-warning" (click)="clearCart()">Clear Cart</button>
+      </div>
+    </div>
+  </div>
+  

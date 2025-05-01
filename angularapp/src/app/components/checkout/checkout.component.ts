@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { OrderItem } from 'src/app/models/order-item.model';
+import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-checkout',
@@ -7,9 +9,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CheckoutComponent implements OnInit {
 
-  constructor() { }
 
-  ngOnInit(): void {
-  }
+  cartItems: OrderItem[] = [];
+
+    constructor(private cartService: CartService) { }
+  
+    ngOnInit(): void {
+      this.cartItems = this.cartService.getCartItems();
+    }
+  
+    removeFromCart(productId: number): void {
+      this.cartService.removeFromCart(productId);
+      this.cartItems = this.cartService.getCartItems(); // Refresh the cart items
+    }
+  
+    clearCart(): void {
+      this.cartService.clearCart();
+      this.cartItems = [];
+    }
+  
+    getTotalPrice(): number {
+      return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    }
+  
 
 }

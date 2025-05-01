@@ -23,7 +23,7 @@ export interface Order{
     totalAmount:number;
 
     // User who placed the order
-    user:User;
+    userId:number;
 
     // List of items included in the order
     orderItems:OrderItem[];

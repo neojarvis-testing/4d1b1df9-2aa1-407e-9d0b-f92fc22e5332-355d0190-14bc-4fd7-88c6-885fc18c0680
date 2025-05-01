@@ -14,6 +14,7 @@ import { MyorderComponent } from './components/myorder/myorder.component';
 import { CombinedGuard } from './combined.guard';
 import { UserviewproductComponent } from './components/userviewproduct/userviewproduct.component';
 import { MyreviewComponent } from './components/myreview/myreview.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent },
@@ -29,6 +30,7 @@ const routes: Routes = [
   {path:'user',component:MyorderComponent, canActivate:[UserGuard]},
   {path:'userProduct',component:UserviewproductComponent, canActivate:[UserGuard]},
   {path:'viewReview',component:MyreviewComponent},
+  {path:'cart',component:CheckoutComponent},
   {path:'**',component:ErrorComponent},
   { path: '', pathMatch: 'full', redirectTo: 'LoginComponent' }
 ];
