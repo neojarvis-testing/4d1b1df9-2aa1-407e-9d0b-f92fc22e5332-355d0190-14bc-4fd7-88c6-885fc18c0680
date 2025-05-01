@@ -18,7 +18,7 @@
         </div>
  
         <a routerLink="/order-placed" *ngIf="authService.isAdmin()">Order Placed</a>
-        <a routerLink="/review" *ngIf="authService.isAdmin()">Review</a>
+        <a routerLink="/viewReview" *ngIf="authService.isAdmin()">Review</a>
 
         <div class="dropdown" *ngIf="authService.isUser()">
             <a class="btn btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
@@ -32,7 +32,7 @@
         </div>
  
         <a routerLink="/cart" *ngIf="authService.isUser()">Cart</a>
-        <a routerLink="/review" *ngIf="authService.isUser()">Review</a>
+        <a routerLink="/viewReview" *ngIf="authService.isUser()">Review</a>
  
         <a class="logout" (click)="logout()" *ngIf="authService.isLoggedUser()">Logout </a>
     </div>
