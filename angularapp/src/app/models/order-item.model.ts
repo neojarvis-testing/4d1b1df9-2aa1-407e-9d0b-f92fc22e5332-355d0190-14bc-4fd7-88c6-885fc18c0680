@@ -7,7 +7,9 @@ export interface OrderItem{
     orderItemId?:number;
 
     // The product associated with the order item
-    product:Product;
+    productId:number;
+
+    productName:string;
 
     // Quantity of the product ordered
     quantity:number;
