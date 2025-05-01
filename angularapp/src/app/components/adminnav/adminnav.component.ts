@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class AdminnavComponent implements OnInit {
 
   userRole: string;
+  showDialog = false;
 
   constructor(public authService:AuthService,private router:Router) { }
   
@@ -19,9 +20,15 @@ export class AdminnavComponent implements OnInit {
   
   logout(): void {
     // Logic to handle logout
+    this.showDialog = true;
+  }
+
+  onDialogConfirm(result: boolean): void {
+    this.showDialog = false;
+    if (result) {
     this.authService.loggedOut();
-    console.log('User logged out');
-    this.router.navigate(['/']);
+    this.router.navigate(['/'])
+    }
   }
   
 }
