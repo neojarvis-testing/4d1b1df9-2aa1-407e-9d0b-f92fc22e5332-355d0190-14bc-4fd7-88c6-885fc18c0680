@@ -11,6 +11,7 @@ export class CheckoutComponent implements OnInit {
 
 
   cartItems: OrderItem[] = [];
+  cartItem: number;
 
     constructor(private cartService: CartService) { }
   
