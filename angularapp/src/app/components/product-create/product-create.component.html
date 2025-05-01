@@ -1,52 +1,80 @@
 <form [formGroup]="addProductForm" (ngSubmit)="createProduct()">
-    <label for="productName">Product Name:</label><br/>
-    <input id="productName" type="text" formControlName="productName" placeholder="Enter product name">
-    <div *ngIf="addProductForm.controls['productName'].invalid && addProductForm.controls['productName'].touched">
-      <span>Please enter a valid product name (3-20 alphanumeric characters).</span>
+    <div class="form-group">
+      <label for="productName">Product Name:</label>
+      <input id="productName" type="text" formControlName="productName" class="form-control">
+      <div *ngIf="addProductForm.get('productName')?.invalid && addProductForm.get('productName')?.touched">
+        <small class="text-danger">Product name is required (3-20 characters).</small>
+      </div>
     </div>
-    <br/>
+  
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <textarea id="description" formControlName="description" class="form-control"></textarea>
+      <div *ngIf="addProductForm.get('description')?.invalid && addProductForm.get('description')?.touched">
+        <small class="text-danger">Description is required (3-500 characters).</small>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="price">Price:</label>
+      <input id="price" type="number" formControlName="price" class="form-control">
+      <div *ngIf="addProductForm.get('price')?.invalid && addProductForm.get('price')?.touched">
+        <small class="text-danger">Price must be at least 1.</small>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="stockQuantity">Stock Quantity:</label>
+      <input id="stockQuantity" type="number" formControlName="stockQuantity" class="form-control">
+      <div *ngIf="addProductForm.get('stockQuantity')?.invalid && addProductForm.get('stockQuantity')?.touched">
+        <small class="text-danger">Stock quantity must be at least 0.</small>
+      </div>
+    </div>
+  
+    <!-- <div class="form-group">
+      <label for="category">Category:</label>
+      <input id="category" type="text" formControlName="category" class="form-control">
+      <div *ngIf="addProductForm.get('category')?.invalid && addProductForm.get('category')?.touched">
+        <small class="text-danger">Category is required.</small>
+      </div>
+    </div> -->
 
-    <label for="description">Description:</label><br/>
-    <textarea id="description" formControlName="description" placeholder="Enter product description"></textarea>
-    <div *ngIf="addProductForm.controls['description'].invalid && addProductForm.controls['description'].touched">
-      <span>Only letters, numbers, spaces, and punctuation (.,!?()-) allowed. (3-500 characters).</span>
+    <div class="form-group">
+      <label for="category">Category:</label><br/>
+      <select id="category" formControlName="category" class="form-control">
+        <option value="" disabled selected>Select a category</option>
+        <option value="Home Appliances">Home Appliances</option>
+        <option value="Toys">Toys</option>
+        <option value="Fashion">Fashion</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Books">Books</option>
+        <option value="Furniture">Furniture</option>
+        <option value="Beauty">Beauty</option>
+      </select>
+      <div *ngIf="addProductForm.controls['category'].invalid && addProductForm.controls['category'].touched">
+        <span class="text-danger">Category selection is required.</span>
+      </div>
     </div>
-    <br/>
-
-    <label for="price">Price:</label><br/>
-    <input id="price" type="number" formControlName="price" placeholder="Enter price">
-    <div *ngIf="addProductForm.controls['price'].invalid && addProductForm.controls['price'].touched">
-      <span>Price must be at least 1.</span>
-    </div>
-    <br/>
+    
   
-    <label for="stockQuantity">Stock Quantity:</label><br/>
-    <input id="stockQuantity" type="number" formControlName="stockQuantity" placeholder="Enter stock quantity">
-    <div *ngIf="addProductForm.controls['stockQuantity'].invalid && addProductForm.controls['stockQuantity'].touched">
-      <span>Stock quantity must be at least 0.</span>
+    <div class="form-group">
+      <label for="brand">Brand:</label>
+      <input id="brand" type="text" formControlName="brand" class="form-control">
+      <div *ngIf="addProductForm.get('brand')?.invalid && addProductForm.get('brand')?.touched">
+        <small class="text-danger">Brand is required (3-20 characters).</small>
+      </div>
     </div>
-    <br/>
   
-    <label for="category">Category:</label><br/>
-    <input id="category" type="text" formControlName="category" placeholder="Enter category">
-    <div *ngIf="addProductForm.controls['category'].invalid && addProductForm.controls['category'].touched">
-      <span>Category must be 3-20 characters long.</span>
+    <div class="form-group">
+      <label for="coverImage">Cover Image:</label>
+      <input id="coverImage" type="file" (change)="onFileChange($event)" class="form-control">
     </div>
-    <br/>
   
-    <label for="brand">Brand:</label><br/>
-    <input id="brand" type="text" formControlName="brand" placeholder="Enter brand">
-    <div *ngIf="addProductForm.controls['brand'].invalid && addProductForm.controls['brand'].touched">
-      <span>Brand must be 3-20 characters long.</span>
+    <button type="submit" class="btn btn-primary" [disabled]="addProductForm.invalid">
+      {{ isEditing ? 'Update Product' : 'Add Product' }}
+    </button>
+  
+    <div *ngIf="successMessage">
+      <p class="text-success">{{ successMessage }}</p>
     </div>
-    <br/>
-  
-    <label for="coverImage">Cover Image:</label><br/>
-    <input id="coverImage" type="file" (change)="handleFileChange($event)">
-    <div *ngIf="addProductForm.controls['coverImage'].invalid && addProductForm.controls['coverImage'].touched">
-      <span>Please select an image file.</span>
-    </div>
-    <br/>
-  
-    <button type="submit">Submit</button>
   </form>
