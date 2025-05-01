@@ -2,15 +2,13 @@
     <h4>Prokart</h4>
     <div class="box">
    
-        <a routerLink="/home" *ngIf="authService.isLoggedUser()">Home</a>
-        
-        
-        
+        <a routerLink="/home" *ngIf="authService.isLoggedUser()">Home</a> 
+       
         <div class="dropdown" *ngIf="authService.isAdmin()">
             <a class="btn btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                 Product
             </a>
-            
+           
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
               <li><a class="dropdown-item" routerLink="/add-product">Add Product</a></li>
               <li><a class="dropdown-item" routerLink="/view-product">View Product</a></li>
@@ -18,13 +16,13 @@
         </div>
  
         <a routerLink="/order-placed" *ngIf="authService.isAdmin()">Order Placed</a>
-        <a routerLink="/review" *ngIf="authService.isAdmin()">Review</a>
-
+        <a routerLink="/viewReview" *ngIf="authService.isAdmin()">Review</a>
+ 
         <div class="dropdown" *ngIf="authService.isUser()">
             <a class="btn btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                 Product
             </a>
-            
+           
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
               <li><a class="dropdown-item" routerLink="/userProduct">View Products</a></li>
               <li><a class="dropdown-item" routerLink="/my-orders">My Orders</a></li>
@@ -32,8 +30,18 @@
         </div>
  
         <a routerLink="/cart" *ngIf="authService.isUser()">Cart</a>
-        <a routerLink="/review" *ngIf="authService.isUser()">Review</a>
+        <a routerLink="/viewReview" *ngIf="authService.isUser()">Review</a>
  
-        <a class="logout" (click)="logout()" *ngIf="authService.isLoggedUser()">Logout </a>
+        <button class="logout" (click)="logout()" *ngIf="authService.isLoggedUser()"><b>Logout</b></button>
+    </div>
+</div>
+
+<div class="dialog-overlay" *ngIf="showDialog">
+    <div class="dialog-box">
+      <h2>Logout</h2>
+      <p>Are you sure you want to logout?</p>
+      <div >
+      <button class="btn btn-success" (click)="onDialogConfirm(true)">Yes</button>
+      <button class="btn btn-danger" (click)="onDialogConfirm(false)">No</button> </div>
     </div>
 </div>

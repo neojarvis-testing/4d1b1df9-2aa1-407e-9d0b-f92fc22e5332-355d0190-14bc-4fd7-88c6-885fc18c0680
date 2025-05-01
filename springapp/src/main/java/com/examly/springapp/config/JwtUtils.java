@@ -24,7 +24,7 @@ public class JwtUtils {
         return Jwts.builder()
             .setSubject(userDetails.getUsername())
             .setIssuedAt(new Date())
-            .setExpiration(new Date(System.currentTimeMillis() + (30 * 60 * 1000))) // Token valid for 30 minutes
+            .setExpiration(new Date(System.currentTimeMillis() + (3*60 * 60 * 1000))) // Token valid for 30 minutes
             .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
             .compact();
     }
