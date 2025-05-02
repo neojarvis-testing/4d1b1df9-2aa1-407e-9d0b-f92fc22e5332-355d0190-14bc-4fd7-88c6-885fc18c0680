@@ -11,72 +11,77 @@ import { ReviewService } from 'src/app/services/review.service';
   styleUrls: ['./myreview.component.css']
 })
 export class MyreviewComponent implements OnInit {
-
+  
   reviews: Review[] = [];
-  filteredReviews: Review[] = [];
-  sortDirection: string = 'asc';
-  searchRating: number | null = null;
-  selectedProduct: Product;
- 
-  constructor(
-    private reviewService: ReviewService,
-    private productService: ProductService,
-    private router: Router
-  ) { }
- 
-  ngOnInit(): void {
- 
-    this.loadReviews();
-  }
- 
-  loadReviews(): void {
-    this.reviewService.getAllReviews().subscribe(
-      (data: Review[]) => {
-        this.reviews = data;
-        this.applyFilters();
-      },
-      (error) => {
-        console.error(error);
-        alert('Failed to load reviews.');
-      }
-    );
-  }
- 
-  applyFilters(): void {
-    this.filteredReviews = this.reviews
-      .filter(review => this.searchRating == null || review.rating === this.searchRating)
-      .sort((a, b) => {
-        const dateA = new Date(a.date).getTime();
-        const dateB = new Date(b.date).getTime();
-        return this.sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
-      });
-  }
- 
-  onSortChange(direction: string): void {
-    this.sortDirection = direction;
-    this.applyFilters();
-  }
- 
-  onRatingChange(rating: number): void {
-    this.searchRating = rating;
-    this.applyFilters();
-  }
- 
-  viewProduct(productId: number): void {
-    this.productService.getProductById(productId).subscribe(
-      (data) => {
-        this.selectedProduct = data;
-        console.log(this.selectedProduct);
-      },
-      (error) => {
-        console.error(error);
-        alert('Failed to load product.');
-      }
-    );
-  }
- 
-  closeModal(): void {
-    this.selectedProduct = null;
-  }
- 
+    filteredReviews: Review[] = [];
+    sortDirection: string = 'asc';
+    searchRating: string | null = null;
+    selectedProduct: Product | null = null;
+  
+    constructor(
+      private reviewService: ReviewService,
+      private productService: ProductService,
+      private router: Router
+    ) { }
+  
+    ngOnInit(): void {
+      this.loadReviews();
+    }
+  
+    loadReviews(): void {
+      this.reviewService.getAllReviews().subscribe(
+        (data: Review[]) => {
+          this.reviews = data;
+          this.filteredReviews = [...this.reviews]; // Initialize filteredReviews
+        },
+        (error) => {
+          console.error(error);
+          alert('Failed to load reviews.');
+        }
+      );
+    }
+  
+    sortReviews(): void {
+      this.filteredReviews.sort((a, b) => {
+        const dateA = new Date(a.date).getTime();
+        const dateB = new Date(b.date).getTime();
+        return this.sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
+      });
+    }
+  
+    filterReviews(): void {
+      if (this.searchRating === null || this.searchRating === '') {
+        this.filteredReviews = [...this.reviews];
+      } else {
+        this.filteredReviews = this.reviews.filter(review => review.rating.toString() === this.searchRating);
+      }
+      this.sortReviews(); // Ensure sorting is applied after filtering
+    }
+  
+    onSortChange(direction: string): void {
+      this.sortDirection = direction;
+      this.sortReviews();
+    }
+  
+    onRatingChange(rating: string | null): void {
+      this.searchRating = rating;
+      this.filterReviews();
+    }
+  
+    viewProduct(productId: number): void {
+      this.productService.getProductById(productId).subscribe(
+        (data) => {
+          this.selectedProduct = data;
+          console.log(this.selectedProduct);
+        },
+        (error) => {
+          console.error(error);
+          alert('Failed to load product.');
+        }
+      );
+    }
+  
+    closeModal(): void {
+      this.selectedProduct = null;
+    }
 }

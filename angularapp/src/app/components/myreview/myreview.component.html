@@ -1,38 +1,43 @@
 <div class="review-container">
+  <!-- Search and Sort Container -->
+  <div class="search-sort-container">
     <!-- Search by Rating -->
-    <input type="number" placeholder="Search by rating..." class="rating-search" (input)="onRatingChange($event.target.valueAsNumber)" />
-     
-      <!-- Sort Dropdown -->
+    <input type="number" placeholder="Search by rating..." class="rating-search" (input)="onRatingChange($event.target.value?.toString())" />
+
+    <!-- Sort Dropdown -->
     <select class="sort-dropdown" (change)="onSortChange($event.target.value)">
-    <option value="asc">Sort by Date: Ascending</option>
-    <option value="desc">Sort by Date: Descending</option>
+      <option value="asc">Sort by Date: Ascending</option>
+      <option value="desc">Sort by Date: Descending</option>
     </select>
-     
-      <!-- Display Reviews -->
-    <div *ngFor="let review of filteredReviews" class="review-card">
+  </div>
+
+  <!-- Display Reviews -->
+  <div *ngFor="let review of filteredReviews" class="review-card">
     <h3>ProductId: {{ review.productId }}</h3>
-    <div class="rating">Rating: {{ review.rating }} stars</div>
+    <div class="rating">
+      <span *ngFor="let star of [1, 2, 3, 4, 5]" [ngClass]="{'filled': star <= review.rating}">&#9733;</span>
+    </div>
     <div class="date">Date: {{ review.date }}</div>
     <p>{{ review.reviewText }}</p>
     <button data-bs-toggle="modal" data-bs-target="#viewProductModal" (click)="viewProduct(review.productId)">View Product</button>
-    </div>
-    </div>
-     
-    <!-- Bootstrap Modal for Product Details -->
-    <div class="modal fade" id="viewProductModal" tabindex="-1" aria-labelledby="viewProductModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+  </div>
+</div>
+
+<!-- Bootstrap Modal for Product Details -->
+<div class="modal fade" id="viewProductModal" tabindex="-1" aria-labelledby="viewProductModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
     <div class="modal-content">
-    <div class="modal-header">
-    <h5 class="modal-title" id="viewProductModalLabel">Product Details</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewProductModalLabel">Product Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Name:</strong> {{ selectedProduct?.productName }}</p>
+        <p><strong>Price:</strong> {{ selectedProduct?.price }}</p>
+        <p><strong>Category Type:</strong> {{ selectedProduct?.category }}</p>
+        <p><strong>Description:</strong> {{ selectedProduct?.description }}</p>
+        <p><strong>Brand:</strong>{{ selectedProduct?.brand }}</p>
+      </div>
     </div>
-    <div class="modal-body">
-    <p><strong>Name:</strong> {{ selectedProduct?.productName }}</p>
-    <p><strong>Price:</strong> {{ selectedProduct?.price }}</p>
-    <p><strong>Category Type:</strong> {{ selectedProduct?.category }}</p>
-    <p><strong>Description:</strong> {{ selectedProduct?.description }}</p>
-    <p><strong>Brand:</strong> {{ selectedProduct?.brand }}</p>
-    </div>
-    </div>
-    </div>
+  </div>
 </div>

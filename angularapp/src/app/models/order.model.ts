@@ -8,7 +8,7 @@ export interface Order{
     orderId?:number;
 
     // The date when the order was placed
-    orderDate:Date;
+    orderDate:string;
 
     // Current status of the order (e.g., Pending, Shipped, Delivered)
     orderStatus:string;
@@ -23,7 +23,7 @@ export interface Order{
     totalAmount:number;
 
     // User who placed the order
-    user:User;
+    userId:number;
 
     // List of items included in the order
     orderItems:OrderItem[];

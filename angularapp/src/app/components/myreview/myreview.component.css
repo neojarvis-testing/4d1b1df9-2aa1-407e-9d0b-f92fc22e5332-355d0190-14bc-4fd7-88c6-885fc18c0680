@@ -1,0 +1,136 @@
+.review-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  .search-sort-container {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    max-width: 600px;
+    margin-bottom: 20px;
+  }
+  
+  .rating-search, .sort-dropdown {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 48%;
+  }
+  
+  .review-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 10px 0;
+    padding: 20px;
+    width: 80%;
+    max-width: 600px;
+    transition: transform 0.2s;
+  }
+  
+  .review-card:hover {
+    transform: scale(1.02);
+  }
+  
+  .review-card h3 {
+    margin: 0 0 10px;
+    font-size: 1.2em;
+    color: #333;
+  }
+  
+  .review-card .rating {
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+    color: #666;
+  }
+  
+  .review-card .rating span {
+    font-size: 1.5em;
+    color: #ccc;
+    margin-right: 5px;
+  }
+  
+  .review-card .rating span.filled {
+    color: #ffcc00;
+  }
+  
+  .review-card .date {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 5px;
+  }
+  
+  .review-card p {
+    font-size: 1em;
+    color: #555;
+    margin-top: 10px;
+  }
+  
+  .review-card button {
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+  }
+  
+  .review-card button:hover {
+    background-color: #0056b3;
+  }
+  
+  .modal-content {
+    border-radius: 10px;
+  }
+  
+  .modal-header {
+    border-bottom: none;
+  }
+  
+  .modal-title {
+    font-size: 1.5em;
+    color: #333;
+  }
+  
+  .modal-body p {
+    font-size: 1em;
+    color: #555;
+  }
+  
+  .btn-close {
+    background-color: transparent;
+    border: none;
+    font-size: 1.5em;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .success-popup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .success-popup {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    text-align: center;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  

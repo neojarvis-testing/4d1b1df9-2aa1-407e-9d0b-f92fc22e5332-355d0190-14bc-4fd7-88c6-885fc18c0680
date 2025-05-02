@@ -42,7 +42,7 @@ import {RouterModule} from '@angular/router';
     SignupComponent,
     UsernavComponent,
     UserviewproductComponent,
-    AdminnavComponent
+    AdminnavComponent,
   ],
   imports: [
     BrowserModule,

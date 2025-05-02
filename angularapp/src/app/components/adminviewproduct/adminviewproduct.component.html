@@ -1,6 +1,15 @@
 <div class="container">
-  <div *ngIf="filteredProduct.length === 0" class="text-center text-danger">
-    <p>No products available.</p>
+
+  <div class="mb-3">
+    <input type="text" [(ngModel)]="searchText" (keyup)="search()" placeholder="Search products..." class="form-control">
+  </div>
+
+  <div class="mb-3">
+    <label for="category" class="form-label">Filter by Category:</label>
+    <select [(ngModel)]="selectedCategory" (change)="filterByCategory()" id="category" class="form-select">
+      <option value="">All Categories</option>
+      <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+    </select>
   </div>
 
   <div class="row" *ngIf="filteredProduct.length > 0">
