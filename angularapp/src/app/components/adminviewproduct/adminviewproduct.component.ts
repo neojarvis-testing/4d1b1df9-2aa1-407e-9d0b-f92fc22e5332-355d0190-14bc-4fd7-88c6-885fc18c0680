@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Api } from 'src/app/api-urls';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/services/product.service';
@@ -15,12 +15,13 @@ export class AdminviewproductComponent implements OnInit {
   searchText:string='';
   filteredProduct:Product[]=[]
   ApiUrl:string=Api.apiUrl
+
+  constructor(private readonly productService:ProductService,private readonly router:Router) { }
+
   selectedCategory: string = ''; // Default empty for 'All Categories'
   //categories: string[] = []
   categories: string[] = ["Home Appliances", "Toys", "Fashion", "Electronics", "Books", "Furniture", "Beauty"];
  
- 
-  constructor(private productService:ProductService,private router:Router) { }
  
   ngOnInit(): void {
     this.getAllProducts();

@@ -17,10 +17,10 @@ export class ReviewComponent implements OnInit {
   showSuccessPopup: boolean = false;
 
   constructor(
-    private formBuilder: FormBuilder,
-    private reviewService: ReviewService,
-    private router: Router,
-    private route: ActivatedRoute
+    private readonly formBuilder: FormBuilder,
+    private readonly reviewService: ReviewService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute
   ) {
     this.addReviewForm = this.formBuilder.group({
       reviewText: ['', [Validators.required, Validators.pattern(/^[A-Za-z0-9 ]{3,300}$/)]],

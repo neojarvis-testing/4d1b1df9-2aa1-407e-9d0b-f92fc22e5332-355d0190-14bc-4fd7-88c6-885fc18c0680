@@ -1,11 +1,10 @@
-/* Overall Page Styling */
+    /* Overall Page Styling */
 body {
     font-family: 'Poppins', sans-serif;
     background-color: #ffebf2; /* Soft pink background */
     margin: 0;
     padding: 20px;
   }
-  
   /* Form Container */
   form {
     max-width: 600px;
@@ -16,7 +15,6 @@ body {
     padding: 20px;
     box-shadow: 0 6px 10px rgba(255, 105, 180, 0.3); /* Pink shadow */
   }
-  
   /* Headings */
   h1 {
     font-size: 1.8rem;
@@ -25,23 +23,19 @@ body {
     margin-bottom: 20px;
     font-weight: bold;
   }
-  
   h1::before {
     content: '💖 ';
     font-size: 1.5rem;
   }
-  
   h1::after {
     content: ' 🛍️';
     font-size: 1.5rem;
   }
-  
   /* Form Labels */
   label {
     font-weight: 600;
     color: #cc0052; /* Deep pink text */
   }
-  
   /* Input Fields */
   .form-control {
     border-radius: 5px;
@@ -49,12 +43,10 @@ body {
     box-shadow: none;
     font-family: 'Poppins', sans-serif;
   }
-  
   .form-control:focus {
     box-shadow: 0 0 6px rgba(255, 105, 180, 0.5); /* Pink glow */
     border-color: #ff4081; /* Vibrant pink focus */
   }
-  
   /* Submit Button */
   button[type="submit"] {
     background-image: linear-gradient(to right, #ff4081, #ff80ab); /* Pop pink gradient */
@@ -66,28 +58,23 @@ body {
     transition: all 0.3s ease;
     font-family: 'Poppins', sans-serif;
   }
-  
   button[type="submit"]:hover {
     background-image: linear-gradient(to right, #ff80ab, #ff4081);
     box-shadow: 0 4px 8px rgba(255, 105, 180, 0.3); /* Hover shadow effect */
   }
-  
   button[type="submit"]::after {
     content: ' 🚀';
   }
-  
   /* Error Messages */
   .text-danger {
     font-size: 0.9rem;
     color: #cc0000; /* Bright red for errors */
     font-family: 'Poppins', sans-serif;
   }
-  
   .text-danger::before {
     content: '⚠️ ';
     font-size: 1rem;
   }
-  
   /* Success Messages */
   .text-success {
     font-size: 1rem;
@@ -95,7 +82,6 @@ body {
     color: #00c853; /* Bright green success message */
     font-family: 'Poppins', sans-serif;
   }
-  
   /* Dropdown Styling */
   select.form-control {
     background-color: white;
@@ -105,7 +91,6 @@ body {
     box-shadow: none;
     font-family: 'Poppins', sans-serif;
   }
-  
   /* File Input Styling */
   input[type="file"] {
     padding: 8px;
@@ -113,7 +98,6 @@ body {
     border-radius: 5px;
     background-color: #ffe6ee; /* Light pink background */
   }
-  
   /* Add margin for form groups */
   .form-group {
     margin-bottom: 20px;

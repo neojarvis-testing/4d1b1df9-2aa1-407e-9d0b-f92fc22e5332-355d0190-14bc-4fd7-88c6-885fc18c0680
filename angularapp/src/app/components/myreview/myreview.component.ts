@@ -4,7 +4,7 @@ import { Product } from 'src/app/models/product.model';
 import { Review } from 'src/app/models/review.model';
 import { ProductService } from 'src/app/services/product.service';
 import { ReviewService } from 'src/app/services/review.service';
-
+ 
 @Component({
   selector: 'app-myreview',
   templateUrl: './myreview.component.html',
@@ -16,17 +16,17 @@ export class MyreviewComponent implements OnInit {
   sortDirection: string = 'asc';
   searchRating: string | null = null;
   selectedProduct: Product | null = null;
-
+ 
   constructor(
     private reviewService: ReviewService,
     private productService: ProductService,
     private router: Router
   ) { }
-
+ 
   ngOnInit(): void {
     this.loadReviews();
   }
-
+ 
   loadReviews(): void {
     this.reviewService.getAllReviews().subscribe(
       (data: Review[]) => {
@@ -39,7 +39,7 @@ export class MyreviewComponent implements OnInit {
       }
     );
   }
-
+ 
   sortReviews(): void {
     this.filteredReviews.sort((a, b) => {
       const dateA = new Date(a.date).getTime();
@@ -47,7 +47,7 @@ export class MyreviewComponent implements OnInit {
       return this.sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
     });
   }
-
+ 
   filterReviews(): void {
     if (this.searchRating === null || this.searchRating === '') {
       this.filteredReviews = [...this.reviews];
@@ -56,17 +56,17 @@ export class MyreviewComponent implements OnInit {
     }
     this.sortReviews(); // Ensure sorting is applied after filtering
   }
-
+ 
   onSortChange(direction: string): void {
     this.sortDirection = direction;
     this.sortReviews();
   }
-
+ 
   onRatingChange(rating: string | null): void {
     this.searchRating = rating;
     this.filterReviews();
   }
-
+ 
   viewProduct(productId: number): void {
     this.productService.getProductById(productId).subscribe(
       (data) => {
@@ -79,11 +79,11 @@ export class MyreviewComponent implements OnInit {
       }
     );
   }
-
+ 
   closeModal(): void {
     this.selectedProduct = null;
   }
-
+ 
   deleteReview(reviewId: number): void {
     this.reviewService.deleteReview(reviewId).subscribe(
       () => {
