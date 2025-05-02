@@ -1,27 +1,43 @@
 <div class="container my-4">
-  
-    <div class="text-center mb-3">
-      <h2>Product</h2>
-    </div>
-    
-    <div class="row">
-      <div *ngFor="let product of products" class="col-md-3 mb-4">
-        <div class="card h-100 shadow-sm">
-          <img [src]='getImageUrl(product.coverImage)' class="card-img-top" [alt]="product.productName" style="height: 180px; object-fit: cover;">
-          <div class="card-body">
-            <h5 class="card-title">{{ product.productName }}</h5>
-            <p class="card-text">{{ product.description }}</p>
-            <p class="card-text"><strong>Price:</strong> {{ product.price | currency: 'INR' }}</p>
-            <p class="card-text"><strong>Stock:</strong> {{ product.stockQuantity }}</p>
-            <p class="card-text"><strong>Category:</strong> {{ product.category }}</p>
-            <p class="card-text"><strong>Brand:</strong> {{ product.brand }}</p>
-          </div>
-          <div class="card-footer d-flex justify-content-between">
-            <button class="btn btn-primary btn-sm" (click)="navigateToReview(product.productId)">Add Review</button>
-            <button class="btn btn-primary btn-sm" (click)="navigateToMyReview()">View Review</button>
-          </div>
+  <div class="text-center mb-3">
+    <h2>Products</h2>
+  </div>
+ 
+  <!-- Search and Category Filter -->
+  <div class="d-flex justify-content-center mb-3">
+    <input type="text" [(ngModel)]="searchText" (input)="searchProducts()" class="form-control w-50" placeholder="Search products...">
+   
+    <select class="form-select w-25 ms-2" [(ngModel)]="selectedCategory" (change)="searchProducts()">
+      <option value="">All Categories</option>
+      <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+    </select>
+  </div>
+ 
+  <!-- Display message when no products exist -->
+  <div *ngIf="filteredProducts.length === 0" class="text-center text-danger">
+    <p>No products available{{ selectedCategory ? ' in ' + selectedCategory : '' }}{{ searchText ? ' matching "' + searchText + '"' : '' }}.</p>
+  </div>
+ 
+  <div class="row" *ngIf="filteredProducts.length > 0">
+    <div *ngFor="let product of filteredProducts" class="col-md-3 mb-4">
+      <div class="card h-100 shadow-sm">
+        <img [src]="getImageUrl(product.coverImage)" class="card-img-top" [alt]="product.productName" style="height: 180px; object-fit: cover;" onerror="this.src='assets/default-image.jpg'">
+        <div class="card-body">
+          <h5 class="card-title">{{ product.productName }}</h5>
+          <p class="card-text">{{ product.description }}</p>
+          <p class="card-text"><strong>Price:</strong> {{ product.price | currency: 'INR' }}</p>
+          <p class="card-text"><strong>Stock:</strong> {{ product.stockQuantity }}</p>
+          <p class="card-text"><strong>Category:</strong> {{ product.category }}</p>
+          <p class="card-text"><strong>Brand:</strong> {{ product.brand }}</p>
+          <input type="number" [(ngModel)]="quantity" min="1" class="form-control" placeholder="Quantity">
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+          <button class="btn btn-primary btn-sm" (click)="addToCart(product)">Add to Cart</button>
+          <button class="btn btn-primary btn-sm" (click)="navigateToReview(product.productId)">Add Review</button>
+          <button class="btn btn-primary btn-sm" (click)="navigateToMyReview()">View Review</button>
         </div>
       </div>
     </div>
-  
   </div>
+</div>
+ 
