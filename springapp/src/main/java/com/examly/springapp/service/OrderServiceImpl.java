@@ -124,38 +124,47 @@ public class OrderServiceImpl implements OrderService {
      * If the order does not exist, throw a custom exception
      * Otherwise Update order with the fields if provided in the DTO
      */
-    @Override
-    public OrderDTO updateOrder(long orderId, OrderDTO orderDTO) {
-        log.info("Updating order with ID: {}", orderId);
-        Order order = orderRepository.findById(orderId).orElseThrow(() ->{
-        log.error("Order with ID: {} not found", orderId);
-        return new OrderNotFoundException("Order not found");
-        });
-        log.info("Order found. Proceeding with update...");
-        order.setOrderDate(orderDTO.getOrderDate());
-        order.setOrderStatus(OrderStatus.CONFIRMED);
+@Override
+public OrderDTO updateOrder(long orderId, OrderDTO orderDTO) {
+    log.info("Updating order with ID: {}", orderId);
+    Order order = orderRepository.findById(orderId)
+        .orElseThrow(() -> new OrderNotFoundException("Order not found"));
+
+    // **Update only the address fields if provided**
+    if (orderDTO.getShippingAddress() != null) {
         order.setShippingAddress(orderDTO.getShippingAddress());
+    }
+    if (orderDTO.getBillingAddress() != null) {
         order.setBillingAddress(orderDTO.getBillingAddress());
-        order.setTotalAmount(calculateTotalAmount(orderDTO.getOrderItems()));
-
-        User user = userRepository.findById(orderDTO.getUserId()).orElseThrow(() ->{
-        log.error("User with ID: {} not found", orderDTO.getUserId());
-        return new UserNotFoundException("User not found");
-        });
-        order.setUser(user);
-
-        log.info("Updating order items...");
-        List<OrderItem> orderItems = orderDTO.getOrderItems().stream()
-            .map(this::mapToOrderItemEntity)
-            .collect(Collectors.toList());
-        order.setOrderItems(orderItems);
-
-        log.info("Saving updated order...");
-        Order updatedOrder = orderRepository.save(order);
-        log.info("Order updated successfully: {}", updatedOrder);
-        return mapToDTO(updatedOrder);
     }
 
+    // **Handle Order Status Updates**
+    if (orderDTO.getOrderStatus() != null) {
+        switch (orderDTO.getOrderStatus()) {
+            case CONFIRMED:
+                order.setOrderStatus(OrderStatus.DISPATCHED);
+                log.info("Order status changed to DISPATCHED.");
+                break;
+            case DISPATCHED:
+                order.setOrderStatus(OrderStatus.DISPATCHED);
+                log.info("Order status changed to DELIVERED.");
+                break;
+            case DELIVERED:
+                order.setOrderStatus(OrderStatus.DELIVERED); // No change
+                log.info("Order remains in PROCESSING state.");
+                break;
+            default:
+                order.setOrderStatus(OrderStatus.PROCESSING);
+                log.info("Order status changed to PROCESSING.");
+                break;
+        }
+    }
+
+    orderRepository.save(order);
+    log.info("Order updated successfully.");
+    
+    return mapToDTO(order);
+}
     
     /**
      * Deletes an order by its ID.
@@ -195,7 +204,7 @@ public class OrderServiceImpl implements OrderService {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setOrderId(order.getOrderId());
         orderDTO.setOrderDate(order.getOrderDate());
-        orderDTO.setOrderStatus(OrderStatus.CONFIRMED);
+        orderDTO.setOrderStatus(order.getOrderStatus());
         orderDTO.setShippingAddress(order.getShippingAddress());
         orderDTO.setBillingAddress(order.getBillingAddress());
         orderDTO.setTotalAmount(order.getTotalAmount());

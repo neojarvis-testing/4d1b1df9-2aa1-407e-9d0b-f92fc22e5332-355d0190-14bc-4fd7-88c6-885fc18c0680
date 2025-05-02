@@ -20,13 +20,14 @@
         <h5 class="card-title">Order ID: {{ order.orderId }}</h5>
         <p class="card-text">
           <strong>Order Date:</strong> {{ order.orderDate }}<br>
-          <strong>Status:</strong> <span class="badge bg-secondary">{{ order.orderStatus }}</span><br>
+          <strong>Status:</strong> 
+          <span class="badge bg-secondary">{{ order.orderStatus }}</span><br>
           <strong>Shipping Address:</strong> {{ order.shippingAddress }}<br>
           <strong>Billing Address:</strong> {{ order.billingAddress }}<br>
           <strong>Total Amount:</strong> ₹{{ order.totalAmount }}
         </p>
 
-        <!-- Dropdown for Updating Order Status -->
+        <!-- Order Status Dropdown -->
         <div class="mb-3">
           <label for="statusDropdown" class="form-label">Update Order Status:</label>
           <select 
@@ -34,17 +35,23 @@
             class="form-select" 
             [(ngModel)]="order.orderStatus"
           >
-            <option value="Pending">Pending</option>
-            <option value="Accepted">Accepted</option>
-            <option value="Dispatched">Dispatched</option>
-            <option value="Out For Delivery">Out For Delivery</option>
-            <option value="Delivered">Delivered</option>
+            <option *ngFor="let status of orderStatusOptions" [value]="status"
+              [disabled]="order.orderStatus === 'DISPATCHED' && status === 'CONFIRMED'">
+              {{ status }}
+            </option>
           </select>
         </div>
 
+        <!-- Button to Save Status Update -->
+        <button 
+          class="btn btn-warning" 
+          (click)="updateOrderStatus(order)">
+          Update Status
+        </button>
+
         <!-- View Items Button -->
         <button 
-          class="btn btn-success" 
+          class="btn btn-success ms-2" 
           data-bs-toggle="modal" 
           data-bs-target="#viewItemsModal" 
           (click)="viewOrderItems(order.orderId)"

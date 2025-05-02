@@ -1,6 +1,10 @@
 package com.examly.springapp.service;
 
 public enum OrderStatus {
-
-    CONFIRMED,PROCESSING,CANCELLED
+        PROCESSING,
+        CONFIRMED,
+        DISPATCHED,
+        DELIVERED,
+        CANCELLED;
 }
+    
