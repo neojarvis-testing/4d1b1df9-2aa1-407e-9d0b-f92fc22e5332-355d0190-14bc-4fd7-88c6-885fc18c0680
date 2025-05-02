@@ -78,5 +78,3 @@ export class UserviewproductComponent implements OnInit {
    
   }
      
-
- 
