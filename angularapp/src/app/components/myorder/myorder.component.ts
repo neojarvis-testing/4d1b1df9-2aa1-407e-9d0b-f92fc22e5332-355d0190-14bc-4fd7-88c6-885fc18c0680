@@ -17,9 +17,8 @@ export class MyorderComponent implements OnInit {
   errorMessage: string = '';
   itemsErrorMessage: string = '';
   trackingErrorMessage: string = '';
-  orderStatusOptions = ['PROCESSING', 'CONFIRMED', 'CANCELLED'];
-
-  constructor(private orderService: OrderService, private cdr:ChangeDetectorRef) {}
+  
+  constructor(private orderService: OrderService) {}
 
   ngOnInit(): void {
     const userId = this.getUserIdFromLocalStorage();
@@ -94,14 +93,14 @@ export class MyorderComponent implements OnInit {
     }
 
     // Update order status to 'Cancelled'
-    this.selectedOrder.orderStatus = 'Cancelled';
+    this.selectedOrder.orderStatus = 'CANCELLED';
 
     // Call service to update the order in backend
-    this.orderService.updateOrderStatus(this.selectedOrder.orderId, 'Cancelled').subscribe(
+    this.orderService.updateOrderStatus(this.selectedOrder.orderId, 'CANCELLED').subscribe(
       () => {
         // Reflect changes in the orders list
         this.orders = this.orders.map(order => 
-          order.orderId === this.selectedOrder!.orderId ? { ...order, orderStatus: 'Cancelled' } : order
+          order.orderId === this.selectedOrder!.orderId ? { ...order, orderStatus: 'CANCELLED' } : order
         );
 
         // Clear selected order

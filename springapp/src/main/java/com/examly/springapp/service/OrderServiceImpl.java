@@ -14,7 +14,6 @@ import com.examly.springapp.model.Order;
 import com.examly.springapp.model.OrderItem;
 import com.examly.springapp.model.Product;
 import com.examly.springapp.model.User;
-import com.examly.springapp.repository.OrderItemRepo;
 import com.examly.springapp.repository.OrderRepo;
 import com.examly.springapp.repository.ProductRepo;
 import com.examly.springapp.repository.UserRepo;
@@ -33,6 +32,18 @@ public class OrderServiceImpl implements OrderService {
     
     private final UserRepo userRepository;
 
+    
+    
+@Override
+ public OrderDTO updateOrderStatus(long orderId, OrderStatus status) {
+ Order order = orderRepository.findById(orderId)
+ .orElseThrow(() -> new OrderNotFoundException("Order not found with id " + orderId));
+ order.setOrderStatus(status);
+ Order updatedOrder = orderRepository.save(order);
+ return mapToDTO(updatedOrder);
+ }
+
+    
     
     /**
      * Adds a new order.
@@ -191,58 +202,60 @@ public class OrderServiceImpl implements OrderService {
         log.info("Total amount calculated: {}", total);
         return total;
     }
-
-    private OrderDTO mapToDTO(Order order) {
-        OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setOrderId(order.getOrderId());
-        orderDTO.setOrderDate(order.getOrderDate());
-        orderDTO.setOrderStatus(order.getOrderStatus());
-        orderDTO.setShippingAddress(order.getShippingAddress());
-        orderDTO.setBillingAddress(order.getBillingAddress());
-        orderDTO.setTotalAmount(order.getTotalAmount());
-        orderDTO.setUserId(order.getUser().getUserId());
-        orderDTO.setOrderItems(order.getOrderItems().stream()
-            .map(this::mapToOrderItemDTO)
-            .collect(Collectors.toList()));
-        return orderDTO;
-    }
-
-    private Order mapToEntity(OrderDTO orderDTO) {
-        Order order = new Order();
-        order.setOrderDate(orderDTO.getOrderDate());
-        order.setOrderStatus(orderDTO.getOrderStatus());
-        order.setShippingAddress(orderDTO.getShippingAddress());
-        order.setBillingAddress(orderDTO.getBillingAddress());
-
-        User user = userRepository.findById(orderDTO.getUserId()).orElseThrow(() -> new UserNotFoundException("User not found"));
-        order.setUser(user);
-
-        List<OrderItem> orderItems = orderDTO.getOrderItems().stream()
-            .map(this::mapToOrderItemEntity)
-            .map(orderItem -> { orderItem.setOrder(order); return orderItem; })
-            .collect(Collectors.toList());
-
-        order.setOrderItems(orderItems);
-        return order;
-    }
-
-    private OrderItemDTO mapToOrderItemDTO(OrderItem orderItem) {
-        OrderItemDTO orderItemDTO = new OrderItemDTO();
-        orderItemDTO.setOrderItemId(orderItem.getOrderItemId());
-        orderItemDTO.setProductId(orderItem.getProduct().getProductId());
-        orderItemDTO.setProductName(orderItem.getProduct().getProductName());
-        orderItemDTO.setQuantity(orderItem.getQuantity());
-        orderItemDTO.setPrice(orderItem.getProduct().getPrice());
-        return orderItemDTO;
-    }
-
-    private OrderItem mapToOrderItemEntity(OrderItemDTO orderItemDTO) {
-        OrderItem orderItem = new OrderItem();
-        orderItem.setQuantity(orderItemDTO.getQuantity());
-        orderItem.setPrice(orderItemDTO.getPrice());
-
-        Product product = productRepository.findById(orderItemDTO.getProductId()).orElseThrow(() -> new ProductNotFoundException("Product not found"));
-        orderItem.setProduct(product);
-        return orderItem;
-    }
+    
+private OrderDTO mapToDTO(Order order) {
+     OrderDTO orderDTO = new OrderDTO();
+     orderDTO.setOrderId(order.getOrderId());
+     orderDTO.setOrderDate(order.getOrderDate());
+     orderDTO.setOrderStatus(order.getOrderStatus());
+     orderDTO.setShippingAddress(order.getShippingAddress());
+     orderDTO.setBillingAddress(order.getBillingAddress());
+     orderDTO.setTotalAmount(order.getTotalAmount());
+     orderDTO.setUserId(order.getUser().getUserId());
+     orderDTO.setOrderItems(order.getOrderItems().stream()
+     .map(this::mapToOrderItemDTO)
+     .collect(Collectors.toList()));
+     return orderDTO;
+     }
+    
+     private Order mapToEntity(OrderDTO orderDTO) {
+     Order order = new Order();
+     order.setOrderDate(orderDTO.getOrderDate());
+     order.setOrderStatus(orderDTO.getOrderStatus());
+     order.setShippingAddress(orderDTO.getShippingAddress());
+     order.setBillingAddress(orderDTO.getBillingAddress());
+     User user = userRepository.findById(orderDTO.getUserId())
+     .orElseThrow(() -> new UserNotFoundException("User not found"));
+     order.setUser(user);
+     List<OrderItem> orderItems = orderDTO.getOrderItems().stream()
+     .map(this::mapToOrderItemEntity)
+     .map(orderItem -> {
+     orderItem.setOrder(order);
+     return orderItem;
+     })
+     .collect(Collectors.toList());
+     order.setOrderItems(orderItems);
+     return order;
+     }
+    
+     private OrderItemDTO mapToOrderItemDTO(OrderItem orderItem) {
+     OrderItemDTO orderItemDTO = new OrderItemDTO();
+     orderItemDTO.setOrderItemId(orderItem.getOrderItemId());
+     orderItemDTO.setProductId(orderItem.getProduct().getProductId());
+     orderItemDTO.setProductName(orderItem.getProduct().getProductName());
+     orderItemDTO.setQuantity(orderItem.getQuantity());
+     orderItemDTO.setPrice(orderItem.getProduct().getPrice());
+     return orderItemDTO;
+ }
+    
+     private OrderItem mapToOrderItemEntity(OrderItemDTO orderItemDTO) {
+     OrderItem orderItem = new OrderItem();
+     orderItem.setQuantity(orderItemDTO.getQuantity());
+     orderItem.setPrice(orderItemDTO.getPrice());
+     Product product = productRepository.findById(orderItemDTO.getProductId())
+     .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+     orderItem.setProduct(product);
+     return orderItem;
+     }
+    
 }
