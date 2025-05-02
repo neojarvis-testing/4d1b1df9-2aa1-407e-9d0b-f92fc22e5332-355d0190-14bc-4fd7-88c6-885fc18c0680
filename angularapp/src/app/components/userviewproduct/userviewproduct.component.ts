@@ -15,7 +15,7 @@ export class UserviewproductComponent implements OnInit {
   products:Product[]=[]
   ApiUrl:string=Api.apiUrl
   quantity:number
-  constructor(private router:Router,private productService:ProductService, private cartService:CartService) { }
+  constructor(private readonly router:Router,private readonly productService:ProductService, private cartService:CartService) { }
 
   ngOnInit(): void {
     this.getAllProducts();

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Api } from 'src/app/api-urls';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/services/product.service';
@@ -16,7 +16,7 @@ export class AdminviewproductComponent implements OnInit {
   filteredProduct:Product[]=[]
   ApiUrl:string=Api.apiUrl
 
-  constructor(private productService:ProductService,private router:Router) { }
+  constructor(private readonly productService:ProductService,private readonly router:Router) { }
 
   ngOnInit(): void {
     this.getAllProducts();

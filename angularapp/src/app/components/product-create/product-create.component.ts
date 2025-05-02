@@ -17,10 +17,10 @@ export class ProductCreateComponent implements OnInit {
   productId!: number; // Ensure productId is stored properly
 
   constructor(
-    private formBuilder: FormBuilder,
-    private productService: ProductService,
-    private router: Router,
-    private route: ActivatedRoute
+    private readonly formBuilder: FormBuilder,
+    private readonly productService: ProductService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute
   ) { 
     this.addProductForm = this.formBuilder.group({
       productName: ['', [Validators.required]],

@@ -19,7 +19,7 @@ export class MyorderComponent implements OnInit {
   trackingErrorMessage: string = '';
   orderStatusOptions = ['Pending', 'Accepted', 'Dispatched', 'Out For Delivery', 'Delivered'];
 
-  constructor(private orderService: OrderService) {}
+  constructor(private readonly orderService: OrderService) {}
 
   ngOnInit(): void {
     const userId = this.getUserIdFromLocalStorage();

@@ -95,7 +95,7 @@ export class OrderplacedComponent implements OnInit {
   sortOrder: 'asc' | 'desc' = 'asc'; // Sorting order
   orderStatusOptions = ['CONFIRMED', 'DISPATCHED', 'DELIVERED']; // Valid statuses
 
-  constructor(private orderService: OrderService) {}
+  constructor(private readonly orderService: OrderService) {}
 
   ngOnInit(): void {
     this.getAllOrders();

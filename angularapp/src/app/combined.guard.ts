@@ -7,7 +7,7 @@ import { UserGuard } from './user.guard';
   providedIn: 'root'
 })
 export class CombinedGuard implements CanActivate {
-  constructor(private adminGuard: AdminGuard, private userGuard: UserGuard, private router: Router) {}
+  constructor(private readonly adminGuard: AdminGuard, private readonly userGuard: UserGuard, private readonly router: Router) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):boolean{ 
     if (this.adminGuard.canActivate(route, state) || this.userGuard.canActivate(route, state)) {
         return true;

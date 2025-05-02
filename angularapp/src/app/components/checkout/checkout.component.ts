@@ -18,7 +18,7 @@ cartItems: OrderItem[] = [];
   shippingAddress: string = '';
   billingAddress: string = '';
 
-  constructor(private cartService: CartService, private orderService: OrderService) { }
+  constructor(private readonly cartService: CartService, private readonly orderService: OrderService) { }
 
   ngOnInit(): void {
     this.cartItems = this.cartService.getCartItems();

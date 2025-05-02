@@ -19,9 +19,9 @@ export class MyreviewComponent implements OnInit {
     selectedProduct: Product | null = null;
   
     constructor(
-      private reviewService: ReviewService,
-      private productService: ProductService,
-      private router: Router
+      private readonly reviewService: ReviewService,
+      private readonly productService: ProductService,
+      private readonly router: Router
     ) { }
   
     ngOnInit(): void {
