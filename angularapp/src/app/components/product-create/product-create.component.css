@@ -1,0 +1,73 @@
+/* Add background image to form */
+form {
+    max-width: 600px;
+    margin: 30px auto;
+    background-image: url('https://via.placeholder.com/600x400.png?text=Your+Creative+Background');
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Enhance headings with emojis */
+  h1 {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.5rem;
+    color: #343a40;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  h1::before {
+    content: '✨';
+    font-size: 1.5rem;
+    margin-right: 8px;
+  }
+  
+  h1::after {
+    content: '🛒';
+    font-size: 1.5rem;
+    margin-left: 8px;
+  }
+  
+  /* Customize submit button with emoji */
+  button[type="submit"] {
+    background-image: linear-gradient(to right, #66ccff, #3399ff);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  /* Add emoji to error messages */
+  .text-danger::before {
+    content: '⚠️ ';
+    font-size: 1.2rem;
+    margin-right: 5px;
+  }
+  
+  /* Dropdown styling with emoji */
+  select.form-control {
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  select.form-control::before {
+    content: '📂';
+    font-size: 1rem;
+  }
+  
+  /* File input with playful emoji */
+  input[type="file"] {
+    padding: 5px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+  }
+  
+  input[type="file"]::after {
+    content: ' 📷';
+  }

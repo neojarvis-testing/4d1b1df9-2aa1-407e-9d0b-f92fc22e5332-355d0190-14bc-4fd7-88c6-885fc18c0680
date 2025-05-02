@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Order } from 'src/app/models/order.model';
 import { OrderService } from 'src/app/services/order.service';
 
@@ -17,9 +17,9 @@ export class MyorderComponent implements OnInit {
   errorMessage: string = '';
   itemsErrorMessage: string = '';
   trackingErrorMessage: string = '';
-  orderStatusOptions = ['Pending', 'Accepted', 'Dispatched', 'Out For Delivery', 'Delivered'];
+  orderStatusOptions = ['PROCESSING', 'CONFIRMED', 'CANCELLED'];
 
-  constructor(private orderService: OrderService) {}
+  constructor(private orderService: OrderService, private cdr:ChangeDetectorRef) {}
 
   ngOnInit(): void {
     const userId = this.getUserIdFromLocalStorage();
@@ -106,6 +106,7 @@ export class MyorderComponent implements OnInit {
 
         // Clear selected order
         this.selectedOrder = null;
+        this.cdr.detectChanges();
       },
       error => {
         this.errorMessage = 'Failed to cancel the order. Please try again.';

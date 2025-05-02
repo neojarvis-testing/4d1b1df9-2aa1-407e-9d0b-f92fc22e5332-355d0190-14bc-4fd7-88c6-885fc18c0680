@@ -133,7 +133,8 @@ public class OrderServiceImpl implements OrderService {
         });
         log.info("Order found. Proceeding with update...");
         order.setOrderDate(orderDTO.getOrderDate());
-        order.setOrderStatus(OrderStatus.CONFIRMED);
+        //order.setOrderStatus(OrderStatus.CONFIRMED);
+        order.setOrderStatus(orderDTO.getOrderStatus());
         order.setShippingAddress(orderDTO.getShippingAddress());
         order.setBillingAddress(orderDTO.getBillingAddress());
         order.setTotalAmount(calculateTotalAmount(orderDTO.getOrderItems()));
@@ -195,7 +196,7 @@ public class OrderServiceImpl implements OrderService {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setOrderId(order.getOrderId());
         orderDTO.setOrderDate(order.getOrderDate());
-        orderDTO.setOrderStatus(OrderStatus.CONFIRMED);
+        orderDTO.setOrderStatus(order.getOrderStatus());
         orderDTO.setShippingAddress(order.getShippingAddress());
         orderDTO.setBillingAddress(order.getBillingAddress());
         orderDTO.setTotalAmount(order.getTotalAmount());
