@@ -1,4 +1,144 @@
-<form [formGroup]="addProductForm" (ngSubmit)="createProduct()">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Form</title>
+
+  <!-- Bootstrap CDN -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Open+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* Overall Page Styling */
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #ffebf2;
+      margin: 0;
+      padding: 20px;
+    }
+
+    /* Form Container */
+    form {
+      max-width: 600px;
+      margin: 30px auto;
+      background-color: #ffffff;
+      border: 1px solid #ffd2e3;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 6px 10px rgba(255, 105, 180, 0.3);
+    }
+
+    /* Heading Styling */
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.8rem;
+      color: #e60073;
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    h1::before {
+      content: '💖 ';
+      font-size: 1.5rem;
+    }
+
+    h1::after {
+      content: ' 🛍️';
+      font-size: 1.5rem;
+    }
+
+    /* Label Styling */
+    label {
+      font-weight: 600;
+      color: #cc0052;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    /* Input Fields Styling */
+    .form-control {
+      border-radius: 5px;
+      border: 1px solid #ffd2e3;
+      box-shadow: none;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .form-control:focus {
+      box-shadow: 0 0 6px rgba(255, 105, 180, 0.5);
+      border-color: #ff4081;
+    }
+
+    /* Submit Button Styling */
+    button[type="submit"] {
+      background-image: linear-gradient(to right, #ff4081, #ff80ab);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-family: 'Montserrat', sans-serif;
+      transition: all 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+      background-image: linear-gradient(to right, #ff80ab, #ff4081);
+      box-shadow: 0 4px 8px rgba(255, 105, 180, 0.3);
+    }
+
+    button[type="submit"]::after {
+      content: ' 🚀';
+    }
+
+    /* Error Messages */
+    .text-danger {
+      font-size: 0.9rem;
+      color: #cc0000;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .text-danger::before {
+      content: '⚠️ ';
+      font-size: 1rem;
+    }
+
+    /* Success Messages */
+    .text-success {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #00c853;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* Dropdown Styling */
+    select.form-control {
+      background-color: white;
+      border: 1px solid #ffd2e3;
+      border-radius: 5px;
+      padding: 10px;
+      box-shadow: none;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    /* File Input Styling */
+    input[type="file"] {
+      padding: 8px;
+      border: 1px solid #ffd2e3;
+      border-radius: 5px;
+      background-color: #ffe6ee;
+    }
+
+    /* Add margin for form groups */
+    .form-group {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <form [formGroup]="addProductForm" (ngSubmit)="createProduct()">
+    <h1>Product Form</h1>
     <div class="form-group">
       <label for="productName">Product Name:</label>
       <input id="productName" type="text" formControlName="productName" class="form-control">
@@ -6,7 +146,7 @@
         <small class="text-danger">Product name is required (3-20 characters).</small>
       </div>
     </div>
-  
+
     <div class="form-group">
       <label for="description">Description:</label>
       <textarea id="description" formControlName="description" class="form-control"></textarea>
@@ -14,7 +154,7 @@
         <small class="text-danger">Description is required (3-500 characters).</small>
       </div>
     </div>
-  
+
     <div class="form-group">
       <label for="price">Price:</label>
       <input id="price" type="number" formControlName="price" class="form-control">
@@ -22,7 +162,7 @@
         <small class="text-danger">Price must be at least 1.</small>
       </div>
     </div>
-  
+
     <div class="form-group">
       <label for="stockQuantity">Stock Quantity:</label>
       <input id="stockQuantity" type="number" formControlName="stockQuantity" class="form-control">
@@ -30,17 +170,9 @@
         <small class="text-danger">Stock quantity must be at least 0.</small>
       </div>
     </div>
-  
-    <!-- <div class="form-group">
-      <label for="category">Category:</label>
-      <input id="category" type="text" formControlName="category" class="form-control">
-      <div *ngIf="addProductForm.get('category')?.invalid && addProductForm.get('category')?.touched">
-        <small class="text-danger">Category is required.</small>
-      </div>
-    </div> -->
 
     <div class="form-group">
-      <label for="category">Category:</label><br/>
+      <label for="category">Category:</label><br>
       <select id="category" formControlName="category" class="form-control">
         <option value="" disabled selected>Select a category</option>
         <option value="Home Appliances">Home Appliances</option>
@@ -55,8 +187,7 @@
         <span class="text-danger">Category selection is required.</span>
       </div>
     </div>
-    
-  
+
     <div class="form-group">
       <label for="brand">Brand:</label>
       <input id="brand" type="text" formControlName="brand" class="form-control">
@@ -64,17 +195,19 @@
         <small class="text-danger">Brand is required (3-20 characters).</small>
       </div>
     </div>
-  
+
     <div class="form-group">
       <label for="coverImage">Cover Image:</label>
       <input id="coverImage" type="file" (change)="onFileChange($event)" class="form-control">
     </div>
-  
+
     <button type="submit" class="btn btn-primary" [disabled]="addProductForm.invalid">
       {{ isEditing ? 'Update Product' : 'Add Product' }}
     </button>
-  
+
     <div *ngIf="successMessage">
       <p class="text-success">{{ successMessage }}</p>
     </div>
   </form>
+</body>
+</html>

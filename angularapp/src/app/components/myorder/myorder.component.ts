@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Order } from 'src/app/models/order.model';
 import { OrderService } from 'src/app/services/order.service';
 
@@ -105,6 +105,7 @@ export class MyorderComponent implements OnInit {
 
         // Clear selected order
         this.selectedOrder = null;
+        this.cdr.detectChanges();
       },
       error => {
         this.errorMessage = 'Failed to cancel the order. Please try again.';

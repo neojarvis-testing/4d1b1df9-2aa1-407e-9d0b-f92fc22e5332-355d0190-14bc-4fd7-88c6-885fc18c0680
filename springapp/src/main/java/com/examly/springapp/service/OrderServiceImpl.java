@@ -144,7 +144,8 @@ public class OrderServiceImpl implements OrderService {
         });
         log.info("Order found. Proceeding with update...");
         order.setOrderDate(orderDTO.getOrderDate());
-        order.setOrderStatus(OrderStatus.CONFIRMED);
+        //order.setOrderStatus(OrderStatus.CONFIRMED);
+        order.setOrderStatus(orderDTO.getOrderStatus());
         order.setShippingAddress(orderDTO.getShippingAddress());
         order.setBillingAddress(orderDTO.getBillingAddress());
         order.setTotalAmount(calculateTotalAmount(orderDTO.getOrderItems()));
@@ -201,7 +202,6 @@ public class OrderServiceImpl implements OrderService {
         log.info("Total amount calculated: {}", total);
         return total;
     }
-
     
 private OrderDTO mapToDTO(Order order) {
      OrderDTO orderDTO = new OrderDTO();
