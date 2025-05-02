@@ -17,7 +17,7 @@ export class MyorderComponent implements OnInit {
   errorMessage: string = '';
   itemsErrorMessage: string = '';
   trackingErrorMessage: string = '';
-  orderStatusOptions = ['Pending', 'Accepted', 'Dispatched', 'Out For Delivery', 'Delivered'];
+  orderStatusOptions = ['Proccesing', 'Confirmed', 'Dispatched', 'Cancelled', 'Delivered'];
 
   constructor(private orderService: OrderService) {}
 
@@ -94,14 +94,14 @@ export class MyorderComponent implements OnInit {
     }
 
     // Update order status to 'Cancelled'
-    this.selectedOrder.orderStatus = 'Cancelled';
+    this.selectedOrder.orderStatus = 'CANCELLED';
 
     // Call service to update the order in backend
-    this.orderService.updateOrderStatus(this.selectedOrder.orderId, 'Cancelled').subscribe(
+    this.orderService.updateOrderStatus(this.selectedOrder.orderId, 'CANCELLED').subscribe(
       () => {
         // Reflect changes in the orders list
         this.orders = this.orders.map(order => 
-          order.orderId === this.selectedOrder!.orderId ? { ...order, orderStatus: 'Cancelled' } : order
+          order.orderId === this.selectedOrder!.orderId ? { ...order, orderStatus: 'CANCELLED' } : order
         );
 
         // Clear selected order
