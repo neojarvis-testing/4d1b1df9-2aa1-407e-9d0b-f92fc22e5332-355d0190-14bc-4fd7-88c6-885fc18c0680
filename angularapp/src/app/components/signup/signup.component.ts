@@ -13,7 +13,7 @@ export class SignupComponent implements OnInit {
   form:FormGroup
   successMessage:string|null=null
 
-  constructor(private formbuilder:FormBuilder, private router:Router, private authService:AuthService) {
+  constructor(private readonly formbuilder:FormBuilder, private router:Router, private authService:AuthService) {
     this.form = this.formbuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@_.])[A-Za-z\d@_.]{8,}$/)]],
