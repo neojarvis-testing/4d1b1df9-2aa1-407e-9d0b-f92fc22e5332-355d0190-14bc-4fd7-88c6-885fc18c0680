@@ -13,42 +13,42 @@ import { ProductService } from 'src/app/services/product.service';
 export class UserviewproductComponent implements OnInit {
 
  
-    products: Product[] = [];
-    ApiUrl: string = Api.apiUrl;
+   products: Product[] = [];
+   ApiUrl: string = Api.apiUrl;
   
-    constructor(private router: Router, private productService: ProductService, private cartService: CartService) { }
+   constructor(private router: Router, private productService: ProductService, private cartService: CartService) { }
   
-    ngOnInit(): void {
-      this.getAllProducts();
-    }
+   ngOnInit(): void {
+   this.getAllProducts();
+   }
   
-   
+  
 getAllProducts() {
-  this.productService.getAllProducts().subscribe((data) => {
-    this.products = data;
-    // Initialize quantity for each product
-    this.products.forEach(product => product.quantity);
-  });
+this.productService.getAllProducts().subscribe((data) => {
+ this.products = data;
+ // Initialize quantity for each product
+ this.products.forEach(product => product.quantity);
+ });
 }
 
   
-    navigateToReview(productId: number) {
-      this.router.navigate(['/review', productId]);
-    }
+   navigateToReview(productId: number) {
+   this.router.navigate(['/review', productId]);
+   }
   
-    navigateToMyReview() {
-      this.router.navigate(['/viewReview']);
-    }
+   navigateToMyReview() {
+   this.router.navigate(['/viewReview']);
+   }
   
-    getImageUrl(imageName: string): string {
-      let a = this.ApiUrl + "/" + imageName;
-      console.log(a);
-      a = 'https://8080-fdefbfaaafbdebbfaadbececcfeddbcfdcfcc.premiumproject.examly.io/1746002370897_Image.jpg';
-      console.log(a);
-      return `${this.ApiUrl}/${imageName}`;
-    }
+   getImageUrl(imageName: string): string {
+   let a = this.ApiUrl + "/" + imageName;
+   console.log(a);
+   a = 'https://8080-fdefbfaaafbdebbfaadbececcfeddbcfdcfcc.premiumproject.examly.io/1746002370897_Image.jpg';
+   console.log(a);
+   return `${this.ApiUrl}/${imageName}`;
+   }
   
-    addToCart(product: Product): void {
+   addToCart(product: Product): void {
     if (product.quantity && product.quantity > 0) {
       if (product.quantity <= product.stockQuantity) {
         this.cartService.addToCart(product, product.quantity);
