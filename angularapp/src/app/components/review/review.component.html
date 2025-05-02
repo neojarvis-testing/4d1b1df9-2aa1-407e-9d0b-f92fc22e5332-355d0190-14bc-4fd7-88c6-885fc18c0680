@@ -2,7 +2,7 @@
   <label for="reviewText">Review Text:</label><br/>
   <textarea id="reviewText" formControlName="reviewText" placeholder="Enter your review"></textarea>
   <div *ngIf="addReviewForm.controls['reviewText'].invalid && addReviewForm.controls['reviewText'].touched">
-    <span class="error-message">Please enter a valid review (3-300 characters).</span>
+    <span class="error-message">Please enter a valid review (3-300 characters, should not have any special characters).</span>
   </div>
   <br/>
 

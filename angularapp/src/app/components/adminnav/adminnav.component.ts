@@ -12,7 +12,7 @@ export class AdminnavComponent implements OnInit {
   userRole: string;
   showDialog = false;
 
-  constructor(public authService:AuthService,private router:Router) { }
+  constructor(public authService:AuthService,private readonly router:Router) { }
   
   ngOnInit(): void {
     this.userRole = localStorage.getItem('userRole'); // Assuming this method returns 'USER' or 'ADMIN'

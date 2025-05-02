@@ -1,32 +1,40 @@
-<div class="container my-4">
+<div class="container">
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <input type="text" [(ngModel)]="searchText" (input)="search()" class="form-control w-50" placeholder="Search products...">
-      <h2 class="text-center flex-grow-1">Products</h2>
-      <!-- <select class="form-select w-25 ms-2" [(ngModel)]="selectedCategory" (change)="filterByCategory()">
-        <option value="">All Categories</option>
-        <option *ngFor="let cat of categories">{{ cat }}</option>
-      </select> -->
-    </div>
-    
-    <div class="row">
-      <div *ngFor="let product of filteredProduct" class="col-md-3 mb-4">
-        <div class="card h-100 shadow-sm">
-          <img [src]='getImageUrl(product.coverImage)' class="card-img-top" [alt]="product.productName" style="height: 180px; object-fit: cover;">
-          <div class="card-body">
-              <h5 class="card-title">{{ product.productName }}</h5>
-              <p class="card-text">{{ product.description }}</p>
-              <p class="card-text"><strong>Price:</strong> {{ product.price | currency: 'INR' }}</p>
-              <p class="card-text"><strong>Stock:</strong> {{ product.stockQuantity }}</p>
-              <p class="card-text"><strong>Category:</strong> {{ product.category }}</p>
-              <p class="card-text"><strong>Brand:</strong> {{ product.brand }}</p>
-          </div>
-          <div class="card-footer d-flex justify-content-between">
-            <button class="btn btn-success btn-sm" (click)="updateProduct(product.productId)">Edit</button>
-            <button class="btn btn-danger btn-sm" (click)="deleteProduct(product.productId)">Delete</button>
-          </div>
+  <div class="mb-3">
+    <input type="text" [(ngModel)]="searchText" (keyup)="search()" placeholder="Search products..." class="form-control">
+  </div>
+
+  <div class="mb-3">
+    <label for="category" class="form-label">Filter by Category:</label>
+    <select [(ngModel)]="selectedCategory" (change)="filterByCategory()" id="category" class="form-select">
+      <option value="">All Categories</option>
+      <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+    </select>
+  </div>
+
+  <div class="row" *ngIf="filteredProduct.length > 0">
+    <div *ngFor="let product of filteredProduct" class="col-md-3 mb-4">
+      <div class="card h-100 shadow-sm">
+        <img
+          [src]="getImageUrl(product.coverImage)"
+          class="card-img-top"
+          [alt]="product.productName"
+          style="height: 180px; object-fit: cover;"
+          onerror="this.src='assets/default-image.jpg'"
+        >
+        <div class="card-body">
+          <h5 class="card-title">{{ product.productName }}</h5>
+          <p class="card-text">{{ product.description }}</p>
+          <p class="card-text"><strong>Price:</strong> {{ product.price | currency: 'INR' }}</p>
+          <p class="card-text"><strong>Stock:</strong> {{ product.stockQuantity }}</p>
+          <p class="card-text"><strong>Category:</strong> {{ product.category }}</p>
+          <p class="card-text"><strong>Brand:</strong> {{ product.brand }}</p>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+          <button class="btn btn-success btn-sm" (click)="updateProduct(product.productId)">Edit</button>
+          <button class="btn btn-danger btn-sm" (click)="deleteProduct(product.productId)">Delete</button>
         </div>
       </div>
     </div>
-    
   </div>
+</div>

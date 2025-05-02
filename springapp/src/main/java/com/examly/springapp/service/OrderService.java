@@ -12,4 +12,6 @@ public interface OrderService {
     OrderDTO updateOrder(long orderId, OrderDTO orderDTO);
     List<OrderItemDTO> getOrderItemByOrderId(long orderId);
     boolean deleteOrderById(long orderId);
+    OrderDTO updateOrderStatus(long orderId, OrderStatus orderStatus);
+    
 }

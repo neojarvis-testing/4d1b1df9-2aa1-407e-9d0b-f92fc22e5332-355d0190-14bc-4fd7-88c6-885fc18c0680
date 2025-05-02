@@ -1,5 +1,3 @@
-import { Product } from "./product.model";
-
 // Represents an individual item in an order, linked to a specific product
 export interface OrderItem{
 
