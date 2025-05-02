@@ -30,16 +30,24 @@
       <h4>Total: {{ getTotalPrice() | currency: 'INR' }}</h4>
       <button class="btn btn-warning" (click)="clearCart()">Clear Cart</button>
     </div>
-    <div class="form-group mt-3">
-      <label for="shippingAddress">Shipping Address</label>
-      <input type="text" id="shippingAddress" class="form-control" [(ngModel)]="shippingAddress">
-    </div>
-    <div class="form-group mt-3">
-      <label for="billingAddress">Billing Address</label>
-      <input type="text" id="billingAddress" class="form-control" [(ngModel)]="billingAddress">
-    </div>
-    <div class="text-right mt-3">
-      <button class="btn btn-success" (click)="placeOrder()">Place Order</button>
-    </div>
+    <form [formGroup]="checkoutForm" (ngSubmit)="placeOrder()">
+      <div class="form-group mt-3">
+        <label for="shippingAddress">Shipping Address</label>
+        <input type="text" id="shippingAddress" class="form-control" formControlName="shippingAddress" maxlength="100" pattern="^[a-zA-Z0-9,-\s]+$" required>
+        <div *ngIf="checkoutForm.get('shippingAddress').invalid && checkoutForm.get('shippingAddress').touched" class="text-danger">
+          Shipping address is required and can only contain letters, numbers, hyphens, and spaces.
+        </div>
+      </div>
+      <div class="form-group mt-3">
+        <label for="billingAddress">Billing Address</label>
+        <input type="text" id="billingAddress" class="form-control" formControlName="billingAddress" maxlength="100" pattern="^[a-zA-Z0-9,-\s]+$" required>
+        <div *ngIf="checkoutForm.get('billingAddress').invalid && checkoutForm.get('billingAddress').touched" class="text-danger">
+          Billing address is required and can only contain letters, numbers, hyphens, and spaces.
+        </div>
+      </div>
+      <div class="text-right mt-3">
+        <button class="btn btn-success" type="submit" [disabled]="checkoutForm.invalid">Place Order</button>
+      </div>
+    </form>
   </div>
 </div>

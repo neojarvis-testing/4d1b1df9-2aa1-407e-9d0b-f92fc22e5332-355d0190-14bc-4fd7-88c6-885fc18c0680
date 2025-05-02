@@ -20,6 +20,7 @@
     <div class="date">Date: {{ review.date }}</div>
     <p>{{ review.reviewText }}</p>
     <button data-bs-toggle="modal" data-bs-target="#viewProductModal" (click)="viewProduct(review.productId)">View Product</button>
+    <button class="btn btn-danger" (click)="deleteReview(review.reviewId)">Delete Review</button>
   </div>
 </div>
 

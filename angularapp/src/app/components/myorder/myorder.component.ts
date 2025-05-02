@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Order } from 'src/app/models/order.model';
 import { OrderService } from 'src/app/services/order.service';
 
@@ -116,18 +116,19 @@ export class MyorderComponent implements OnInit {
     }
 
     // Update order status to 'Cancelled'
-    this.selectedOrder.orderStatus = 'Cancelled';
+    this.selectedOrder.orderStatus = 'CANCELLED';
 
     // Call service to update the order in backend
-    this.orderService.updateOrderStatus(this.selectedOrder.orderId, 'Cancelled').subscribe(
+    this.orderService.updateOrderStatus(this.selectedOrder.orderId, 'CANCELLED').subscribe(
       () => {
         // Reflect changes in the orders list
         this.orders = this.orders.map(order => 
-          order.orderId === this.selectedOrder!.orderId ? { ...order, orderStatus: 'Cancelled' } : order
+          order.orderId === this.selectedOrder!.orderId ? { ...order, orderStatus: 'CANCELLED' } : order
         );
 
         // Clear selected order
         this.selectedOrder = null;
+        this.cdr.detectChanges();
       },
       error => {
         this.errorMessage = 'Failed to cancel the order. Please try again.';
