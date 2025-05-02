@@ -46,6 +46,7 @@ cartItems: OrderItem[] = [];
         console.log('Order placed successfully:', response);
         alert('Order placed successfully!');
         this.cartService.clearCart();
+        this.cartItems = []; // Clear the cart items
       },
       (error) => {
         console.error('Failed to place order:', error);
