@@ -167,7 +167,7 @@
       <label for="stockQuantity">Stock Quantity:</label>
       <input id="stockQuantity" type="number" formControlName="stockQuantity" class="form-control">
       <div *ngIf="addProductForm.get('stockQuantity')?.invalid && addProductForm.get('stockQuantity')?.touched">
-        <small class="text-danger">Stock quantity must be at least 0.</small>
+        <small class="text-danger">Stock quantity must be at least 0 and no decimal place is allowed.</small>
       </div>
     </div>
 
