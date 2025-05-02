@@ -128,6 +128,7 @@ export class MyorderComponent implements OnInit {
 
         // Clear selected order
         this.selectedOrder = null;
+        this.cdr.detectChanges();
       },
       error => {
         this.errorMessage = 'Failed to cancel the order. Please try again.';
