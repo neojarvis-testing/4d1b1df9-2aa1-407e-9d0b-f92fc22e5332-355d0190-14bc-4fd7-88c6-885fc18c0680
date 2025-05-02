@@ -17,8 +17,7 @@ export class MyorderComponent implements OnInit {
   errorMessage: string = '';
   itemsErrorMessage: string = '';
   trackingErrorMessage: string = '';
-  orderStatusOptions = ['Proccesing', 'Confirmed', 'Dispatched', 'Cancelled', 'Delivered'];
-
+  
   constructor(private orderService: OrderService) {}
 
   ngOnInit(): void {

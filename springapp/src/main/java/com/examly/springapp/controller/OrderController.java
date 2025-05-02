@@ -38,14 +38,16 @@ public class OrderController {
      */
     
 
+
 @PatchMapping("/{orderId}/status")
 @Operation(summary = "Update order status by ID", description = "Updates the status of the order with the specified ID and returns the updated order object")
- public ResponseEntity<OrderDTO> updateOrderStatus(@PathVariable long orderId, @RequestBody Map<String, String> statusUpdate) {
- String status = statusUpdate.get("status");
- OrderStatus orderStatus = OrderStatus.valueOf(status);
- OrderDTO updatedOrder = orderService.updateOrderStatus(orderId, orderStatus);
- return ResponseEntity.status(200).body(updatedOrder);
- }
+public ResponseEntity<OrderDTO> updateOrderStatus(@PathVariable long orderId, @RequestBody Map<String, String> statusUpdate) {
+     String status = statusUpdate.get("status");
+     OrderStatus orderStatus = OrderStatus.fromString(status);
+     OrderDTO updatedOrder = orderService.updateOrderStatus(orderId, orderStatus);
+     return ResponseEntity.status(200).body(updatedOrder);
+}
+
 
 
 
