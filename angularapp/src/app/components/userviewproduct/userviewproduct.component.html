@@ -29,7 +29,7 @@
           <p class="card-text"><strong>Stock:</strong> {{ product.stockQuantity }}</p>
           <p class="card-text"><strong>Category:</strong> {{ product.category }}</p>
           <p class="card-text"><strong>Brand:</strong> {{ product.brand }}</p>
-          <input type="number" [(ngModel)]="quantity" min="1" class="form-control" placeholder="Quantity">
+          <input type="number" [(ngModel)]="product.quantity" min="1" class="form-control" placeholder="Quantity">
         </div>
         <div class="card-footer d-flex justify-content-between">
           <button class="btn btn-primary btn-sm" (click)="addToCart(product)">Add to Cart</button>
