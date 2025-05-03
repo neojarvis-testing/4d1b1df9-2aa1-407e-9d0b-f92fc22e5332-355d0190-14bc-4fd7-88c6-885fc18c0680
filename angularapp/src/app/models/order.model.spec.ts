@@ -1,6 +1,5 @@
 import { Order } from './order.model';
 import { User } from './user.model';
-import { OrderItem } from './order-item.model';
 
 describe('Order Model', () => {
 
@@ -9,7 +8,6 @@ describe('Order Model', () => {
     const user: User = {
       userId: 1,
       email: 'user@example.com',
-      password: 'password123',
       username: 'exampleUser',
       mobileNumber: '1234567890',
       userRole: 'USER'

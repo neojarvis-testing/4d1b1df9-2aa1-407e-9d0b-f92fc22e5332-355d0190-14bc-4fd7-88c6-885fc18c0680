@@ -1,5 +1,4 @@
 import { OrderItem } from "./order-item.model";
-import { User } from "./user.model";
 
 // Represents an Order entity containing details about user orders
 export interface Order{

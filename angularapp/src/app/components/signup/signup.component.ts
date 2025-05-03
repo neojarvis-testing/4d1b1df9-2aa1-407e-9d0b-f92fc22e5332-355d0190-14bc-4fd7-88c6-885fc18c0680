@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent {
 
   form:FormGroup
   successMessage:string|null=null
@@ -18,9 +18,9 @@ export class SignupComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@_.])[A-Za-z\d@_.]{8,}$/)]],
       confirmPassword:["",[Validators.required]],
-      mobileNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+      mobileNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       userRole:["USER"],
-      username: ['', [Validators.required, Validators.pattern(/^[A-Za-z0-9_]*$/)]]
+      username: ['', [Validators.required, Validators.pattern(/^\w*$/)]]
     },{validators:this.matchPassword});
    }
 
@@ -34,9 +34,7 @@ export class SignupComponent implements OnInit {
     confirmPassword.setErrors(null)
     }
   }
-  ngOnInit(): void {
 
-  }
   register(){
     if(this.form.valid){
       console.log(this.form.value)

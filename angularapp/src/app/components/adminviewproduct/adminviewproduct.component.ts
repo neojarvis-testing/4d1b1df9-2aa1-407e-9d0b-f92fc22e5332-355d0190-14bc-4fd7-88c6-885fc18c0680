@@ -25,14 +25,12 @@ export class AdminviewproductComponent implements OnInit {
  
   ngOnInit(): void {
     this.getAllProducts();
-    //this.categories = [...new Set(this.products.map(p => p.category))]; // Extract unique categories
   }
   getAllProducts(){
     this.productService.getAllProducts().subscribe((data)=>{
          this.products=data;
          console.log(this.products)
       this.filteredProduct=data;
-      //this.categories = [...new Set(data.map(p => p.category))];
     })
   }
   deleteProduct(productId:number){

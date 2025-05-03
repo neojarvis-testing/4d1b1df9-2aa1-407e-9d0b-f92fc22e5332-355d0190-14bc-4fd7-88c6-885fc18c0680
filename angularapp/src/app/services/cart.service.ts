@@ -10,7 +10,7 @@ export class CartService {
 
  
 private cartItems: OrderItem[] = [];
-  private cartSubject = new BehaviorSubject<OrderItem[]>(this.cartItems);
+  private readonly cartSubject = new BehaviorSubject<OrderItem[]>(this.cartItems);
 
   constructor() { }
 

@@ -55,9 +55,9 @@ public class UserServiceImpl implements UserDetailsService {
         User user = userRepo.findByEmail(email);
         if (user != null) {
             /* Build and return UserDetails object */
-            log.info("User found for email: {}", email);
-            UserDetails userDetails = UserPrinciple.build(user);
-            return userDetails;
+            log.info("User found for email: {}", email);           
+            return UserPrinciple.build(user);
+
         }
         log.error("User not found for email: {}", email);
         throw new UserNotFoundException("User not found for the email: " + email);

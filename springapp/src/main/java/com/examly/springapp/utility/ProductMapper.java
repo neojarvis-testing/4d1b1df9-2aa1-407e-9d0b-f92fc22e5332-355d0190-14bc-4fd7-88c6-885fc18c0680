@@ -9,6 +9,10 @@ import com.examly.springapp.dto.ProductDTO;
 import com.examly.springapp.model.Product;
 
 public class ProductMapper {
+
+    private ProductMapper(){
+        
+    }
     public static ProductDTO mapToProductDTO(Product product){
         ProductDTO productDTO = new ProductDTO();
         productDTO.setProductId(product.getProductId());

@@ -4,6 +4,10 @@ import com.examly.springapp.dto.ReviewDTO;
 import com.examly.springapp.model.Review;
 
 public class ReviewMapper {
+
+    private ReviewMapper() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
     public static ReviewDTO convertToReviewDTO(Review review) {
         ReviewDTO reviewDTO = new ReviewDTO();
         reviewDTO.setReviewId(review.getReviewId());

@@ -1,6 +1,3 @@
-import { Product } from "./product.model";
-
-import { User } from "./user.model";
  
 // Represents a Review entity with details about reviews
 export interface Review {

@@ -5,9 +5,7 @@
         <a routerLink="/home" *ngIf="authService.isLoggedUser()">Home</a> 
        
         <div class="dropdown" *ngIf="authService.isAdmin()">
-            <a class="btn btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                Product
-            </a>
+           
            
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
               <li><a class="dropdown-item" routerLink="/add-product">Add Product</a></li>
@@ -19,9 +17,7 @@
         <a routerLink="/viewReview" *ngIf="authService.isAdmin()">Review</a>
 
         <div class="dropdown" *ngIf="authService.isUser()">
-            <a class="btn btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                Product
-            </a>
+            
            
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
               <li><a class="dropdown-item" routerLink="/userProduct">View Products</a></li>

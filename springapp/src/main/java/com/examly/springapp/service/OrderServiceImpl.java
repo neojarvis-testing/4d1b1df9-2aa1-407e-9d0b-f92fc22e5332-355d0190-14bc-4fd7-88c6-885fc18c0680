@@ -32,7 +32,7 @@ public class OrderServiceImpl implements OrderService {
     
     private final UserRepo userRepository;
 
-    
+    public static final String PRODUCT_NOT_FOUND_MESSAGE = "Product not found";
     
 @Override
  public OrderDTO updateOrderStatus(long orderId, OrderStatus status) {
@@ -61,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
         // Check if order item quantity is less than product stock quantity
         for (OrderItemDTO itemDTO : orderDTO.getOrderItems()) {
             Product product = productRepository.findById(itemDTO.getProductId())
-                    .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+                    .orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND_MESSAGE));
             if (itemDTO.getQuantity() > product.getStockQuantity()) {
                 log.error("Insufficient stock for product: {}", product.getProductName());
                 throw new ProductNotFoundException("Insufficient stock for product: " + product.getProductName());
@@ -71,7 +71,7 @@ public class OrderServiceImpl implements OrderService {
         // Update product stock quantity
         for (OrderItemDTO itemDTO : orderDTO.getOrderItems()) {
             Product product = productRepository.findById(itemDTO.getProductId())
-                    .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+                    .orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND_MESSAGE));
             product.setStockQuantity(product.getStockQuantity() - itemDTO.getQuantity());
             productRepository.save(product);
         }
@@ -259,7 +259,7 @@ private OrderDTO mapToDTO(Order order) {
      orderItem.setQuantity(orderItemDTO.getQuantity());
      orderItem.setPrice(orderItemDTO.getPrice());
      Product product = productRepository.findById(orderItemDTO.getProductId())
-     .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+     .orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND_MESSAGE));
      orderItem.setProduct(product);
      return orderItem;
      }
