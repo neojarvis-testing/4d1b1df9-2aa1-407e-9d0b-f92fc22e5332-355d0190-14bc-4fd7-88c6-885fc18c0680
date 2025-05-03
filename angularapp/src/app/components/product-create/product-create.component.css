@@ -2,13 +2,17 @@
 form {
     max-width: 600px;
     margin: 30px auto;
-    background-image: url('https://via.placeholder.com/600x400.png?text=Your+Creative+Background');
-    background-size: cover;
-    background-position: center;
+    background-color: #E0E0E0;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
+
+body{
+    background-image: url('https://images.pexels.com/photos/2533266/pexels-photo-2533266.jpeg?cs=srgb&dl=pexels-suzyhazelwood-2533266.jpg&fm=jpg');
+    background-size:contain;
+    background-position: center;
+}
   
   /* Enhance headings with emojis */
   h1 {
@@ -20,20 +24,20 @@ form {
   }
   
   h1::before {
-    content: '✨';
+    content: '';
     font-size: 1.5rem;
     margin-right: 8px;
   }
   
   h1::after {
-    content: '🛒';
+    content: '';
     font-size: 1.5rem;
     margin-left: 8px;
   }
   
   /* Customize submit button with emoji */
   button[type="submit"] {
-    background-image: linear-gradient(to right, #66ccff, #3399ff);
+    background-image: linear-gradient(to right, #ff66fa, #d41bbb);
     color: white;
     border: none;
     border-radius: 5px;

@@ -5,6 +5,8 @@ import { Review } from 'src/app/models/review.model';
 import { ProductService } from 'src/app/services/product.service';
 import { ReviewService } from 'src/app/services/review.service';
  
+declare var bootstrap: any;
+ 
 @Component({
   selector: 'app-myreview',
   templateUrl: './myreview.component.html',
@@ -16,12 +18,13 @@ export class MyreviewComponent implements OnInit {
   sortDirection: string = 'asc';
   searchRating: string | null = null;
   selectedProduct: Product | null = null;
+  selectedReviewId: number | null = null;
  
   constructor(
     private readonly reviewService: ReviewService,
-    private  readonly productService: ProductService,
+    private readonly productService: ProductService,
     private readonly router: Router
-  ) { }
+  ) {}
  
   ngOnInit(): void {
     this.loadReviews();
@@ -31,13 +34,22 @@ export class MyreviewComponent implements OnInit {
     this.reviewService.getAllReviews().subscribe(
       (data: Review[]) => {
         this.reviews = data;
-        this.filteredReviews = [...this.reviews]; // Initialize filteredReviews
+        this.filteredReviews = [...this.reviews];
       },
       (error) => {
         console.error(error);
-        alert('Failed to load reviews.');
       }
     );
+  }
+ 
+  onSortChange(direction: string): void {
+    this.sortDirection = direction;
+    this.sortReviews();
+  }
+ 
+  onRatingChange(rating: string | null): void {
+    this.searchRating = rating;
+    this.filterReviews();
   }
  
   sortReviews(): void {
@@ -54,28 +66,16 @@ export class MyreviewComponent implements OnInit {
     } else {
       this.filteredReviews = this.reviews.filter(review => review.rating.toString() === this.searchRating);
     }
-    this.sortReviews(); // Ensure sorting is applied after filtering
-  }
- 
-  onSortChange(direction: string): void {
-    this.sortDirection = direction;
     this.sortReviews();
-  }
- 
-  onRatingChange(rating: string | null): void {
-    this.searchRating = rating;
-    this.filterReviews();
   }
  
   viewProduct(productId: number): void {
     this.productService.getProductById(productId).subscribe(
       (data) => {
         this.selectedProduct = data;
-        console.log(this.selectedProduct);
       },
       (error) => {
         console.error(error);
-        alert('Failed to load product.');
       }
     );
   }
@@ -85,21 +85,42 @@ export class MyreviewComponent implements OnInit {
   }
  
   deleteReview(reviewId: number): void {
-    // Show confirmation alert
-    const isConfirmed = confirm('Are you sure you want to delete this review?');
-  
-    if (isConfirmed) {
-      this.reviewService.deleteReview(reviewId).subscribe(
+    this.selectedReviewId = reviewId;
+    this.showModal('confirmDeleteModal');
+  }
+ 
+  confirmDeleteReview(): void {
+    if (this.selectedReviewId) {
+      this.reviewService.deleteReview(this.selectedReviewId).subscribe(
         () => {
-          this.reviews = this.reviews.filter(review => review.reviewId !== reviewId);
-          this.filteredReviews = this.filteredReviews.filter(review => review.reviewId !== reviewId);
+          this.reviews = this.reviews.filter(review => review.reviewId !== this.selectedReviewId);
+          this.filteredReviews = this.filteredReviews.filter(review => review.reviewId !== this.selectedReviewId);
+         
+          this.hideModal('confirmDeleteModal');
         },
         (error) => {
           console.error(error);
-          alert('Failed to delete review.');
+          this.showModal('deleteErrorModal');
         }
       );
     }
   }
-
+ 
+  showModal(modalId: string): void {
+    const modalElement = document.getElementById(modalId);
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    } else {
+      console.error(`❌ Modal with ID ${modalId} not found.`);
+    }
+  }
+ 
+  hideModal(modalId: string): void {
+    const modalElement = document.getElementById(modalId);
+    if (modalElement) {
+      const modal = bootstrap.Modal.getInstance(modalElement);
+      modal?.hide();
+    }
+  }
 }

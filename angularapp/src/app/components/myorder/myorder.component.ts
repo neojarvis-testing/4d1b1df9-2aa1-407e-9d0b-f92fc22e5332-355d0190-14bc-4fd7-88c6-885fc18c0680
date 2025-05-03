@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Order } from 'src/app/models/order.model';
 import { OrderService } from 'src/app/services/order.service';
-
+import { Order } from 'src/app/models/order.model';
+ 
+declare var bootstrap: any;
+ 
 @Component({
   selector: 'app-myorder',
   templateUrl: './myorder.component.html',
@@ -9,18 +11,18 @@ import { OrderService } from 'src/app/services/order.service';
 })
 export class MyorderComponent implements OnInit {
   orders: Order[] = [];
-  selectedOrderItems: any[] = []; // Holds items for the selected order
-  selectedOrder: Order | null = null; // Holds the selected order for cancellation
+  selectedOrderItems: any[] = [];
+  selectedOrder: Order | null = null;
   isLoading: boolean = true;
-  isItemsLoading: boolean = false; // Loading state for order items
-  isTrackingLoading: boolean = false; // Loading state for order tracking
+  isItemsLoading: boolean = false;
+  isTrackingLoading: boolean = false;
   errorMessage: string = '';
   itemsErrorMessage: string = '';
   trackingErrorMessage: string = '';
   orderStatusOptions = ['Pending', 'Accepted', 'Dispatched', 'Out For Delivery', 'Delivered'];
-
+ 
   constructor(private orderService: OrderService) {}
-
+ 
   ngOnInit(): void {
     const userId = this.getUserIdFromLocalStorage();
     if (userId) {
@@ -30,8 +32,7 @@ export class MyorderComponent implements OnInit {
       this.isLoading = false;
     }
   }
-
-  // Fetch orders for the user
+ 
   getUserOrders(userId: number): void {
     this.orderService.getOrdersByUserId(userId).subscribe(
       (data: Order[]) => {
@@ -44,14 +45,12 @@ export class MyorderComponent implements OnInit {
       }
     );
   }
-
-  // Retrieve user ID from local storage
+ 
   getUserIdFromLocalStorage(): number | null {
     const userId = localStorage.getItem('userId');
     return userId ? parseInt(userId, 10) : null;
   }
-
-  // Fetch items for a specific order
+ 
   viewOrderItems(orderId: number): void {
     this.isItemsLoading = true;
     this.itemsErrorMessage = '';
@@ -66,8 +65,7 @@ export class MyorderComponent implements OnInit {
       }
     );
   }
-
-  // Determine the badge class based on order status
+ 
   getStatusBadgeClass(status: string): string {
     switch (status.toLowerCase()) {
       case 'pending': return 'bg-warning text-dark';
@@ -79,42 +77,48 @@ export class MyorderComponent implements OnInit {
       default: return 'bg-secondary';
     }
   }
-
-  // Open cancel order modal and store the selected order
+ 
   openCancelOrder(order: Order): void {
     if (order.orderStatus.toLowerCase() !== 'cancelled') {
       this.selectedOrder = order;
     }
   }
-
-  // Cancel the order and update its status
+ 
   cancelOrder(): void {
     if (!this.selectedOrder) {
       return;
     }
-    // Check if the order status is 'DELIVERED'
     if (this.selectedOrder.orderStatus.toLowerCase() === 'delivered') {
       alert('Delivered orders cannot be canceled.');
       return;
-     }
- 
-    // Update order status to 'Cancelled'
+    }
+   
     this.selectedOrder.orderStatus = 'Cancelled';
-
-    // Call service to update the order in backend
     this.orderService.updateOrderStatus(this.selectedOrder.orderId, 'Cancelled').subscribe(
       () => {
         // Reflect changes in the orders list
-        this.orders = this.orders.map(order => 
+        this.orders = this.orders.map(order =>
           order.orderId === this.selectedOrder!.orderId ? { ...order, orderStatus: 'Cancelled' } : order
         );
-
-        // Clear selected order
         this.selectedOrder = null;
+       
+        this.hideModal('cancelOrderModal'); // ✅ Close the modal after cancellation
       },
       error => {
         this.errorMessage = 'Failed to cancel the order. Please try again.';
       }
     );
+  }
+ 
+  hideModal(modalId: string): void {
+    const modalElement = document.getElementById(modalId);
+    if (modalElement) {
+      const modal = bootstrap.Modal.getInstance(modalElement);
+      modal?.hide();
+    }
+  }  
+ 
+  isStepActive(currentStatus: string, orderStatus: string): boolean {
+    return this.orderStatusOptions.indexOf(currentStatus) <= this.orderStatusOptions.indexOf(orderStatus);
   }
 }
