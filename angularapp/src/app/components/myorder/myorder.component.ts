@@ -19,7 +19,7 @@ export class MyorderComponent implements OnInit {
   trackingErrorMessage: string = '';
   orderStatusOptions = ['Pending', 'Accepted', 'Dispatched', 'Out For Delivery', 'Delivered'];
 
-  constructor(private readonly orderService: OrderService) {}
+  constructor(private orderService: OrderService) {}
 
   ngOnInit(): void {
     const userId = this.getUserIdFromLocalStorage();
@@ -79,28 +79,6 @@ export class MyorderComponent implements OnInit {
       default: return 'bg-secondary';
     }
   }
-  updateOrderStatus(order: Order, newStatus: string): void {
-    if (!order) return; // Ensure order is valid
-  
-    // Preserve existing order fields while updating status
-    const updatedOrder = { 
-      ...order, 
-      orderStatus: newStatus 
-    };
-  
-    this.orderService.updateOrder(order.orderId, updatedOrder).subscribe(
-      (updatedOrderResponse) => {
-        // Update UI with the response from backend
-        order.orderStatus = updatedOrderResponse.orderStatus;
-        console.log(`Order status updated successfully: ${updatedOrderResponse.orderStatus}`);
-      },
-      (error) => {
-        this.errorMessage = 'Failed to update order status. Please try again.';
-        console.error('Error updating order status:', error);
-      }
-    );
-  }
-  
 
   // Open cancel order modal and store the selected order
   openCancelOrder(order: Order): void {
@@ -114,16 +92,21 @@ export class MyorderComponent implements OnInit {
     if (!this.selectedOrder) {
       return;
     }
-
+    // Check if the order status is 'DELIVERED'
+    if (this.selectedOrder.orderStatus.toLowerCase() === 'delivered') {
+      alert('Delivered orders cannot be canceled.');
+      return;
+     }
+ 
     // Update order status to 'Cancelled'
-    this.selectedOrder.orderStatus = 'CANCELLED';
+    this.selectedOrder.orderStatus = 'Cancelled';
 
     // Call service to update the order in backend
-    this.orderService.updateOrderStatus(this.selectedOrder.orderId, 'CANCELLED').subscribe(
+    this.orderService.updateOrderStatus(this.selectedOrder.orderId, 'Cancelled').subscribe(
       () => {
         // Reflect changes in the orders list
         this.orders = this.orders.map(order => 
-          order.orderId === this.selectedOrder.orderId ? { ...order, orderStatus: 'CANCELLED' } : order
+          order.orderId === this.selectedOrder!.orderId ? { ...order, orderStatus: 'Cancelled' } : order
         );
 
         // Clear selected order
