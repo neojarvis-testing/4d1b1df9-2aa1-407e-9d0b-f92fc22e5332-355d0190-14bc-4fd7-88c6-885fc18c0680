@@ -218,9 +218,7 @@ private OrderDTO mapToDTO(Order order) {
      orderDTO.setBillingAddress(order.getBillingAddress());
      orderDTO.setTotalAmount(order.getTotalAmount());
      orderDTO.setUserId(order.getUser().getUserId());
-     orderDTO.setOrderItems(order.getOrderItems().stream()
-     .map(this::mapToOrderItemDTO)
-     .collect(Collectors.toList()));
+
      return orderDTO;
      }
     
@@ -233,14 +231,6 @@ private OrderDTO mapToDTO(Order order) {
      User user = userRepository.findById(orderDTO.getUserId())
      .orElseThrow(() -> new UserNotFoundException("User not found"));
      order.setUser(user);
-     List<OrderItem> orderItems = orderDTO.getOrderItems().stream()
-     .map(this::mapToOrderItemEntity)
-     .map(orderItem -> {
-     orderItem.setOrder(order);
-     return orderItem;
-     })
-     .collect(Collectors.toList());
-     order.setOrderItems(orderItems);
      return order;
      }
     

@@ -41,12 +41,12 @@ public class ProductMapper {
         File file = new File(imagePath);
         try (FileInputStream fileInputStream = new FileInputStream(file)) {
             byte[] imageBytes = new byte[(int) file.length()];
-            fileInputStream.read(imageBytes);
-
-            // Encode to Base64
+           int bytes= fileInputStream.read(imageBytes);
+           if(bytes<=0)
+              throw new IOException();
             return Base64.getEncoder().encodeToString(imageBytes);
         } catch (IOException e) {
-            e.printStackTrace();
+            
             return null;
         }
     }

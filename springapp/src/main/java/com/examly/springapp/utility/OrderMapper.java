@@ -1,13 +1,11 @@
 package com.examly.springapp.utility;
  
-import java.util.stream.Collectors;
  
 import com.examly.springapp.dto.OrderDTO;
 import com.examly.springapp.dto.OrderItemDTO;
 import com.examly.springapp.model.Order;
 import com.examly.springapp.model.OrderItem;
  
-import java.util.List;
  
 public class OrderMapper {
 
@@ -26,9 +24,7 @@ private OrderMapper() {
         orderDTO.setBillingAddress(order.getBillingAddress());
         orderDTO.setTotalAmount(order.getTotalAmount());
         orderDTO.setUserId(order.getUser().getUserId());
-        orderDTO.setOrderItems(order.getOrderItems().stream()
-            .map(OrderMapper::convertToOrderItemDTO)
-            .collect(Collectors.toList()));
+        
         return orderDTO;
     }
  
