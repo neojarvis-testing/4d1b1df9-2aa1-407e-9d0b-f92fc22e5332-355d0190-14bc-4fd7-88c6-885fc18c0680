@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductServiceImpl implements ProductService{
     
     private final ProductRepo productRepo;
+    public static final String PRODUCT_NOT_FOUND_LOG = "Product with ID: {} not found";
     
     /*
      *  method to add new product takes DTO as input
@@ -47,7 +48,7 @@ public class ProductServiceImpl implements ProductService{
         log.info("Retrieving product with ID: {}", productId);
         Product product=productRepo.findById(productId).orElse(null);
         if(product==null){
-            log.error("Product with ID: {} not found", productId);
+            log.error(PRODUCT_NOT_FOUND_LOG, productId);
             throw new ProductNotFoundException("Product with the given id "+productId+" not found.");
         }
         log.info("Product retrieved successfully: {}", product);
@@ -64,7 +65,7 @@ public class ProductServiceImpl implements ProductService{
         log.info("Attempting to delete product with ID: {}", productId);
         Product existingProduct=productRepo.findById(productId).orElse(null);
         if(existingProduct==null){
-            log.error("Product with ID: {} not found", productId);
+            log.error(PRODUCT_NOT_FOUND_LOG, productId);
             throw new ProductNotFoundException("Product with the given id not found");
         } 
         productRepo.delete(existingProduct);
@@ -92,7 +93,7 @@ public class ProductServiceImpl implements ProductService{
         log.info("Updating product with ID: {}", productId);
         Product existingProduct=productRepo.findById(productId).orElse(null);
         if(existingProduct==null){
-            log.error("Product with ID: {} not found", productId);
+            log.error(PRODUCT_NOT_FOUND_LOG, productId);
             throw new ProductNotFoundException("Product with the given id not found");
         }
         log.info("Existing product found: {}", existingProduct);

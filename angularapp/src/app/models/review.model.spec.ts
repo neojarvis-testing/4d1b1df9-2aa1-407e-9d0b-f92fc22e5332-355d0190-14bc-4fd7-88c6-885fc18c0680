@@ -9,7 +9,6 @@ describe('Review Model', () => {
     const user: User = {
       userId: 1,
       email: 'user@example.com',
-      password: 'password123',
       username: 'exampleUser',
       mobileNumber: '1234567890',
       userRole: 'USER'

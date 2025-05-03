@@ -54,7 +54,6 @@ export class ReviewComponent implements OnInit {
           this.showSuccessPopup = true;
           setTimeout(() => this.showSuccessPopup = false, 3000); // Hide popup after 3 seconds
           this.addReviewForm.reset();
-         // this.router.navigate(['/viewReview']);
         },
         (error) => {
           console.error(error);

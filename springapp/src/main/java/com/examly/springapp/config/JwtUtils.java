@@ -16,7 +16,7 @@ public class JwtUtils {
 
     /* Inject the secret key from the application properties */
     @Value("${SECRET_KEY}") // in application property add SECRET_KEY
-    private String SECRET_KEY;
+    private String secretKey;
 
     /* Generate a JWT token based on the authentication object */
     public String genrateToken(Authentication authentication) {
@@ -25,18 +25,18 @@ public class JwtUtils {
             .setSubject(userDetails.getUsername())
             .setIssuedAt(new Date())
             .setExpiration(new Date(System.currentTimeMillis() + (3*60 * 60 * 1000))) // Token valid for 30 minutes
-            .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+            .signWith(SignatureAlgorithm.HS256, secretKey)
             .compact();
     }
 
     /* Extract the username from the JWT token */
     public String extractUsername(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
     /* Extract the expiration date from the JWT token */
     public Date extractExperation(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getExpiration();
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getExpiration();
     }
 
     /* Check if the JWT token is expired */

@@ -10,7 +10,7 @@ import { OrderItem } from '../models/order-item.model';
 })
 export class OrderService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   /**
    * Method to place a new order.

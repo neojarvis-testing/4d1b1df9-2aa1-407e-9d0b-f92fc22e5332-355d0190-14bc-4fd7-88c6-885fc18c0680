@@ -20,9 +20,9 @@ cartItems: OrderItem[] = [];
  checkoutForm: FormGroup;
 
  constructor(
- private cartService: CartService,
- private orderService: OrderService,
- private fb: FormBuilder
+ private readonly cartService: CartService,
+ private readonly orderService: OrderService,
+ private readonly fb: FormBuilder
  ) { }
 
  ngOnInit(): void {

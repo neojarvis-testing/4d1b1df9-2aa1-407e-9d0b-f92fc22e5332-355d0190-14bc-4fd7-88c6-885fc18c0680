@@ -5,6 +5,10 @@ import com.examly.springapp.model.User;
 
 public class UserMapper {
 
+    private UserMapper() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
+
     //Maps a User object to a UserDTO object
     public static UserDTO mapToUserDTO(User user){
         UserDTO userDTO = new UserDTO();

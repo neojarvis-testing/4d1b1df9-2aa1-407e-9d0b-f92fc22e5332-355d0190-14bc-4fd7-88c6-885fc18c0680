@@ -20,7 +20,7 @@ export class UserviewproductComponent implements OnInit {
   selectedCategory: string = ''; // Stores selected category
   categories: string[] = ["Home Appliances", "Toys", "Fashion", "Electronics", "Books", "Furniture", "Beauty"];
    
-     constructor(private router: Router, private productService: ProductService, private cartService: CartService) { }
+     constructor(private readonly router: Router, private readonly productService: ProductService, private readonly cartService: CartService) { }
    
      ngOnInit(): void {
      this.getAllProducts();

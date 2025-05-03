@@ -10,7 +10,7 @@ import { Api } from '../api-urls';
 export class ReviewService {
 
   // Constructor to inject the HttpClient dependency for making HTTP calls
-constructor(private http: HttpClient) { }
+constructor(private readonly http: HttpClient) { }
  
 /**
    * Method to add a new review

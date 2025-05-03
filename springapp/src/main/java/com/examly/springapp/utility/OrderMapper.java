@@ -8,9 +8,14 @@ import com.examly.springapp.model.Order;
 import com.examly.springapp.model.OrderItem;
  
 import java.util.List;
-import java.util.stream.Collectors;
  
 public class OrderMapper {
+
+    
+private OrderMapper() {
+    throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+}
+    
  
     public static OrderDTO convertToOrderDTO(Order order) {
         OrderDTO orderDTO = new OrderDTO();

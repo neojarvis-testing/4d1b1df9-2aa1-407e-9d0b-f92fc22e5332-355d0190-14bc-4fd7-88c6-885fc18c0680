@@ -12,7 +12,7 @@ import { Api } from '../api-urls';
 export class AuthService {
 
   // Constructor to inject the HttpClient dependency for making HTTP calls
-  constructor(private http:HttpClient) { }
+  constructor(private readonly http:HttpClient) { }
 
   /**
    * Method to register a new user
