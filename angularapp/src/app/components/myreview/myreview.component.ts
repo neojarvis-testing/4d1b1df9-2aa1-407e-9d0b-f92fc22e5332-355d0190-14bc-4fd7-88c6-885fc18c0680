@@ -85,15 +85,21 @@ export class MyreviewComponent implements OnInit {
   }
  
   deleteReview(reviewId: number): void {
-    this.reviewService.deleteReview(reviewId).subscribe(
-      () => {
-        this.reviews = this.reviews.filter(review => review.reviewId !== reviewId);
-        this.filteredReviews = this.filteredReviews.filter(review => review.reviewId !== reviewId);
-      },
-      (error) => {
-        console.error(error);
-        alert('Failed to delete review.');
-      }
-    );
+    // Show confirmation alert
+    const isConfirmed = confirm('Are you sure you want to delete this review?');
+  
+    if (isConfirmed) {
+      this.reviewService.deleteReview(reviewId).subscribe(
+        () => {
+          this.reviews = this.reviews.filter(review => review.reviewId !== reviewId);
+          this.filteredReviews = this.filteredReviews.filter(review => review.reviewId !== reviewId);
+        },
+        (error) => {
+          console.error(error);
+          alert('Failed to delete review.');
+        }
+      );
+    }
   }
+
 }

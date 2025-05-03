@@ -1,19 +1,16 @@
 package com.examly.springapp.utility;
  
+import java.util.stream.Collectors;
  
 import com.examly.springapp.dto.OrderDTO;
 import com.examly.springapp.dto.OrderItemDTO;
 import com.examly.springapp.model.Order;
 import com.examly.springapp.model.OrderItem;
  
+import java.util.List;
+import java.util.stream.Collectors;
  
 public class OrderMapper {
-
-    
-private OrderMapper() {
-    throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
-}
-    
  
     public static OrderDTO convertToOrderDTO(Order order) {
         OrderDTO orderDTO = new OrderDTO();
@@ -24,7 +21,9 @@ private OrderMapper() {
         orderDTO.setBillingAddress(order.getBillingAddress());
         orderDTO.setTotalAmount(order.getTotalAmount());
         orderDTO.setUserId(order.getUser().getUserId());
-        
+        orderDTO.setOrderItems(order.getOrderItems().stream()
+            .map(OrderMapper::convertToOrderItemDTO)
+            .collect(Collectors.toList()));
         return orderDTO;
     }
  

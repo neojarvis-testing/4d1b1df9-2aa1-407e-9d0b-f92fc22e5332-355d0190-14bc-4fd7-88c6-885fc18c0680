@@ -21,6 +21,7 @@
   <div class="row" *ngIf="filteredProducts.length > 0">
     <div *ngFor="let product of filteredProducts" class="col-md-3 mb-4">
       <div class="card h-100 shadow-sm">
+        <img [src]='getImageUrl(product.coverImage)' class="card-img-top" [alt]="product.productName" style="height: 180px; object-fit: cover;">
         <div class="card-body">
           <h5 class="card-title">{{ product.productName }}</h5>
           <p class="card-text">{{ product.description }}</p>

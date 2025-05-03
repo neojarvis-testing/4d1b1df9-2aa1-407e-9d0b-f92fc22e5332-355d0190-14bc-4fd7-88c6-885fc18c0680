@@ -9,10 +9,6 @@ import com.examly.springapp.dto.ProductDTO;
 import com.examly.springapp.model.Product;
 
 public class ProductMapper {
-
-    private ProductMapper(){
-        
-    }
     public static ProductDTO mapToProductDTO(Product product){
         ProductDTO productDTO = new ProductDTO();
         productDTO.setProductId(product.getProductId());
@@ -41,12 +37,12 @@ public class ProductMapper {
         File file = new File(imagePath);
         try (FileInputStream fileInputStream = new FileInputStream(file)) {
             byte[] imageBytes = new byte[(int) file.length()];
-           int bytes= fileInputStream.read(imageBytes);
-           if(bytes<=0)
-              throw new IOException();
+            fileInputStream.read(imageBytes);
+
+            // Encode to Base64
             return Base64.getEncoder().encodeToString(imageBytes);
         } catch (IOException e) {
-            
+            e.printStackTrace();
             return null;
         }
     }

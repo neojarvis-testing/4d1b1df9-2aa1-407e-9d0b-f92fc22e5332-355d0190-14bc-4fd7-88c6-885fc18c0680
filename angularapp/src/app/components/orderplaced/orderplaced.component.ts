@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Order } from 'src/app/models/order.model';
 import { OrderService } from 'src/app/services/order.service';
-
+ 
 @Component({
   selector: 'app-orderplaced',
   templateUrl: './orderplaced.component.html',
@@ -11,19 +11,21 @@ export class OrderplacedComponent implements OnInit {
   orders: Order[] = [];
   filteredOrders: Order[] = [];
   selectedOrderItems: any[] = [];
+  selectedOrder: Order | null = null;
   isLoading: boolean = true;
   isItemsLoading: boolean = false;
   errorMessage: string = '';
+  itemsErrorMessage: string = '';
   searchQuery: string = '';
-  sortOrder: 'asc' | 'desc' = 'asc'; // Sorting order
-  orderStatusOptions = ['CONFIRMED', 'DISPATCHED', 'DELIVERED']; // Valid statuses
-
+  sortOrder: 'asc' | 'desc' = 'asc';
+  orderStatusOptions = ['CONFIRMED', 'DISPATCHED', 'DELIVERED'];
+ 
   constructor(private readonly orderService: OrderService) {}
-
+ 
   ngOnInit(): void {
     this.getAllOrders();
   }
-
+ 
   // Fetch all orders
   getAllOrders(): void {
     this.orderService.getAllOrders().subscribe(
@@ -38,31 +40,16 @@ export class OrderplacedComponent implements OnInit {
       }
     );
   }
-
-  // Update order status (Enforces correct transitions)
+ 
+  // Update order status (Pass selected status properly)
   updateOrderStatus(order: Order): void {
     if (!order) return;
-
-    let newStatus = '';
-
-    // Define valid transitions
-    switch (order.orderStatus) {
-      case 'CONFIRMED':
-        newStatus = 'DISPATCHED';
-        break;
-      case 'DISPATCHED':
-        newStatus = 'DELIVERED';
-        break;
-      default:
-        this.errorMessage = 'Order status cannot be updated further.';
-        return;
-    }
-
-    const updatedOrder = { ...order, orderStatus: newStatus };
-
+ 
+    const updatedOrder = { ...order, orderStatus: order.orderStatus }; // Ensure selected status is sent
+ 
     this.orderService.updateOrder(order.orderId, updatedOrder).subscribe(
       (updatedOrderResponse) => {
-        order.orderStatus = updatedOrderResponse.orderStatus; // Reflect backend update in UI
+        order.orderStatus = updatedOrderResponse.orderStatus; // Correctly reflect the updated status
         console.log(`Order status updated successfully: ${updatedOrderResponse.orderStatus}`);
       },
       (error) => {
@@ -71,7 +58,18 @@ export class OrderplacedComponent implements OnInit {
       }
     );
   }
-
+ 
+  // Disable statuses dynamically
+  shouldDisableStatus(currentStatus: string, statusOption: string): boolean {
+    const statusHierarchy = {
+      'CONFIRMED': ['CONFIRMED'],
+      'DISPATCHED': ['CONFIRMED', 'DISPATCHED'],
+      'DELIVERED': ['CONFIRMED', 'DISPATCHED', 'DELIVERED']
+    };
+ 
+    return statusHierarchy[currentStatus]?.includes(statusOption) || false;
+  }
+ 
   // Filter orders based on search query
   onSearch(): void {
     const query = this.searchQuery.toLowerCase().trim();
@@ -82,7 +80,7 @@ export class OrderplacedComponent implements OnInit {
       order.billingAddress.toLowerCase().includes(query)
     );
   }
-
+ 
   // Sort orders by date
   sortByDate(): void {
     this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
@@ -92,7 +90,7 @@ export class OrderplacedComponent implements OnInit {
       return this.sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
     });
   }
-
+ 
   // View order items for a specific order
   viewOrderItems(orderId: number): void {
     this.isItemsLoading = true;
@@ -102,9 +100,14 @@ export class OrderplacedComponent implements OnInit {
         this.isItemsLoading = false;
       },
       error => {
-        this.errorMessage = 'Failed to fetch order items. Please try again later.';
+        this.itemsErrorMessage = 'Failed to fetch order items. Please try again later.';
         this.isItemsLoading = false;
       }
     );
+  }
+ 
+  // Track order status for a selected order
+  trackStatus(order: Order): void {
+    this.selectedOrder = order;
   }
 }
