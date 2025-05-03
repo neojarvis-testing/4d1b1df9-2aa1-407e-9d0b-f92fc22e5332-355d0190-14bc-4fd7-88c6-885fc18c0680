@@ -13,8 +13,8 @@
     align-items: center;
 }
  
-h4 {
-    color: white;
+.heading a{
+    color: whitesmoke;
     padding-left: 16px;
 }
  
@@ -27,7 +27,7 @@ h4 {
 }
  
 .dropdown-toggle:hover{
-    color: #007bff;
+    color: grey;
 }
  
 .dropdown-item{
@@ -43,14 +43,16 @@ a{
 }
  
 a:hover {
-    color: #007bff;
+    color:grey;
+    padding: 3px;
+    border-radius: 3px;
 }
  
 .logout {
     color: white;
     border-radius: 10px;
     padding: 4px 8px;
-    background-color: red;
+    background-image: linear-gradient(to right, #ff6666, #d41b1b);
 }
  
 .logout:hover {

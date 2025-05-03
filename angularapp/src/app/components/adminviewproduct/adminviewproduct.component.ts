@@ -4,6 +4,8 @@ import { Api } from 'src/app/api-urls';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/services/product.service';
  
+declare var bootstrap: any; // Required for Bootstrap modal control
+ 
 @Component({
   selector: 'app-adminviewproduct',
   templateUrl: './adminviewproduct.component.html',
@@ -11,64 +13,89 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class AdminviewproductComponent implements OnInit {
  
-  products:Product[]=[];
-  searchText:string='';
-  filteredProduct:Product[]=[]
-  ApiUrl:string=Api.apiUrl
-
-  constructor(private readonly productService:ProductService,private readonly router:Router) { }
-
-  selectedCategory: string = ''; // Default empty for 'All Categories'
-  //categories: string[] = []
+  products: Product[] = [];
+  searchText: string = '';
+  filteredProduct: Product[] = [];
+  ApiUrl: string = Api.apiUrl;
+ 
+  isLoading: boolean = true;
+  currentPage: number = 1;
+  itemsPerPage: number = 8;
+ 
+  selectedCategory: string = '';
   categories: string[] = ["Home Appliances", "Toys", "Fashion", "Electronics", "Books", "Furniture", "Beauty"];
  
+  selectedProductId: number = 0; // Store product ID for deletion
+ 
+  constructor(private readonly productService: ProductService, private readonly router: Router) { }
  
   ngOnInit(): void {
     this.getAllProducts();
   }
-  getAllProducts(){
-    this.productService.getAllProducts().subscribe((data)=>{
-         this.products=data;
-         console.log(this.products)
-      this.filteredProduct=data;
-    })
+ 
+  getAllProducts() {
+    this.productService.getAllProducts().subscribe((data) => {
+      this.products = data;
+      this.filteredProduct = data;
+    });
   }
-  deleteProduct(productId:number){
-    if(confirm("Are you sure you want to delete product")){
-      this.productService.deleteProduct(productId).subscribe(()=>{
-        console.log("1")
-        this.getAllProducts();
-        console.log("2")
+ 
+  openDeleteModal(productId: number) {
+    this.selectedProductId = productId;
+    const modalElement = document.getElementById('deleteConfirmModal');
+ 
+    //  Ensure modal is visible and accessible
+    modalElement?.removeAttribute("aria-hidden");
+ 
+    const modal = new bootstrap.Modal(modalElement!);
+    modal.show();
+  }
+ 
+  confirmDelete() {
+    this.productService.deleteProduct(this.selectedProductId).subscribe(
+      () => {
+        console.log(` Product ID ${this.selectedProductId} deleted successfully`);
+        this.getAllProducts(); // Refresh product list
+ 
+        //  Close the modal after successful deletion
+        const modalElement = document.getElementById('deleteConfirmModal');
+        const modal = bootstrap.Modal.getInstance(modalElement!);
+        modal?.hide();
       },
-      (error)=>{
-        console.log(error)
-      })
-    }
+      (error) => {
+        console.error(` Error deleting product ID ${this.selectedProductId}`, error);
+        if (error.status === 404) {
+          alert(`Product with ID ${this.selectedProductId} not found.`);
+        } else {
+          alert(`Error deleting product: ${error.message}`);
+        }
+      }
+    );
   }
  
-  updateProduct(productId:number){
-    this.router.navigate(['/updateProduct',productId])
+  updateProduct(productId: number) {
+    this.router.navigate(['/updateProduct', productId]);
   }
  
-  search(){
-    if(this.searchText=='')
-      return this.filteredProduct;
-    else
-    this.filteredProduct=this.products.filter((data)=>JSON.stringify(data).toLowerCase().includes(this.searchText.toLowerCase()))
+  search() {
+    this.filteredProduct = this.searchText === ''
+      ? this.products
+      : this.products.filter((data) =>
+          JSON.stringify(data).toLowerCase().includes(this.searchText.toLowerCase())
+        );
   }
  
   filterByCategory(): void {
     this.filteredProduct = this.selectedCategory
       ? this.products.filter(p => p.category === this.selectedCategory)
-      : [...this.products]; // Show all products if no category is selected
+      : [...this.products];
   }
  
+  onPageChange(page: number): void {
+    this.currentPage = page;
+  }
  
   getImageUrl(imageName: string): string {
-    let a = this.ApiUrl+"/"+imageName
-    console.log(a)
-    a='https://8080-fdefbfaaafbdebbfaadbececcfeddbcfdcfcc.premiumproject.examly.io/1746002370897_Image.jpg'
-    console.log(a)
     return `${this.ApiUrl}/${imageName}`;
   }
 }

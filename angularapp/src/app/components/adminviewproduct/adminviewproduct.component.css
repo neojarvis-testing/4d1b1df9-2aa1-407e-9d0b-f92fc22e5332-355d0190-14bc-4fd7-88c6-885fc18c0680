@@ -1,104 +1,103 @@
-    /* Overall Page Styling */
+/* Page Background */
+/* Apply background color to whole page */
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #ffebf2; /* Soft pink background */
-    margin: 0;
-    padding: 20px;
-  }
-  /* Form Container */
-  form {
-    max-width: 600px;
-    margin: 30px auto;
-    background-color: #ffffff; /* Bright white background */
-    border: 1px solid #ffd2e3; /* Soft pink border */
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 6px 10px rgba(255, 105, 180, 0.3); /* Pink shadow */
-  }
-  /* Headings */
-  h1 {
-    font-size: 1.8rem;
-    color: #e60073; /* Bright pink heading */
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: bold;
-  }
-  h1::before {
-    content: '💖 ';
-    font-size: 1.5rem;
-  }
-  h1::after {
-    content: ' 🛍️';
-    font-size: 1.5rem;
-  }
-  /* Form Labels */
-  label {
-    font-weight: 600;
-    color: #cc0052; /* Deep pink text */
-  }
-  /* Input Fields */
-  .form-control {
-    border-radius: 5px;
-    border: 1px solid #ffd2e3; /* Pink border for inputs */
-    box-shadow: none;
-    font-family: 'Poppins', sans-serif;
-  }
-  .form-control:focus {
-    box-shadow: 0 0 6px rgba(255, 105, 180, 0.5); /* Pink glow */
-    border-color: #ff4081; /* Vibrant pink focus */
-  }
-  /* Submit Button */
-  button[type="submit"] {
-    background-image: linear-gradient(to right, #ff4081, #ff80ab); /* Pop pink gradient */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    font-family: 'Poppins', sans-serif;
-  }
-  button[type="submit"]:hover {
-    background-image: linear-gradient(to right, #ff80ab, #ff4081);
-    box-shadow: 0 4px 8px rgba(255, 105, 180, 0.3); /* Hover shadow effect */
-  }
-  button[type="submit"]::after {
-    content: ' 🚀';
-  }
-  /* Error Messages */
-  .text-danger {
-    font-size: 0.9rem;
-    color: #cc0000; /* Bright red for errors */
-    font-family: 'Poppins', sans-serif;
-  }
-  .text-danger::before {
-    content: '⚠️ ';
-    font-size: 1rem;
-  }
-  /* Success Messages */
-  .text-success {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #00c853; /* Bright green success message */
-    font-family: 'Poppins', sans-serif;
-  }
-  /* Dropdown Styling */
-  select.form-control {
-    background-color: white;
-    border: 1px solid #ffd2e3; /* Pink border */
-    border-radius: 5px;
-    padding: 10px;
-    box-shadow: none;
-    font-family: 'Poppins', sans-serif;
-  }
-  /* File Input Styling */
-  input[type="file"] {
-    padding: 8px;
-    border: 1px solid #ffd2e3; /* Pink border */
-    border-radius: 5px;
-    background-color: #ffe6ee; /* Light pink background */
-  }
-  /* Add margin for form groups */
-  .form-group {
-    margin-bottom: 20px;
-  }
+  font-family: 'Poppins', sans-serif; /* Clean and stylish */
+}
+ 
+/* Headings */
+h2, h4 {
+  font-family: 'Montserrat', sans-serif; /* Bold and impactful */
+  color: #555555; /* Medium grey */
+}
+ 
+/* Product Card */
+.card {
+  font-family: 'Lato', sans-serif; /* Simple and professional */
+}
+ 
+body {
+  background-color: #e0e0e0; /* Light grey */
+}
+ 
+ 
+/* Container should match and blend smoothly */
+.container {
+  background-color: #f7f7f7; /* Slightly lighter grey */
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+ 
+ 
+ 
+/* Headings */
+h2, h4 {
+  color: #444444; /* Medium grey */
+}
+ 
+/* Search & Filter Inputs */
+.form-control,
+.form-select {
+  background-color: #d6d6d6; /* Light grey */
+  border: 2px solid #888888; /* Grey border */
+  color: #333333;
+}
+ 
+.form-control:focus,
+.form-select:focus {
+  border-color: #555555; /* Darker grey focus */
+}
+ 
+/* Product Card */
+.card {
+  background-color: #f0f0f0; /* Light grey */
+  border: 2px solid #bbbbbb; /* Border for product box */
+  border-radius: 8px; /* Rounded corners */
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  color: #222222;
+}
+ 
+/* Card Image */
+.card-img-top {
+  border-bottom: 2px solid #888888; /* Grey accent */
+}
+ 
+/* Buttons */
+.btn-outline-primary {
+  border: 2px solid #666666;
+  color: #444444;
+}
+ 
+.btn-outline-danger {
+  border: 2px solid #993333; /* Dark red-grey */
+  color: #993333;
+}
+ 
+.btn-outline-primary:hover,
+.btn-outline-danger:hover {
+  background-color: #666666; /* Grey hover effect */
+  color: #ffffff;
+}
+ 
+/* Modal */
+.modal-content {
+  background-color: #f0f0f0; /* Light grey modal */
+  border-radius: 8px;
+}
+ 
+.modal-header {
+  background-color: #777777; /* Medium grey header */
+  color: #ffffff;
+}
+ 
+.modal-footer .btn-secondary {
+  background-color: #999999; /* Soft grey */
+  color: #ffffff;
+}
+ 
+/* Pagination */
+pagination-controls {
+  color: #666666; /* Medium grey pagination highlights */
+}
+ 

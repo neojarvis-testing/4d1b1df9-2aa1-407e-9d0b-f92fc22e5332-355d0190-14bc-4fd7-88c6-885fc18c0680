@@ -20,10 +20,18 @@ export class OrderplacedComponent implements OnInit {
   sortOrder: 'asc' | 'desc' = 'asc';
   orderStatusOptions = ['CONFIRMED', 'DISPATCHED', 'DELIVERED'];
  
+  isLoadingPagenation: boolean = true;
+  currentPage: number = 1;
+  itemsPerPage: number = 8;
+ 
   constructor(private readonly orderService: OrderService) {}
  
   ngOnInit(): void {
     this.getAllOrders();
+  }
+ 
+  onPageChange(page: number): void {
+    this.currentPage = page;
   }
  
   // Fetch all orders
